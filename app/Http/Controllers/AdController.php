@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
 use App\Ad;
+use Illuminate\Support\Facades\Auth;
 
 class AdController extends Controller
 {
@@ -46,28 +48,16 @@ class AdController extends Controller
     public function store(Request $request)
     {
         // validate
-       // $this->validate($request,array('title' => 'required|max:100','content'=>'required|max:800|min:20','contact'=>'required|max:100'));
-
-        $this->posts->create([
+        $this->validate($request,array('title' => 'required|max:100','content'=>'required|max:800|min:20','contact'=>'required|max:100'));
+        $userId = Auth::user()->id;
+        $ad = $this->posts->create([
             'title' => $request['title'],
             'content' => $request['content'],
+            'contact' => $request['contact'],
+            'image_url' => $request['image_url'],
+            'user_id' => $userId,
         ]);
-        //title = $request['title'];
-        //$this->posts->content = $request['content'];
-        //$this->posts->contact = $request->contact;
-
-        $user = Auth::user();
-
-//        if ($user)
-//        {
-//            $this->posts->author = $user->id;
-//            $post->save();
-//        }
-//        else
-//        {
-//            return redirect()->route('ads.index');
-//        }
-        return redirect()->route('ads.show');
+        return redirect()->route('ad.show',$ad->id);
 
     }
 
@@ -106,10 +96,14 @@ class AdController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $user = Auth::user();
         $request = $request->all();
         $this->posts->where('id', $id)->update([
             'title' => $request['title'],
             'content' => $request['content'],
+            'contact' => $request['contact'],
+            'image_url' => $request['image_url'],
+            'user_id' => $user->getAuthIdentifier(),
         ]);
         return redirect()->route('ad.index');
     }

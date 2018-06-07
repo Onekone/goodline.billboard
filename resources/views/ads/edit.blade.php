@@ -7,6 +7,12 @@
         {{Form::text('title',$post->title)}}<br>
         <h1>{{Form::label('content',"Текст")}}</h1>
         {{Form::textarea('content',$post->content)}}<br>
+        <h1>{{Form::label('contact',"Контактная информация")}}</h1>
+        {{Form::text('contact',$post->contact)}}<br><br>
+        <h1>{{Form::label('contact',"Контактная информация")}}</h1>
+        {{Form::text('contact',$post->contact)}}<br><br>
+        <h1>{{Form::label('image_url',"Ссылка на картинку")}}</h1>
+        {{Form::text('image_url',$post->image_url)}}<br><br>
         {{Form::submit('Отправить')}}
         {!! Form::close() !!}
     </div>
