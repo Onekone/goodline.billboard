@@ -19,8 +19,8 @@ class CreateAdsTable extends Migration
             $table->text('content');
             $table->text('contact');
             $table->text('image_url');
-            $table->unsignedInteger('author');
-            $table->foreign('author')->references('id')->on('users');
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }
