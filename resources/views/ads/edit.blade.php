@@ -2,22 +2,12 @@
 
 @section('content')
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">Dashboard</div>
-
-                    <div class="card-body">
-                        @if (session('status'))
-                            <div class="alert alert-success">
-                                {{ session('status') }}
-                            </div>
-                        @endif
-
-                        We have visuals!
-                    </div>
-                </div>
-            </div>
-        </div>
+        {!! Form::open(['method'=>'put','route'=>['ad.update',$post->id]]) !!}
+        <h1>{{Form::label('title',"Заголовок")}}</h1>
+        {{Form::text('title',$post->title)}}<br>
+        <h1>{{Form::label('content',"Текст")}}</h1>
+        {{Form::textarea('content',$post->content)}}<br>
+        {{Form::submit('Отправить')}}
+        {!! Form::close() !!}
     </div>
 @endsection

@@ -7,10 +7,18 @@
 }
 
 .ads {
-    margin: 10px; /* Space for fixed navbar */
-    display: inline-block;
+    padding-top: 40px;
+}
+
+.editButtons{
+    padding-top: 40px;
 }
 
 .information {
     margin: 10px; /* Space for fixed navbar */
+}
+
+.block_links{
+    padding-top: 40px;
+    margin-top: 10px;
 }

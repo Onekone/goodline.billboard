@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Ad;
-use Auth;
 
 class AdController extends Controller
 {
@@ -13,9 +12,16 @@ class AdController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    private $posts;
+
+    public function __construct(Ad $posts)
+    {
+        $this->posts = $posts;
+    }
+
     public function index()
     {
-        $posts = Ad::paginate(5);;
+        $posts = $this->posts->paginate(5);
 
         return view('ads.index')->withPosts($posts);
     }
@@ -40,25 +46,28 @@ class AdController extends Controller
     public function store(Request $request)
     {
         // validate
-        $this->validate($request,array('title' => 'required|max:100','content'=>'required|max:800|min:20','contact'=>'required|max:100'));
+       // $this->validate($request,array('title' => 'required|max:100','content'=>'required|max:800|min:20','contact'=>'required|max:100'));
 
-        $post = new Ad;
-        $post->title = $request->title;
-        $post->content = $request->content;
-        $post->contact = $request->contact;
+        $this->posts->create([
+            'title' => $request['title'],
+            'content' => $request['content'],
+        ]);
+        //title = $request['title'];
+        //$this->posts->content = $request['content'];
+        //$this->posts->contact = $request->contact;
 
         $user = Auth::user();
 
-        if ($user)
-        {
-            $post->author = $user->id;
-            $post->save();
-        }
-        else
-        {
-            return redirect()->route('ads.index');
-        }
-        return redirect()->route('ads.show',$post->id);
+//        if ($user)
+//        {
+//            $this->posts->author = $user->id;
+//            $post->save();
+//        }
+//        else
+//        {
+//            return redirect()->route('ads.index');
+//        }
+        return redirect()->route('ads.show');
 
     }
 
@@ -84,7 +93,8 @@ class AdController extends Controller
      */
     public function edit($id)
     {
-        //
+        $posts = $this->posts->find($id);
+        return view('ads.edit')->withPost($posts);
     }
 
     /**
@@ -96,7 +106,12 @@ class AdController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request = $request->all();
+        $this->posts->where('id', $id)->update([
+            'title' => $request['title'],
+            'content' => $request['content'],
+        ]);
+        return redirect()->route('ad.index');
     }
 
     /**
@@ -107,6 +122,8 @@ class AdController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $post = $this->posts->find($id);
+        $post->delete();
+        return redirect()->route('ad.index');
     }
 }

@@ -3,14 +3,22 @@
 @section('content')
     <div class="container">
         @foreach($posts as $post)
-            <span class="ads">
-            <a href="{{route('ad.show',$post->id)}}">
-                <img src="http://placehold.it/200x200" class="img" >
-                {{$post->title}}
-            </a> <br>
-                {{$post->content}}
-            </span> <br>
-        @endforeach
-        {{ $posts->links() }}
-    </div>
+
+            <div class="ads">
+                <div class="row">
+                    <div class="col-lg-3 col-md-3 col-sm-12">
+                        <a href="{{route('ad.show',$post->id)}}">
+                            <img src="http://placehold.it/200x200" class="img">
+                        </a>
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-sm-12">
+                        <div><a href="{{route('ad.show',$post->id)}}">{{$post->title}}</a></div>
+                        <div>{{$post->content}}</div>
+                    </div>
+                </div>
+                @endforeach
+                <div class="block_links">
+                    {{ $posts->links() }}
+                </div>
+            </div>
 @endsection

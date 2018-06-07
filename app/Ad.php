@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ad extends Model
 {
-    protected $fillable = ['title', 'content', 'contact'];
+    protected $fillable = ['title', 'content'];
 }
