@@ -1,23 +1,23 @@
 @extends('layouts.app')
-
+<link href="{{ asset('css/billboard.css') }}" rel="stylesheet">
 @section('content')
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">Dashboard</div>
+<div class="container">
+    <div class="information">
+        <span class="ads">
+            <img src="http://placehold.it/200x200" class="img" >
+            {{$post->title}}
+            {{$post->content}}
+        </span>
 
-                    <div class="card-body">
-                        @if (session('status'))
-                            <div class="alert alert-success">
-                                {{ session('status') }}
-                            </div>
-                        @endif
 
-                        We have visuals!
-                    </div>
-                </div>
-            </div>
-        </div>
+        @if(Auth::check() && Auth:: user()->status)
+            {!! Form::open(['method'=>'delete','route'=>['articles.destroy',$post->id]]) !!}
+            {{Form::submit('Удалить')}}
+            {!! Form::close() !!}
+            {!! Form::open(['method'=>'get','route'=>['articles.edit',$post->id]]) !!}
+            {!!Form::submit('Редактироать')!!}
+            {!! Form::close() !!}
+        @endif
     </div>
-@endsection
+</div>
+@stop

@@ -15,7 +15,7 @@ class AdController extends Controller
      */
     public function index()
     {
-        $posts = Ad::all();
+        $posts = Ad::paginate(5);;
 
         return view('ads.index')->withPosts($posts);
     }

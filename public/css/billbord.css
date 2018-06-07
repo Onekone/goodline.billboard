@@ -1,0 +1,16 @@
+.links {
+    padding-top: 40px; /* Space for fixed navbar */
+}
+.img {
+    margin-right: 10px; /* Space for fixed navbar */
+    float:left;
+}
+
+.ads {
+    margin: 10px; /* Space for fixed navbar */
+    display: inline-block;
+}
+
+.information {
+    margin: 10px; /* Space for fixed navbar */
+}
