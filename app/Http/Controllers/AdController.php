@@ -79,8 +79,9 @@ class AdController extends Controller
     {
         //
         $post = Ad::find($id);
+        $username = User::where('id',$post->user_id)->get()[0]->name;
 
-        return view('ads.show')->withPost($post);
+        return view('ads.show')->withPost($post)->withUsername($username);
     }
 
     /**

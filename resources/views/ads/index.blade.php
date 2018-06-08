@@ -26,9 +26,8 @@
                     </div>
                 </div>
             </div>
-                @endforeach
-                <div class="block_links">
-                    {{ $posts->links() }}
-                </div>
-
+        @endforeach
+        <div class="block_links">
+            {{ $posts->links() }}
+        </div>
 @endsection
