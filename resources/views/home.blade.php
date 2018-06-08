@@ -14,6 +14,12 @@
                         </div>
                     @endif
 
+                    @if (defined('message'))
+                        <div class="alert alert-warning">
+                            {{ $message }}
+                        </div>
+                    @endif
+
                     You are logged in!
                 </div>
             </div>
