@@ -5,7 +5,7 @@
         @foreach($posts as $post)
 
             <div class="ads">
-                <div class="row">
+            <div class="row">
                     <div class="col-lg-3 col-md-3 col-sm-12">
                         <a href="{{route('ad.show',$post->id)}}">
                             <img src="http://placehold.it/200x200" class="img">
@@ -16,9 +16,11 @@
                         <div>{{$post->content}}</div>
                     </div>
                 </div>
-                @endforeach
-                <div class="block_links">
-                    {{ $posts->links() }}
-                </div>
+
+
+            </div>
+        @endforeach
+            <div class="block_links">
+                {{ $posts->links() }}
             </div>
 @endsection

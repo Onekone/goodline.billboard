@@ -11,7 +11,7 @@
                     <img src="http://placehold.it/200x200">
                 </div>
                 <div class="card-body">
-                    Прислал: {{$post->user_id}}</br>
+                    Прислал: {{$username}}</br>
                     Дата: {{ date('M j, Y', strtotime($post->created_at)) }}
                 </div>
                 <div class="card-footer">
