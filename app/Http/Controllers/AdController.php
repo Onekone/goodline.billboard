@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
 use App\Ad;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class AdController extends Controller
 {
@@ -13,9 +14,16 @@ class AdController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    private $posts;
+
+    public function __construct(Ad $posts)
+    {
+        $this->posts = $posts;
+    }
+
     public function index()
     {
-        $posts = Ad::paginate(5);;
+        $posts = $this->posts->paginate(5);
 
         return view('ads.index')->withPosts($posts);
     }
@@ -41,24 +49,15 @@ class AdController extends Controller
     {
         // validate
         $this->validate($request,array('title' => 'required|max:100','content'=>'required|max:800|min:20','contact'=>'required|max:100'));
-
-        $post = new Ad;
-        $post->title = $request->title;
-        $post->content = $request->content;
-        $post->contact = $request->contact;
-
-        $user = Auth::user();
-
-        if ($user)
-        {
-            $post->author = $user->id;
-            $post->save();
-        }
-        else
-        {
-            return redirect()->route('ads.index');
-        }
-        return redirect()->route('ads.show',$post->id);
+        $userId = Auth::user()->id;
+        $ad = $this->posts->create([
+            'title' => $request['title'],
+            'content' => $request['content'],
+            'contact' => $request['contact'],
+            'image_url' => $request['image_url'],
+            'user_id' => $userId,
+        ]);
+        return redirect()->route('ad.show',$ad->id);
 
     }
 
@@ -84,7 +83,8 @@ class AdController extends Controller
      */
     public function edit($id)
     {
-        //
+        $posts = $this->posts->find($id);
+        return view('ads.edit')->withPost($posts);
     }
 
     /**
@@ -96,7 +96,16 @@ class AdController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = Auth::user();
+        $request = $request->all();
+        $this->posts->where('id', $id)->update([
+            'title' => $request['title'],
+            'content' => $request['content'],
+            'contact' => $request['contact'],
+            'image_url' => $request['image_url'],
+            'user_id' => $user->getAuthIdentifier(),
+        ]);
+        return redirect()->route('ad.index');
     }
 
     /**
@@ -107,6 +116,8 @@ class AdController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $post = $this->posts->find($id);
+        $post->delete();
+        return redirect()->route('ad.index');
     }
 }

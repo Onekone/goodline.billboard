@@ -2,22 +2,16 @@
 
 @section('content')
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">Dashboard</div>
-
-                    <div class="card-body">
-                        @if (session('status'))
-                            <div class="alert alert-success">
-                                {{ session('status') }}
-                            </div>
-                        @endif
-
-                        We have visuals!
-                    </div>
-                </div>
-            </div>
-        </div>
+        {!! Form::open(['method'=>'post','route'=>'ad.store']) !!}
+        <h1>{{Form::label('title',"Заголовок")}}</h1>
+        {{Form::text('title')}}<br>
+        <h1>{{Form::label('content',"Текст")}}</h1>
+        {{Form::textarea('content')}}<br>
+        <h1>{{Form::label('contact',"Контактная информация")}}</h1>
+        {{Form::text('contact')}}<br>
+        <h1>{{Form::label('image_url',"Ссылка на картинку")}}</h1>
+        {{Form::text('image_url')}}<br><br>
+        {{Form::submit('Отправить')}}
+        {!! Form::close() !!}
     </div>
 @endsection
