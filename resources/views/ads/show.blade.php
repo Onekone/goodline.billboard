@@ -6,10 +6,12 @@
             <div class="ads">
                 <div class="row">
                     <div class="col-lg-3 col-md-3 col-sm-12">
-                        <img src="http://placehold.it/200x200" class="img">
+                        <img src="{{asset('images/'.$post->image_url)}}" width="200" height="200">
                     </div>
                     <div class="col-lg-9 col-md-9 col-sm-12">
+                        {{Form::label('Заголовок')}}<br>
                         <div>{{$post->title}}</div>
+                        {{Form::label('Описание')}}<br>
                         <div>{{$post->content}}</div>
                     </div>
                 </div>

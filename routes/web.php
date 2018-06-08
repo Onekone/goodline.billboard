@@ -17,4 +17,5 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('ad','AdController');
+Route::resource('photo','UserImageController');
 

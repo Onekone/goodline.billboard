@@ -23,7 +23,7 @@ class AdController extends Controller
 
     public function index()
     {
-        $posts = $this->posts->paginate(5);
+        $posts = $this->posts->latest()->paginate(4);
 
         return view('ads.index')->withPosts($posts);
     }
@@ -50,12 +50,20 @@ class AdController extends Controller
         // validate
         $this->validate($request,array('title' => 'required|max:100','content'=>'required|max:800|min:20','contact'=>'required|max:100'));
         $userId = Auth::user()->id;
+
+        if ($request->image_url) {
+            $photoName = time() . '.' . $request->image_url->getClientOriginalExtension();
+            $request->image_url->move(public_path('images'), $photoName);
+        }
+        else {
+                $photoName = null;
+            }
         $ad = $this->posts->create([
             'title' => $request['title'],
             'content' => $request['content'],
             'contact' => $request['contact'],
-            'image_url' => $request['image_url'],
             'user_id' => $userId,
+            'image_url' => $photoName,
         ]);
         return redirect()->route('ad.show',$ad->id);
 
