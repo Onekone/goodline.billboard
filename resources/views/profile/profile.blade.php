@@ -24,11 +24,24 @@
                         </p>
 
                         @if($auth && $auth==$user->id)<hr>
-                        <ul>
-                            <li><a href="{{route("password.request")}}">Поменять пароль</a></li>
-                            <li><a href="{{route("password.request")}}">Поменять электронную почту</a></li>
-                            <li><a href="{{route("password.request")}}">Поменять имя</a></li>
-                        </ul>
+                        {!! Form::model($user, ['route' => ['user',$user->id], $user->id, 'method' => 'PUT', 'name' => 'editForm']) !!}
+                        Отображаемое имя:
+                        <input id="username" type="text" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value={{$user->name}} required> <br>
+
+                        Адрес электронной почты:
+                        <input id="useremail" type="email" class="form-control{{ $errors->has('useremail') ? ' is-invalid' : '' }}" name="useremail" value={{$user->email}} required> <br>
+
+                        Текущий пароль:
+                        <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required> <br>
+
+                        <input id="changePassQuestion" name="changePassQuestion" value="changePasswordQuestion" type="checkbox"> Поменять пароль?
+                        <input id="password_new" type="password" class="form-control{{ $errors->has('password_new') ? ' is-invalid' : '' }}" name="password_new"> <br>
+
+                        <button type="submit" class = "btn btn-success form-control">[PH] Сохранить изменения</button> <br>
+                        <a href="#" class="btn btn-outline-danger form-control">[PH] Удалить все объявления</a>
+                        <a href="#" class="btn btn-danger form-control">[PH] Удалить аккаунт</a>
+
+                        {!! Form::close() !!}
                         @endif
                     </div>
                 </div>
@@ -107,4 +120,49 @@
             $('[data-toggle="tooltip"]').tooltip();
         });
     </script>
+
+    <div id="modalNukeUser" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+
+                    <h4 class="modal-title">Вопрос</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    Это действие **невозможно** отменить.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default form-control" data-dismiss="modal">Закрыть</button>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div id="modalNukeAds" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+
+                    <h4 class="modal-title">Настройки аккаунта</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    Это действие **невозможно** отменить. Вы уверены, что хотите удалить все свои объявления?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default form-control" data-dismiss="modal">Закрыть</button>
+
+
+                    {!! Form::close() !!}
+                </div>
+            </div>
+
+        </div>
+    </div>
 @endsection
