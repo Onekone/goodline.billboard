@@ -2,8 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\EmailVerify;
+use App\Mail\EmailVerifyAccount;
 use App\User;
 use App\Http\Controllers\Controller;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -63,10 +69,20 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $p = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+
+        $ev = EmailVerify::create([
+            'user_id' => $p->id,
+            'verify_token' => str_random(60)
+            ]);
+
+
+        Mail::to($data['email'])->send(new EmailVerifyAccount($data['name'],$ev->verify_token));
+
+        return $p;
     }
 }

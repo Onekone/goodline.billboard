@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\EmailVerify;
 use Illuminate\Http\Request;
 use App\Ad;
 use App\User;
@@ -9,8 +10,6 @@ use Auth;
 
 class ProfileController extends Controller
 {
-
-
     public function show($id)
     {
         $user = User::find($id);
@@ -22,18 +21,24 @@ class ProfileController extends Controller
         return view('profile.profile')->withPosts($posts)->withAuth($auth)->withUser($user);
     }
 
-    public function edit($id)
+    public function verify($key)
     {
-        //
-    }
+        $tkn = EmailVerify::where('verify_token',$key)->get();
 
-    public function update(Request $request, $id)
-    {
-        //
-    }
+        if ($tkn){
+            foreach($tkn as $user) {
+                $p = User::find($user->user_id);
+                $p->verified = 1;
+                $p->save();
+                $user->delete();
+            }
 
-    public function destroy($id)
-    {
-        //
+        }
+        else {
+
+        };
+
+
+        return view('home');
     }
 }
