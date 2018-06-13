@@ -30,7 +30,11 @@
 
                         Адрес электронной почты:
                         <input id="useremail" type="email" class="form-control{{ $errors->has('useremail') ? ' is-invalid' : '' }}" name="useremail" value={{$user->email}} required> <br>
-
+                        @if ($errors->has('email'))
+                            <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('email') }}</strong>
+                                    </span>
+                        @endif
                         Текущий пароль:
                         <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required> <br>
 
