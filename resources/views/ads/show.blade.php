@@ -1,5 +1,4 @@
 @extends('layouts.app')
-<link href="{{ asset('css/billboard.css') }}" rel="stylesheet">
 @section('content')
 <div class="container">
     <div class="row">
@@ -11,18 +10,18 @@
                     <img src="http://placehold.it/200x200">
                 </div>
                 <div class="card-body">
-                    Прислал: {{$username}}</br>
-                    Дата: {{ date('M j, Y', strtotime($post->created_at)) }}
+                    [PH] Прислал: {{$username}}</br>
+                    [PH] Дата: {{ date('M j, Y', strtotime($post->created_at)) }}
                 </div>
                 <div class="card-footer">
 
 
                 {!! Form::open(['method'=>'get','route'=>['ad.edit',$post->id]]) !!}
-                    {!! Form::submit('Редактировать',array('class'=>'form-control btn btn-primary','width'=>'300px'))!!}
+                    {!! Form::submit('[PH] Редактировать',array('class'=>'form-control btn btn-primary','width'=>'300px'))!!}
                 {!! Form::close() !!}
 
                 {!! Form::open(['method'=>'delete','route'=>['ad.destroy',$post->id]]) !!}
-                    {{  Form::submit('Удалить',array('class'=>'form-control btn btn-danger','width'=>'300px'))}}
+                    {{  Form::submit('[PH] Удалить',array('class'=>'form-control btn btn-danger','width'=>'300px'))}}
                 {!! Form::close() !!}
                 </div>
             </div>

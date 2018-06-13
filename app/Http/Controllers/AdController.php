@@ -105,6 +105,7 @@ class AdController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->validate($request,array('title' => 'required|max:100','content'=>'required|max:800|min:20','contact'=>'required|max:100'));
         $user = Auth::user();
         $request = $request->all();
         $this->posts->where('id', $id)->update([
