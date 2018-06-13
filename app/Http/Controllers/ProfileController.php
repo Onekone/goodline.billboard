@@ -47,16 +47,17 @@ class ProfileController extends Controller
 
             $auth = Auth::user()->id;
 
-            if ($auth==$user->id && Hash::check($request->password, $user->password)) {
+            if ($auth==$user->id && Auth::once(['email' => $user->email, 'password' => $request->password])) {
                 $user->name = $request->username;
                 if ($user->email != $request->useremail)
                     if ( !Validator::make(['email' => $request->useremail], ['email' => 'required|string|email|max:255|unique:users',])->fails() ) {
                         $user->email = $request->useremail;
                         $user->verified = 0;
-                        $ev = EmailVerify::create([
+                        $ev = EmailVerify::firstOrCreate([
                             'user_id' => $user->id,
-                            'verify_token' => str_random(60)
                         ]);
+                        $ev->verify_token = str_random(60);
+                        $ev->save();
                         Mail::to($request->useremail)->send(new EmailVerifyAccount($request->name,$ev->verify_token));
                 }
                 if ($request->changePassQuestion == "changePasswordQuestion"){
@@ -86,10 +87,6 @@ class ProfileController extends Controller
             }
 
         }
-        else {
-
-        };
-
 
         return view('home');
     }
