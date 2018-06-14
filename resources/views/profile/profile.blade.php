@@ -81,9 +81,11 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="row">
+                                            @if($userpost->image_url!=null)
                                             <div class="col-md-4">
-                                                <img src="{{ $userpost->image_url }}" width="200px" height="200px">
+                                                <img src="{{asset('images/'.$userpost->image_url)}}" width="200" height="200">
                                             </div>
+                                            @endif
                                             <div class="col-md-8">
                                                 {{ $userpost->content }}
                                             </div>

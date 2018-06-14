@@ -52,7 +52,7 @@ class AdController extends Controller
         $userId = Auth::user()->id;
 
         if ($request->image_url) {
-            $photoName = time() . '.' . $request->image_url->getClientOriginalExtension();
+            $photoName = md5(time() . '.' . $request->image_url->getClientOriginalExtension());
             $request->image_url->move(public_path('images'), $photoName);
         }
         else {

@@ -6,13 +6,16 @@
 
         <div class="col-md-4">
             <div class="card">
+                @if($post->image_url!=null)
                 <div class="card-header" style="text-align:center">
-                    <img src="http://placehold.it/200x200">
+                    <img src="{{asset('images/'.$post->image_url)}}" width="200" height="200">
                 </div>
+                @endif
                 <div class="card-body">
                     [PH] Прислал: {{$username}}</br>
                     [PH] Дата: {{ date('M j, Y', strtotime($post->created_at)) }}
                 </div>
+                    @if(Auth::check() && Auth:: user()->status)
                 <div class="card-footer">
 
 
@@ -24,6 +27,7 @@
                     {{  Form::submit('[PH] Удалить',array('class'=>'form-control btn btn-danger','width'=>'300px'))}}
                 {!! Form::close() !!}
                 </div>
+                    @endif
             </div>
         </div>
 
@@ -43,5 +47,4 @@
     </div>
 </div>
 @stop
-@if(Auth::check() && Auth:: user()->status)
-@endif
+

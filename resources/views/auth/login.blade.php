@@ -58,6 +58,24 @@
                                 <a class="btn btn-link" href="{{ route('password.request') }}">
                                     {{ __('Forgot Your Password?') }}
                                 </a>
+                                <div class="form-group row">
+
+                                    <button name ="vk"  type="submit" class="btn btn-primary">
+                                        {{ __('VK') }}
+                                    </button>
+                                    @if(\Illuminate\Support\Facades\Input::get('vk'))
+                                    <script type="text/javascript" src="https://vk.com/js/api/openapi.js?154"></script>
+                                    <script type="text/javascript">
+                                        VK.init({apiId: 6600741});
+                                    </script>
+
+                                    <!-- VK Widget -->
+                                    <div id="vk_auth"></div>
+                                    <script type="text/javascript">
+                                        VK.Widgets.Auth("vk_auth", {"authUrl":"/login/vk/callback"});
+                                    </script>
+                                        @endif
+                                </div>
                             </div>
                         </div>
                     </form>

@@ -11,8 +11,8 @@
         {{Form::text('contact',$post->contact)}}<br><br>
         <h1>{{Form::label('contact',"Контактная информация")}}</h1>
         {{Form::text('contact',$post->contact)}}<br><br>
-        <h1>{{Form::label('image_url',"Ссылка на картинку")}}</h1>
-        {{Form::text('image_url',$post->image_url)}}<br><br>
+        <h1>{{Form::label('image_url',"Картинка")}}</h1>
+        {{Form::file('image_url')}}<br><br>
         {{Form::submit('Отправить')}}
         {!! Form::close() !!}
     </div>
