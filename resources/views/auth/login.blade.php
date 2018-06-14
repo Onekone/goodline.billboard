@@ -58,15 +58,19 @@
                                 <a class="btn btn-link" href="{{ route('password.request') }}">
                                     {{ __('Forgot Your Password?') }}
                                 </a>
-                                <div class="form-group row">
 
-                                    <a class="btn btn-info" href="{{route("vk")}}"> VK </a>
 
-                                </div>
                             </div>
                         </div>
                     </form>
+                    <hr>
+                    <div class="align-content-md-center">
+
+                        <a class="btn btn-outline-info" href="{{route("vk")}}"><img src="https://maxcdn.icons8.com/Share/icon/Logos/vk_com1600.png" width="24px" height="24px"> VK </a>
+
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>
