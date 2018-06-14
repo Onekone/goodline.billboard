@@ -147,6 +147,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         \SocialiteProviders\Manager\ServiceProvider::class,
+
         /*
          * Package Service Providers...
          */
@@ -162,7 +163,6 @@ return [
 
         Collective\Html\HtmlServiceProvider::class,
 
-        \SocialiteProviders\Manager\ServiceProvider::class,
     ],
 
     /*

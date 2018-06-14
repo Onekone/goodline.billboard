@@ -19,3 +19,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('ad','AdController');
 Route::resource('photo','UserImageController');
 Route::get('/user/{id}', 'ProfileController@show')->name('user');
+Route::get('login/vk', 'Auth\LoginController@redirectToProvider');
+Route::get('login/vk/callback', 'Auth\LoginController@handleProviderCallback');

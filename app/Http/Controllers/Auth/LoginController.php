@@ -5,6 +5,7 @@ use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use Laravel\Socialite\Facades\Socialite;
+use SocialiteProviders\vkontakte\Provider;
 
 
 use App\Http\Controllers\Controller;
@@ -53,20 +54,16 @@ class LoginController extends Controller
     public function handleProviderCallback()
     {
 
-        //dd(\Illuminate\Support\Facades\Request::input('first_name'));
-        $first_name = Request::input('first_name');
-        $uid = Request::input('uid');
-        //dd($first_name);
-        //$user = Socialite::driver('vkontakte')->user();
-        //$accessTokenResponseBody = $user->accessTokenResponseBody;
+
+        $user = Socialite::driver('vkontakte')->user();
+//        $newUser = User::create([
+//            'name' => $first_name,
+//            'email' => '',
+//        ]);
+//
+//        Auth::loginUsingId($newUser->id, TRUE);
 
 
-        $newUser = User::create([
-            'name' => $first_name,
-            'email' => '',
-        ]);
-
-        Auth::loginUsingId($newUser->id, TRUE);
 
         return redirect()->route('ad.index');
     }
