@@ -17,9 +17,9 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('ad','AdController');
-Route::resource('photo','UserImageController');
+//Route::resource('photo','UserImageController');
 Route::get('/user/{id}', 'ProfileController@show')->name('user');
-Route::get('login/vk', 'Auth\LoginController@redirectToProvider');
+Route::get('login/vk', 'Auth\LoginController@redirectToProvider')->name('vk');;
 Route::get('login/vk/callback', 'Auth\LoginController@handleProviderCallback');
 Route::get('/verify/{key}','ProfileController@verify')->name('verify');
 Route::put('/user/{key}','ProfileController@update')->name('user.update');

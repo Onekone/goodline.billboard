@@ -54,18 +54,19 @@ class LoginController extends Controller
     public function handleProviderCallback()
     {
         $userSocial = Socialite::driver('vkontakte')->user();
+        $accessTokenResponseBody = $userSocial->accessTokenResponseBody;
 
         dd($userSocial);
-//        $newUser = User::create([
-//            'name' => $userSocial->name,
-//            'email' => $userSocial->email,
-//        ]);
-//
-//        Auth::loginUsingId($newUser->id, TRUE);
+        $newUser = User::create([
+            'name' => $userSocial->name,
+            'email' => $accessTokenResponseBody['email'],
+        ]);
+    //dd($newUser);
+        Auth::loginUsingId($newUser->id, TRUE);
 
 
 
-        //return redirect()->route('ad.index');
+        return redirect()->route('ad.index');
     }
 
 }
