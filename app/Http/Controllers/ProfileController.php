@@ -23,7 +23,7 @@ class ProfileController extends Controller
 
         if($user){
             $posts = Ad::where('user_id',$id)->orderBy('created_at','desc')->get();
-            $auth = Auth::user()->id;
+            $auth = Auth::id();
 
             // view
             return view('profile.profile')->withPosts($posts)->withAuth($auth)->withUser($user);
@@ -47,7 +47,7 @@ class ProfileController extends Controller
 
             $auth = Auth::user()->id;
 
-            if ($auth==$user->id && Auth::once(['email' => $user->email, 'password' => $request->password])) {
+            if ($auth && $auth==$user->id && Auth::once(['email' => $user->email, 'password' => $request->password])) {
                 $user->name = $request->username;
                 if ($user->email != $request->useremail)
                     if ( !Validator::make(['email' => $request->useremail], ['email' => 'required|string|email|max:255|unique:users',])->fails() ) {
