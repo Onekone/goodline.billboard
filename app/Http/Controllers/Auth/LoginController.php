@@ -55,6 +55,7 @@ class LoginController extends Controller
     {
 
 
+
         $user = Socialite::driver('vkontakte')->user();
 //        $newUser = User::create([
 //            'name' => $first_name,
