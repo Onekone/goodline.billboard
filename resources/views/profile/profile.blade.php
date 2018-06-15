@@ -8,8 +8,11 @@
                     <div class="card-body">
                         <p>
                             E-mail:<br>{{$user->email}}
+
                             @if ($auth && $auth==$user->id)
-                                @if ($user->verified != NULL)
+                                @if ($vkLink)
+                                    <a data-toggle="tooltip" title="Аккаунт связан с ВК"><img src="https://maxcdn.icons8.com/Share/icon/Logos/vk_com1600.png" width="24px" height="24px"></a>
+                                @elseif ($user->verified == 1)
                                     <img src = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Emojione_2705.svg/1024px-Emojione_2705.svg.png" width="24px" height="24px">
                                 @else
                                     <a href="{{route("password.request")}}" data-toggle="tooltip" title="[PH] Необходимо подтвердить адрес электронной почты. Отправить запрос?"><img src = "https://emojipedia-us.s3.amazonaws.com/thumbs/120/twitter/141/warning-sign_26a0.png" width="24px" height="24px"></a>
@@ -68,7 +71,7 @@
                     <div class="card-header"> {{ $user->name }}
                         <div style="display: inline-block; position: relative; float: right;">
                             @if ($user->isModerator == true)
-                                <a href="#" data-toggle="tooltip" title="[PH] Модератор"><img src = "https://image.freepik.com/free-icon/star-ios-7-symbol_318-35526.jpg" width="24px" height="24px"></a>
+                                <a data-toggle="tooltip" title="[PH] Модератор"><img src = "https://image.freepik.com/free-icon/star-ios-7-symbol_318-35526.jpg" width="24px" height="24px"></a>
                             @endif
                         </div>
                     </div>
@@ -91,7 +94,7 @@
                                         {{ $userpost->title }}
                                         @if (!$auth || $auth!=$user->id)
                                         <div style="display: inline-block; position: relative; float: right;">
-                                            <a href="#" data-toggle="tooltip" title="Истекает {{ date('d M, Y', strtotime($userpost->created_at. ' + 15 days')) }}">{{$userpost->created_at}}</a>
+                                            <a data-toggle="tooltip" title="Истекает {{ date('d M, Y', strtotime($userpost->created_at. ' + 15 days')) }}">{{$userpost->created_at}}</a>
                                         </div>
                                         @endif
                                     </div>
@@ -112,7 +115,7 @@
                                     @if ($auth && $auth==$user->id)
                                     <div class="card-footer">
                                         <div style='display: inline-block; float:left; width:30%; text-align: center'>
-                                            <a href="#" data-toggle="tooltip" title="[PH] Истекает {{ date('d M, Y', strtotime($userpost->created_at. ' + 15 days')) }}">{{$userpost->created_at}}</a>
+                                            <a data-toggle="tooltip" title="[PH] Истекает {{ date('d M, Y', strtotime($userpost->created_at. ' + 15 days')) }}">{{$userpost->created_at}}</a>
                                         </div>
                                         <div style='display: inline-block; float:right; width:30%;'>
                                             {!! Form::open(['method'=>'delete','route'=>['ad.destroy',$userpost->id]]) !!}
@@ -193,7 +196,12 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
-                    Привязанный профиль ВК будет отвязан от этого аккаунта. Перед продолжением, настройте пароль и адрес электронной почты
+                    @if($user->password != "" && $user->email != "")
+                        Привязанный профиль ВК будет отвязан от этого аккаунта. Перед продолжением, убедитесь в том, что вы правильно настроили адрес электронной почты и пароль.
+                    @else
+                        Привязанный профиль ВК будет отвязан от этого аккаунта. Перед продолжением, вам необходимо настроить пароль и адрес электронной почты.
+                    @endif
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-success form-control" data-dismiss="modal">Отмена</button>

@@ -23,10 +23,10 @@ Route::get('/user/{id}/clear', 'ProfileController@nukeAds')->name('user.clear');
 Route::get('/user/{id}/destroy', 'ProfileController@nukeUser')->name('user.destroy');
 Route::get('/user/{id}/unbindVK', 'ProfileController@unbindVK')->name('user.unbindVK');
 
-Route::get('register/vk', 'Auth\LoginController@redirectToProvider')->name('vk');
-Route::get('login/vk', 'Auth\LoginController@redirectToProvider')->name('vk');
-Route::get('login/vk/callback', 'Auth\LoginController@handleProviderCallback');
+Route::get('register/vk', 'SocialProviderController@redirectToProvider')->name('vk');
+Route::get('login/vk', 'SocialProviderController@redirectToProvider')->name('vk');
+Route::get('login/vk/callback', 'SocialProviderController@handleProviderCallback');
 
 Route::get('/verify/{key}','ProfileController@verify')->name('verify');
 Route::put('/user/{key}','ProfileController@update')->name('user.update');
-Route::any('/teapot',function() {return view('errors.418');} );
+Route::any('/teapot',function() {abort(418);});
