@@ -8,8 +8,8 @@
                 <div class="card-header">Dashboard</div>
 
                 <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success">
+                    @if (session('status') && session('status-class'))
+                        <div class="alert {{ session('status-class') }}">
                             {{ session('status') }}
                         </div>
                     @endif

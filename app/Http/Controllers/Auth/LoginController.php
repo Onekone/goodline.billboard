@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Auth;
 use App\SocialProvider;
 use App\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 use SocialiteProviders\vkontakte\Provider;
+
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -39,7 +40,7 @@ class LoginController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Request $request)
     {
         $this->middleware('guest')->except('logout');
     }

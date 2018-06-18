@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
+
 class RegisterController extends Controller
 {
     /*
@@ -80,7 +81,7 @@ class RegisterController extends Controller
             ]);
     }
 
-    protected function create(array $data)
+    protected function create(Request $request, array $data)
     {
         $p = User::create([
             'name' => $data['name'],
@@ -93,6 +94,8 @@ class RegisterController extends Controller
             'verify_token' => str_random(60)
             ]);
 
+        $message = 'Регистрация прошла успешно, проверьте почту и подтвердите email';
+
         if ($data['social_id'])
         {
             $sp = SocialProvider::create([
@@ -101,11 +104,18 @@ class RegisterController extends Controller
                 'social_provider' => 0
                 ]
             );
+            $message = "Успешно зарегистрировались используя аккаунт ВКонтакте, <a href='vk.com/id".$data['social_id'].">".$data['name']."</a>";
         }
-
+        RegisterController::flashMessage($request,'alert-info',$message);
 
         Mail::to($data['email'])->send(new EmailVerifyAccount($data['name'],$ev->verify_token));
 
         return $p;
+    }
+
+    public function flashMessage(Request $request,$class,$message)
+    {
+        $request->session()->flash('status', $message);
+        $request->session()->flash('status-class',$class);
     }
 }

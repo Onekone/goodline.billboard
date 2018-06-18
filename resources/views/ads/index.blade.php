@@ -9,6 +9,12 @@
             </form>
         </div>
 
+        @if (session('status') && session('status-class'))
+            <div class="alert {{ session('status-class') }}">
+                {{ session('status') }}
+            </div>
+        @endif
+
         @foreach($posts as $post)
 
             <div class="ads">
