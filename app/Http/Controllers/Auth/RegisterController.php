@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\EmailVerify;
 use App\Mail\EmailVerifyAccount;
+use App\SocialProvider;
 use App\User;
 use App\Http\Controllers\Controller;
 
@@ -34,7 +35,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/ad';
 
     /**
      * Create a new controller instance.
@@ -55,6 +56,7 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
+            'vk_id' => 'string|unique:social_providers',
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
@@ -67,6 +69,17 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\User
      */
+    public function passVKData(Request $request)
+    {
+        $input = $request->all();
+
+        return view('auth.register')->withSocialOptions([
+            'social_id'=>$input['social_id'],
+            'email'=>$input['email'],
+            'name'=>$input['name'],
+            ]);
+    }
+
     protected function create(array $data)
     {
         $p = User::create([
@@ -79,6 +92,16 @@ class RegisterController extends Controller
             'user_id' => $p->id,
             'verify_token' => str_random(60)
             ]);
+
+        if ($data['social_id'])
+        {
+            $sp = SocialProvider::create([
+                'user_id' => $p->id,
+                'social_id' =>  $data['social_id'],
+                'social_provider' => 0
+                ]
+            );
+        }
 
 
         Mail::to($data['email'])->send(new EmailVerifyAccount($data['name'],$ev->verify_token));

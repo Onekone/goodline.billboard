@@ -23,7 +23,7 @@ Route::get('/user/{id}/clear', 'ProfileController@nukeAds')->name('user.clear');
 Route::get('/user/{id}/destroy', 'ProfileController@nukeUser')->name('user.destroy');
 Route::get('/user/{id}/unbindVK', 'ProfileController@unbindVK')->name('user.unbindVK');
 
-Route::get('register/vk', 'SocialProviderController@redirectToProvider')->name('vk');
+Route::get('register/vk', 'Auth\RegisterController@passVKData')->name('register.vk');
 Route::get('login/vk', 'SocialProviderController@redirectToProvider')->name('vk');
 Route::get('login/vk/callback', 'SocialProviderController@handleProviderCallback');
 

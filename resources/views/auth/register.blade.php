@@ -14,9 +14,12 @@
                                 <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
 
                                 <div class="col-md-6">
+
+                                    <input name="social_id" type="text" value="{{isset($socialOptions) ? $socialOptions['social_id'] : ''}}" hidden>
+
                                     <input id="name" type="text"
                                            class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}"
-                                           name="name" value="{{ old('name') }}" required autofocus>
+                                           name="name" value="{{ isset($socialOptions) ? $socialOptions['name'] : old('name') }}" required autofocus>
 
                                     @if ($errors->has('name'))
                                         <span class="invalid-feedback">
@@ -33,7 +36,7 @@
                                 <div class="col-md-6">
                                     <input id="email" type="email"
                                            class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}"
-                                           name="email" value="{{ old('email') }}" required>
+                                           name="email" value="{{ isset($socialOptions) ? $socialOptions['email'] : old('email') }}" required>
 
                                     @if ($errors->has('email'))
                                         <span class="invalid-feedback">
