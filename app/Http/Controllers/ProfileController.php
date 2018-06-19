@@ -39,8 +39,8 @@ class ProfileController extends Controller
     {
         $this->validate($request,array(
             'username' => 'required|max:64',
-            'useremail' => 'required|email|max:64',
-            'password-new'=>'min:6'
+            'useremail' => 'required|email|max:64|unique:users,email,'.$id,
+            'password-new'=>'password|min:6'
         ));
 
         $user = User::find($id);
@@ -51,7 +51,8 @@ class ProfileController extends Controller
             $auth = Auth::id();
             $authUser = Auth::user();
             $managedToLogin = Auth::once(['email' => $user->email, 'password' => $request->password]);
-
+            $message = 'Изменения успешно сохранены';
+            $messageClass = 'alert-success';
             if ($auth && $auth==$user->id && ($managedToLogin || $authUser->password=='')) {
                 $user->name = $request->username;
                 if ($user->email != $request->useremail)
@@ -65,13 +66,15 @@ class ProfileController extends Controller
                         $ev->save();
                         Mail::to($request->useremail)->send(new EmailVerifyAccount($request->name,$ev->verify_token));
                     }
-                    else
-                        ProfileController::flashMessage($request,'alert-danger','Этот адрес электронной почты уже занят');
+                    else {
+                        $messageClass = 'alert-warning';
+                        $message = 'Этот адрес электронной почты неверен или уже занят';
+                    }
                 if ($request->changePassQuestion == "changePasswordQuestion"){
                     $user->password=Hash::make($request->password_new);
                 }
                 $user->save();
-                ProfileController::flashMessage($request,'alert-success','Изменения успешно сохранены');
+                ProfileController::flashMessage($request,$messageClass,$message);
                 return redirect()->route('user',$user->id);
             }
             else {

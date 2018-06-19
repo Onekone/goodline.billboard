@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
-
 class RegisterController extends Controller
 {
     /*
@@ -81,7 +80,7 @@ class RegisterController extends Controller
             ]);
     }
 
-    protected function create(Request $request, array $data)
+    protected function create(array $data)
     {
         $p = User::create([
             'name' => $data['name'],
@@ -106,16 +105,18 @@ class RegisterController extends Controller
             );
             $message = "Успешно зарегистрировались используя аккаунт ВКонтакте, <a href='vk.com/id".$data['social_id'].">".$data['name']."</a>";
         }
-        RegisterController::flashMessage($request,'alert-info',$message);
+
+
+        RegisterController::flashMessage('alert-info',$message);
 
         Mail::to($data['email'])->send(new EmailVerifyAccount($data['name'],$ev->verify_token));
 
         return $p;
     }
 
-    public function flashMessage(Request $request,$class,$message)
+    public function flashMessage($class,$message)
     {
-        $request->session()->flash('status', $message);
-        $request->session()->flash('status-class',$class);
+        Session::flash('alert-class', $class);
+        Session::flash('message', $message);
     }
 }

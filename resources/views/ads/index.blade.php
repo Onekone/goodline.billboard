@@ -8,6 +8,10 @@
             </div>
         @endif
 
+        @if (Auth::user())
+                <a href="{{route('ad.create')}}" class="btn btn-primary form-control">Создать новое объявление</a>
+        @endif
+
         @foreach($posts as $post)
 
             <div class="ads">
@@ -32,18 +36,14 @@
                             <div class="col-md-8">
                                 {{ $post->content }}
                             </div>
-
                         </div>
-
                     </div>
 
                     <div class="card-footer">
                         <div style="display: inline-block; float:left; width:30%">
                             <a href="{{route("user",$post->user_id)}}">{{ App\User::find($post->user_id)->name}}</a>
                         </div>
-
                     </div>
-
                 </div>
             </div>
         @endforeach

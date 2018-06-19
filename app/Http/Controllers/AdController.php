@@ -49,7 +49,11 @@ class AdController extends Controller
     public function store(Request $request)
     {
 
-        $this->validate($request, array('title' => 'required|max:100', 'content' => 'required|max:800|min:20', 'contact' => 'required|max:100', 'image_url' => 'required|mimes:jpeg,bmp,png'));
+        $this->validate($request, array(
+            'title' => 'required|max:100',
+            'content' => 'required|max:800|min:20',
+            'contact' => 'required|max:100',
+            'image_url' => 'nullable|image'));
         $userId = Auth::user()->id;
 
         if ($request->image_url) {

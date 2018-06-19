@@ -1,6 +1,5 @@
 @extends('layouts.app')
 @section('content')
-
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-4">
@@ -29,13 +28,13 @@
                         <input id="username" type="text" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{$user->name}}" required> <br>
 
                         [PH] Адрес электронной почты:
-                        <input id="useremail" type="email" class="form-control{{ $errors->has('useremail') ? ' is-invalid' : '' }}" name="useremail" value="{{$user->email}}" required> <br>
-                        @if ($errors->has('email'))
+                        <input id="useremail" type="email" class="form-control{{ $errors->has('useremail') ? ' is-invalid' : '' }}" name="useremail" value="{{$user->email}}" required>
+                        @if ($errors->has('useremail'))
                             <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('email') }}</strong>
+                                        <strong>{{ $errors->first('useremail') }}</strong>
                                     </span>
                         @endif
-
+                        <br>
                         @if($user->password=="")
                         [PH] У вас нет пароля.<br>
                         <input id="changePassQuestion" name="changePassQuestion" value="changePasswordQuestion" type="checkbox"> Задать пароль?
