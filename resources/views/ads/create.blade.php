@@ -61,9 +61,9 @@
                 <div class="form-group row">
                     {!! Form::submit('Сохранить',['class' => 'form-control col-md-12 btn btn-primary']) !!}
                 </div>
-
+                {!! Form::close() !!}
             </div>
         </div>
-        {!! Form::close() !!}
+
     </div>
 @endsection
