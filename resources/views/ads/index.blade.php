@@ -1,13 +1,6 @@
 @extends('layouts.app')
 @section('content')
     <div class="container">
-        <div>
-            <form>
-                <button>
-                    <a href="{{route('ad.create')}}">Новое объявление</a>
-                </button>
-            </form>
-        </div>
 
         @if (session('status') && session('status-class'))
             <div class="alert {{ session('status-class') }}">
@@ -45,16 +38,6 @@
                     </div>
 
                     <div class="card-footer">
-                        <div style='display: inline-block; float:right; width:30%;'>
-                            {!! Form::open(['method'=>'delete','route'=>['ad.destroy',$post->id]]) !!}
-                            {{  Form::submit('[PH] Удалить',array('class'=>'form-control btn btn-danger'))}}
-                            {!! Form::close() !!}
-                        </div>
-                        <div style='display: inline-block; float:right; width:30%;'>
-                            {!! Form::open(['method'=>'get','route'=>['ad.edit',$post->id]]) !!}
-                            {!! Form::submit('[PH] Редактировать',array('class'=>'form-control btn btn-primary'))!!}
-                            {!! Form::close() !!}
-                        </div>
                         <div style="display: inline-block; float:left; width:30%">
                             <a href="{{route("user",$post->user_id)}}">{{ App\User::find($post->user_id)->name}}</a>
                         </div>

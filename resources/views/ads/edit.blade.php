@@ -2,18 +2,46 @@
 
 @section('content')
     <div class="container">
-        {!! Form::open(['method'=>'put','route'=>['ad.update',$post->id]]) !!}
-        <h1>{{Form::label('title',"Заголовок")}}</h1>
-        {{Form::text('title',$post->title)}}<br>
-        <h1>{{Form::label('content',"Текст")}}</h1>
-        {{Form::textarea('content',$post->content)}}<br>
-        <h1>{{Form::label('contact',"Контактная информация")}}</h1>
-        {{Form::text('contact',$post->contact)}}<br><br>
-        <h1>{{Form::label('contact',"Контактная информация")}}</h1>
-        {{Form::text('contact',$post->contact)}}<br><br>
-        <h1>{{Form::label('image_url',"Картинка")}}</h1>
-        {{Form::file('image_url')}}<br><br>
-        {{Form::submit('Отправить')}}
+        {!!Form::open(['method'=>'POST','route'=>['ad.store'],'file'=>true, 'enctype'=>"multipart/form-data"])!!}
+        <div class="card">
+            <div class="card-body">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Заголовок</span>
+                    </div>
+                    <input id="title" type="text" class="form-control" name="title" value="{{$post->title}}" required> <br>
+                </div><br>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Информация о товаре</span>
+                    </div>
+                    <textarea class="form-control" aria-label="With textarea" id="content" name="content" rows="7">{{$post->content}} </textarea>
+                </div><br>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Контактная информация</span>
+                    </div>
+                    <textarea class="form-control" aria-label="With textarea" id="contact" name="contact" rows="5" >{{$post->contact}}</textarea>
+                </div><br>
+                <div class="input-group mb-3">
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile02" name="image_url">
+                        <label class="custom-file-label" for="inputGroupFile02">Выберите файл</label>
+                    </div>
+                </div>
+                <br>
+
+                <div class="input-group-append">
+                    <button type="submit" class="input-group-text">Сохранить</button>
+                    <br>
+                </div>
+
+            </div>
+        </div>
         {!! Form::close() !!}
     </div>
+
+
+
+
 @endsection

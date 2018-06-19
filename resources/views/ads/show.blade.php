@@ -12,10 +12,11 @@
                 </div>
                 @endif
                 <div class="card-body">
-                    [PH] Прислал: {{$username}}</br>
+                    [PH] Прислал: {{$username}}<br>
                     [PH] Дата: {{ date('M j, Y', strtotime($post->created_at)) }}
                 </div>
-                    @if(Auth::check() && Auth:: user()->status)
+                @if(Auth::check() && $post->user_id == Auth::user()->id)
+
                 <div class="card-footer">
 
 
