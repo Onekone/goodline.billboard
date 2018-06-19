@@ -17,8 +17,8 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('ad','AdController');
-Route::get('ad/{ad} ','AdController@show')->middleware('check');
-//Route::resource('photo','UserImageController');
+Route::resource('ad','AdController')->only('create')->middleware('auth');
+Route::resource('ad','AdController')->only('edit')->middleware('check');
 Route::get('/user/{id}', 'ProfileController@show')->name('user');
 Route::get('/user/{id}/clear', 'ProfileController@nukeAds')->name('user.clear');
 Route::get('/user/{id}/destroy', 'ProfileController@nukeUser')->name('user.destroy');

@@ -6,6 +6,7 @@ use App\User;
 use Illuminate\Http\Request;
 use App\Ad;
 use Auth;
+
 //use Illuminate\Support\Facades\Auth;
 
 class AdController extends Controller
@@ -95,14 +96,8 @@ class AdController extends Controller
      */
     public function edit($id)
     {
-//        $auth = Auth::user();
-//        $post = Ad::find($id);
-//        $username = User::where('id', $post->user_id)->get()[0]->name;
-//        if($auth && $auth->name == $username){
-                $posts = $this->posts->find($id);
-                return view('ads.edit')->withPost($posts);
-//        } else
-//                return redirect()->route('ad.index');
+        $posts = $this->posts->find($id);
+        return view('ads.create')->withPosts($posts);
     }
 
     /**
@@ -120,18 +115,17 @@ class AdController extends Controller
         } else {
             $photoName = null;
         }
-
-            $this->validate($request, array('title' => 'required|max:100', 'content' => 'required|max:800|min:20', 'contact' => 'required|max:100', 'images_url' => 'required|images|mimes:jpeg,bmp,png'));
-            $user = Auth::user();
-            $request = $request->all();
-            $this->posts->where('id', $id)->update([
-                'title' => $request['title'],
-                'content' => $request['content'],
-                'contact' => $request['contact'],
-                'image_url' => $photoName,
-                'user_id' => $user->getAuthIdentifier(),
-            ]);
-            return redirect()->route('ad.index');
+        $this->validate($request, array('title' => 'required|max:100', 'content' => 'required|max:800|min:20', 'contact' => 'required|max:100', 'images_url' => 'required|images|mimes:jpeg,bmp,png'));
+        $user = Auth::user();
+        $request = $request->all();
+        $this->posts->where('id', $id)->update([
+            'title' => $request['title'],
+            'content' => $request['content'],
+            'contact' => $request['contact'],
+            'image_url' => $photoName,
+            'user_id' => $user->getAuthIdentifier(),
+        ]);
+        return redirect()->route('ad.index');
 
     }
 
