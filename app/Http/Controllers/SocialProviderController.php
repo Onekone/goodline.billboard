@@ -69,14 +69,8 @@ class SocialProviderController extends Controller
                         'name' => $userSocial->name,
                         'email' => $accessTokenResponseBody['email'],
                         'password' => '',
-                        'verified' => 0,
+                        'verified' => 1,
                     ]);
-
-                    $ev = EmailVerify::create([
-                        'user_id' => $newUser->id,
-                        'verify_token' => str_random(60)
-                    ]);
-                    Mail::to($userSocial->accessTokenResponseBody['email'])->send(new EmailVerifyAccount($userSocial->name,$ev->verify_token));
 
                     $newSignUp = SocialProvider::create([
                         'user_id' => $newUser->id,

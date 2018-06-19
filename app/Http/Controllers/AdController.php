@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Validator;
 use App\User;
 use Illuminate\Http\Request;
 use App\Ad;
@@ -109,15 +110,30 @@ class AdController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if ($request->image_url) {
-            $photoName = md5(time() . '.' . $request->image_url->getClientOriginalExtension());
-            $request->image_url->move(public_path('images'), $photoName);
-        } else {
-            $photoName = null;
+        $this->validate($request, array(
+            'title' => 'required|max:100',
+            'content' => 'required|max:800|min:20',
+            'contact' => 'required|max:100',
+            'images_url' => 'nullable|file|image|mimes:jpeg,png,jpg,gif,svg|size:2048|max:2048'));
+
+        $asset = Ad::find($id);
+        $photoName = $asset->image_url;
+
+        if ($request->image_url && !$request->delete_image) {
+            try {
+                $photoName = md5(time() ). '.' . $request->image_url->getClientOriginalExtension();
+                $request->image_url->move(public_path('images'), $photoName);
+            }
+            catch (\Symfony\Component\HttpFoundation\File\Exception\IniSizeFileException $e) {$photoName = $asset->image_url;}
         }
-        $this->validate($request, array('title' => 'required|max:100', 'content' => 'required|max:800|min:20', 'contact' => 'required|max:100', 'images_url' => 'required|images|mimes:jpeg,bmp,png'));
+
+        if ($request->delete_image) {
+            $photoName = NULL;
+        }
+
         $user = Auth::user();
         $request = $request->all();
+
         $this->posts->where('id', $id)->update([
             'title' => $request['title'],
             'content' => $request['content'],
@@ -125,7 +141,8 @@ class AdController extends Controller
             'image_url' => $photoName,
             'user_id' => $user->getAuthIdentifier(),
         ]);
-        return redirect()->route('ad.index');
+
+        return redirect()->route('ad.show',$id);
 
     }
 

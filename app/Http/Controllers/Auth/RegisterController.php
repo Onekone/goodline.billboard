@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Session;
 use App\EmailVerify;
 use App\Mail\EmailVerifyAccount;
 use App\SocialProvider;
@@ -82,21 +83,17 @@ class RegisterController extends Controller
 
     protected function create(array $data)
     {
-        $p = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
-
-        $ev = EmailVerify::create([
-            'user_id' => $p->id,
-            'verify_token' => str_random(60)
-            ]);
-
         $message = 'Регистрация прошла успешно, проверьте почту и подтвердите email';
 
         if ($data['social_id'])
         {
+            $p = User::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => Hash::make($data['password']),
+                'verified' => 1,
+            ]);
+
             $sp = SocialProvider::create([
                 'user_id' => $p->id,
                 'social_id' =>  $data['social_id'],
@@ -104,6 +101,20 @@ class RegisterController extends Controller
                 ]
             );
             $message = "Успешно зарегистрировались используя аккаунт ВКонтакте, <a href='vk.com/id".$data['social_id'].">".$data['name']."</a>";
+        }
+        else
+        {
+            $p = User::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => Hash::make($data['password']),
+                'verified' => 0,
+            ]);
+
+            $ev = EmailVerify::create([
+                'user_id' => $p->id,
+                'verify_token' => str_random(60)
+            ]);
         }
 
 
@@ -116,7 +127,7 @@ class RegisterController extends Controller
 
     public function flashMessage($class,$message)
     {
-        Session::flash('alert-class', $class);
-        Session::flash('message', $message);
+        Session::flash('status-class', $class);
+        Session::flash('status', $message);
     }
 }

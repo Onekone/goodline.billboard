@@ -3,15 +3,31 @@
 @section('content')
     <div class="container">
         @if (isset($posts))
-            {!!Form::model($posts,['method'=>'POST','route'=>['ad.update',$posts->id],'file'=>true,'enctype'=>"multipart/form-data"]) !!}
+            {!!Form::model($posts,['method'=>'PUT','route'=>['ad.update',$posts->id],'file'=>true,'enctype'=>"multipart/form-data"]) !!}
         @else
             {!!Form::open(['method'=>'POST','route'=>['ad.store'],'file'=>true,'enctype'=>"multipart/form-data"]) !!}
         @endif
         @csrf
         <div class="card">
+            <div class="card-header">
+                @if (isset($posts))
+                    <div class="form-group row">
+                        {!! Form::label('title','Заголовок',['class'=>'col-sm-2 col-form-label text-md-right']) !!}
+                        <div class="col-md-10">
+                            {!! Form::text('title',old('title'),['class'=> $errors->has('title')?'form-control is-invalid':'form-control','required']) !!}
+                            @if ($errors->has('title'))
+                                <span class="invalid-feedback"><strong>{{ $errors->first('title') }}</strong></span>
+                            @endif
+                        </div>
 
+                    </div>
+                @else
+                    Создание нового объявления
+                @endif
+            </div>
             <div class="card-body">
 
+                @if (!isset($posts))
                 <div class="form-group row">
                     {!! Form::label('title','Заголовок',['class'=>'col-sm-2 col-form-label text-md-right']) !!}
                     <div class="col-md-10">
@@ -22,6 +38,7 @@
                     </div>
 
                 </div>
+                @endif
 
                 <div class="form-group row">
                     {!! Form::label('content','Текст объяления',['class'=>'col-sm-2 col-form-label text-md-right']) !!}
@@ -47,19 +64,35 @@
                 <div class="form-group row">
                     {!! Form::label('image_url','Изображение',['class'=>'col-sm-2 col-form-label text-md-right']) !!}
                     <div class="col-md-10">
-                    {!! Form::file('image_url',['class' => $errors->has('image_url')?'form-control is-invalid':'form-control','accept'=>'image/*']) !!}
+
+                    {!! Form::file('image_url',['class' => $errors->has('image_url')?'is-invalid':'','accept'=>'image/*']) !!}
+                    {!! Form::checkbox('delete_image','delete_image') !!}
+                    {!! Form::label('delete_image','Удалить изображение') !!}
                     @if ($errors->has('image_url'))
                         <span class="invalid-feedback"><strong>{{ $errors->first('image_url') }}</strong></span>
                     @endif
-                        @if (isset($model))
-                            <img src="{{$posts->image_url}}">
+                        @if (isset($posts))
+                        <div style="text-align: center" class="form-control">
+                            @if ($posts->image_url != NULL)
+                                <img src="{{asset('images/'.$posts->image_url)}}" class="">
+                                @else
+                                <img src="https://ultimatefires.com.au/wp-content/uploads/2018/02/no-image-available.png" width="128px" height="128px" class="">
                             @endif
+                        </div>
+                        @endif
                 </div>
+
+
 
                 </div>
 
+
+
+            </div>
+            <div class="card-footer">
                 <div class="form-group row">
-                    {!! Form::submit('Сохранить',['class' => 'form-control col-md-12 btn btn-primary']) !!}
+                    <a href="{{isset($posts)? route('ad.show',$posts->id) : URL::previous()}}" class="form-control col-md-6 btn btn-danger">Отмена</a>
+                    {!! Form::submit('Сохранить',['class' => 'form-control col-md-6 btn btn-primary']) !!}
                 </div>
                 {!! Form::close() !!}
             </div>

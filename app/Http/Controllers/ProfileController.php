@@ -35,6 +35,21 @@ class ProfileController extends Controller
             return redirect()->route('home');
     }
 
+    public function sendAnotherVerify(Request $request, $id)
+    {
+        $user = User::find($id);
+
+        $ev = EmailVerify::firstOrNew([
+            'user_id' => $user->id,
+        ]);
+        $ev->verify_token = str_random(60);
+        $ev->save();
+        Mail::to($user->email)->send(new EmailVerifyAccount($user->name,$ev->verify_token));
+
+        ProfileController::flashMessage($request,'alert-info','Отправлено письмо с подтверждением');
+        return redirect()->route('user',$id);
+    }
+
     public function update(Request $request, $id)
     {
         $this->validate($request,array(
@@ -137,18 +152,23 @@ class ProfileController extends Controller
         return redirect()->route('user',$id);
     }
 
-    public function verify($key)
+    public function verify(Request $request, $key)
     {
-        $tkn = EmailVerify::where('verify_token',$key)->get();
 
-        if ($tkn){
-            foreach($tkn as $user) {
-                $p = User::find($user->user_id);
-                $p->verified = 1;
-                $p->save();
-                $user->delete();
-            }
+        try {
+            $tkn = EmailVerify::where('verify_token',$key)->firstOrFail();
 
+            $p = User::find($tkn->user_id);
+            $p->verified = 1;
+            $p->save();
+
+            $tkn->delete();
+
+            ProfileController::flashMessage($request,'alert-success','Email успешно подтвержден');
+        }
+        catch (\Exception $E) {
+            ProfileController::flashMessage($request,'alert-danger','Ошибка подтверждения email');
+            return redirect()->route('user',$p->id);
         }
 
         return view('home');

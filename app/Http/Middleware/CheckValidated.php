@@ -2,13 +2,14 @@
 
 namespace App\Http\Middleware;
 
+use Session;
 use App\Ad;
 use App\User;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class CheckAuthorMiddleware
+class CheckValidated
 {
     /**
      * Handle an incoming request.
@@ -19,14 +20,11 @@ class CheckAuthorMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $id = $request->route()->parameter('ad');
-        $post = Ad::find($id);
-        $username = User::where('id', $post->user_id)->get()[0]->name;
-        if(Auth::Check() && Auth::user()->name==$username) {
+        if(Auth::Check() && Auth::user()->verified) {
             return $next($request);
         }
-        Session::flash('status','Это действие вам недоступно');
+        Session::flash('status','Сначала вам необходимо подтвердить адрес электронной почты.');
         Session::flash('status-class','alert-warning');
-        return redirect()->route('ad.index');
+        return redirect()->back();
     }
 }

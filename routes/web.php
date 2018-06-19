@@ -17,9 +17,14 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('ad','AdController');
-Route::resource('ad','AdController')->only('create')->middleware('auth');
-Route::resource('ad','AdController')->only('edit')->middleware('check');
+Route::resource('ad','AdController')->only('create')->middleware(['auth','validated']);
+Route::resource('ad','AdController')->only('store')->middleware(['auth','validated']);
+
+Route::resource('ad','AdController')->only('edit')->middleware(['check','validated']);
+Route::resource('ad','AdController')->only('update')->middleware(['check','validated']);
+Route::resource('ad','AdController')->only('destroy')->middleware(['check','validated']);
 Route::get('/user/{id}', 'ProfileController@show')->name('user');
+Route::get('/user/{id}/verify', 'ProfileController@sendAnotherVerify')->name('user.verify')->middleware('auth');
 Route::get('/user/{id}/clear', 'ProfileController@nukeAds')->name('user.clear');
 Route::get('/user/{id}/destroy', 'ProfileController@nukeUser')->name('user.destroy');
 Route::get('/user/{id}/unbindVK', 'ProfileController@unbindVK')->name('user.unbindVK');

@@ -9,12 +9,10 @@
                             E-mail:<br>{{$user->email}}
 
                             @if ($auth && $auth==$user->id)
-                                @if ($vkLink)
-                                    <a data-toggle="tooltip" title="Аккаунт связан с ВК"><img src="https://maxcdn.icons8.com/Share/icon/Logos/vk_com1600.png" width="24px" height="24px"></a>
-                                @elseif ($user->verified == 1)
+                                @if ($user->verified == 1)
                                     <img src = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Emojione_2705.svg/1024px-Emojione_2705.svg.png" width="24px" height="24px">
                                 @else
-                                    <a href="{{route("password.request")}}" data-toggle="tooltip" title="[PH] Необходимо подтвердить адрес электронной почты. Отправить запрос?"><img src = "https://emojipedia-us.s3.amazonaws.com/thumbs/120/twitter/141/warning-sign_26a0.png" width="24px" height="24px"></a>
+                                    <a href="{{route('user.verify',$user->id)}}" data-toggle="tooltip" title="[PH] Необходимо подтвердить адрес электронной почты. Отправить запрос?"><img src = "https://emojipedia-us.s3.amazonaws.com/thumbs/120/twitter/141/warning-sign_26a0.png" width="24px" height="24px"></a>
                                 @endif
                             @endif
                         </p>
