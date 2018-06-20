@@ -84,7 +84,11 @@ class AdController extends Controller
     {
         //
         $post = Ad::find($id);
-        $username = User::where('id', $post->user_id)->get()[0]->name;
+        $username = 'deleted';
+
+        $user = User::where('id', $post->user_id)->first();
+        if ($user)
+            $username = $user->name;
 
         return view('ads.show')->withPost($post)->withUsername($username);
     }
