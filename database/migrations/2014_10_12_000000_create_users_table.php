@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('password')->default('')->nullable();
             $table->integer('verified')->default(false);
             $table->integer('vk_account_id')->nullable();
+            $table->boolean('isModerator')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });

@@ -100,7 +100,7 @@ class RegisterController extends Controller
                 'social_provider' => 0
                 ]
             );
-            $message = "Успешно зарегистрировались используя аккаунт ВКонтакте, <a href='vk.com/id".$data['social_id'].">".$data['name']."</a>";
+            $message = "Успешно зарегистрировались используя аккаунт ВКонтакте";
         }
         else
         {
@@ -117,11 +117,8 @@ class RegisterController extends Controller
             ]);
         }
 
-
         RegisterController::flashMessage('alert-info',$message);
-
         Mail::to($data['email'])->send(new EmailVerifyAccount($data['name'],$ev->verify_token));
-
         return $p;
     }
 

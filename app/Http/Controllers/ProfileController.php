@@ -157,8 +157,8 @@ class ProfileController extends Controller
 
         try {
             $tkn = EmailVerify::where('verify_token',$key)->firstOrFail();
-
             $p = User::find($tkn->user_id);
+
             $p->verified = 1;
             $p->save();
 
@@ -168,7 +168,7 @@ class ProfileController extends Controller
         }
         catch (\Exception $E) {
             ProfileController::flashMessage($request,'alert-danger','Ошибка подтверждения email');
-            return redirect()->route('user',$p->id);
+            return redirect()->back();
         }
 
         return view('home');

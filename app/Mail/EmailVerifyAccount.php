@@ -30,6 +30,6 @@ class EmailVerifyAccount extends Mailable
      */
     public function build()
     {
-        return $this->view('auth.passwords.verify')->withKey($this->key);
+        return $this->view('auth.passwords.verify')->text('auth.passwords.verify_plain')->withKey($this->key);
     }
 }

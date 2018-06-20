@@ -20,6 +20,7 @@ class CheckValidated
      */
     public function handle(Request $request, Closure $next)
     {
+
         if(Auth::Check() && Auth::user()->verified) {
             return $next($request);
         }

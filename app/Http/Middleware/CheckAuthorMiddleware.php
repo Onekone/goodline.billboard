@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use Session;
 use App\Ad;
 use App\User;
 use Closure;

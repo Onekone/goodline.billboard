@@ -25,8 +25,8 @@ Route::resource('ad','AdController')->only('update')->middleware(['check','valid
 Route::resource('ad','AdController')->only('destroy')->middleware(['check','validated']);
 Route::get('/user/{id}', 'ProfileController@show')->name('user');
 Route::get('/user/{id}/verify', 'ProfileController@sendAnotherVerify')->name('user.verify')->middleware('auth');
-Route::get('/user/{id}/clear', 'ProfileController@nukeAds')->name('user.clear');
-Route::get('/user/{id}/destroy', 'ProfileController@nukeUser')->name('user.destroy');
+Route::get('/user/{id}/clear', 'ProfileController@nukeAds')->name('user.clear')->middleware(['checkUser','validated']);;
+Route::get('/user/{id}/destroy', 'ProfileController@nukeUser')->name('user.destroy')->middleware(['checkUser','validated']);;
 Route::get('/user/{id}/unbindVK', 'ProfileController@unbindVK')->name('user.unbindVK');
 
 Route::get('register/vk', 'Auth\RegisterController@passVKData')->name('register.vk');
