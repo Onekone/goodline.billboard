@@ -13,9 +13,9 @@ class AdsTableSeeder extends Seeder
      */
     public function run()
     {
-        $ads = new Ad();
         DB::statement("SET foreign_key_checks=0");
         DB::table('ads')->truncate();
+        $ads = new Ad();
         $faker = \Faker\Factory::create();
         $users = User::all();
         $count = sizeof($users)-2;
