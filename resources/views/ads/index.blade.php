@@ -41,7 +41,11 @@
 
                     <div class="card-footer">
                         <div style="display: inline-block; float:left; width:30%">
-                            <a href="{{route("user",$post->user_id)}}">{{ App\User::find($post->user_id)->name}}</a>
+                            @if (App\User::find($post->user_id))
+                            <a href="{{route("user",$post->user_id)}}">{{App\User::find($post->user_id)->name}}</a>
+                            @else
+                                deleted
+                            @endif
                         </div>
                     </div>
                 </div>
