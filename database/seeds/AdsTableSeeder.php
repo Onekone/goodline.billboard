@@ -14,9 +14,12 @@ class AdsTableSeeder extends Seeder
     public function run()
     {
         $ads = new Ad();
+        DB::statement("SET foreign_key_checks=0");
+        DB::table('ads')->truncate();
         $faker = \Faker\Factory::create();
         $users = User::all();
         $count = sizeof($users)-2;
+
         foreach (range(0,$count) as $user) {
             foreach (range(1, 5) as $ad) {
                 $ads->create([
@@ -27,5 +30,6 @@ class AdsTableSeeder extends Seeder
                 ]);
             }
         }
+        DB::statement("SET foreign_key_checks=1");
     }
 }
