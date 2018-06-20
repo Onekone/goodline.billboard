@@ -22,8 +22,8 @@ class CheckAuthorMiddleware
     {
         $id = $request->route()->parameter('ad');
         $post = Ad::find($id);
-        $username = User::where('id', $post->user_id)->get()[0]->name;
-        if(Auth::Check() && Auth::user()->name==$username) {
+        $username = $post->user->id;
+        if(Auth::Check() && Auth::id()===$username) {
             return $next($request);
         }
         Session::flash('status','Это действие вам недоступно');
