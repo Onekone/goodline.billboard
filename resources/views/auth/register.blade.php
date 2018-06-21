@@ -1,4 +1,20 @@
 @extends('layouts.app')
+@section('head')
+<script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+    function refreshCaptchaJSFunction() {
+        $.ajax({
+            type:'GET',
+            url:'{{route('refresh_captcha')}}',
+            success:function(data){
+                $(".captcha span").html(data.captcha+" <button type=\"button\" class=\"btn btn-success\" onclick=\"refreshCaptchaJSFunction()\" ><img src=\"http://www.clipartbest.com/cliparts/7Ta/Mnb/7TaMnbL7c.png\" width=\"24px\" height=\"24px\"></button> ");
+            }
+        });
+    };
+
+</script>
+@endsection
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
@@ -78,6 +94,30 @@
                                            name="password_confirmation" required>
                                 </div>
                             </div>
+
+
+                            <div class="form-group row">
+
+                                <div class="col-md-4 col-form-label text-md-right captcha">
+                                    <span class="captcha">{!! captcha_img() !!}<button type="button" class="btn btn-success" onclick="refreshCaptchaJSFunction()" ><img src="http://www.clipartbest.com/cliparts/7Ta/Mnb/7TaMnbL7c.png" width="24px" height="24px"></button></span>
+
+
+                                </div>
+                                <div class="col-md-6">
+
+                                    <input id="captcha" type="text" class="form-control {{ $errors->has('captcha') ? ' is-invalid' : '' }}" placeholder="Enter Captcha" name="captcha" required>
+                                    @if ($errors->has('captcha'))
+                                        <span class="invalid-feedback">
+                                            <strong>{{ $errors->first('captcha') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+
+                            </div>
+
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-4">
                                     <button type="submit" class="btn btn-primary">
@@ -97,4 +137,7 @@
             </div>
         </div>
     </div>
+@endsection
+@section('afterbody')
+
 @endsection

@@ -29,15 +29,16 @@ class SocialProviderController extends Controller
     //
     public function redirectToProvider()
     {
-        return Socialite::with('vkontakte')->redirect();
+
+        return Socialite::with('vkontakte')->stateless()->redirect();
     }
 
     //
     public function handleProviderCallback(Request $request)
     {
-
-        $userSocial = Socialite::driver('vkontakte')->user();
+        $userSocial = Socialite::driver('vkontakte')->stateless()->user();
         $accessTokenResponseBody = $userSocial->accessTokenResponseBody;
+
 
         // Martin Bean - Stack Overflow
         // https://stackoverflow.com/questions/29127330/laravel-5-socialite-change-auth-redirect-path-dynamically
@@ -95,7 +96,7 @@ class SocialProviderController extends Controller
                     SocialProviderController::flashMessage($request,'alert-dark','Прощайте');
                     return redirect()->route('register.vk', [
                         'social_id' => $userSocial->id,
-                        'email' => $userSocial->accessTokenResponseBody['email'],
+                        'email' => '',
                         'name' => $userSocial->name,
                     ]);
                 }

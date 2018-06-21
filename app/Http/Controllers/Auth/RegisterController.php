@@ -61,8 +61,14 @@ class RegisterController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
+            'captcha' => 'required|captcha'
+        ], [
+            'captcha.captcha' => 'Invalid captcha code.'
         ]);
     }
+
+
+
 
     /**
      * Create a new user instance after a valid registration.
@@ -79,6 +85,10 @@ class RegisterController extends Controller
             'email'=>$input['email'],
             'name'=>$input['name'],
             ]);
+    }
+    public function refreshCaptcha()
+    {
+        return response()->json(['captcha'=> captcha_img()]);
     }
 
     protected function create(array $data)
@@ -119,6 +129,7 @@ class RegisterController extends Controller
 
         RegisterController::flashMessage('alert-info',$message);
         Mail::to($data['email'])->send(new EmailVerifyAccount($data['name'],$ev->verify_token));
+
         return $p;
     }
 

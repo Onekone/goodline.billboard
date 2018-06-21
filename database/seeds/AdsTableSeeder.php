@@ -21,6 +21,8 @@ class AdsTableSeeder extends Seeder
         $count = sizeof($users)-2;
 
         foreach (range(0,$count) as $user) {
+            $p = $users[$user]->id;
+            $this->command->getOutput()->writeln("<info>($p)</info>");
             foreach (range(1, 5) as $ad) {
                 $ads->create([
                     'title' => $faker->text(20),

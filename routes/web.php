@@ -37,3 +37,5 @@ Route::get('login/vk/callback', 'SocialProviderController@handleProviderCallback
 Route::get('/verify/{key}','ProfileController@verify')->name('verify');
 Route::put('/user/{key}','ProfileController@update')->name('user.update');
 Route::any('/teapot',function() {abort(418);});
+
+Route::get('refresh_captcha', 'Auth\RegisterController@refreshCaptcha')->name('refresh_captcha');

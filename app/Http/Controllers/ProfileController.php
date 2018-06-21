@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Validator;
 
 class ProfileController extends Controller
 {
+
+
     public function show(Request $request, $id)
     {
         $user = User::find($id);

@@ -35,6 +35,10 @@
                         {{$post->content}}
                     </div>
                 </div>
+                <div class="card-footer">
+                    Контактная информация: <br>
+                    {{$post->contact}}
+                </div>
             </div>
         </div>
     </div>

@@ -27,9 +27,8 @@
 
     @yield('head')
 </head>
-<body>
 @yield('prebody')
-
+<body>
 <div id="app">
     <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
         <div class="container">
@@ -95,4 +94,5 @@
     </main>
 </div>
 </body>
+@yield('afterbody')
 </html>
