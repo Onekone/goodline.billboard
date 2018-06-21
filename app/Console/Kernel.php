@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use DB;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Ad;
@@ -28,8 +29,8 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')
         //          ->hourly();
         $schedule->call( function() {
-            Ad::where('TIMESTAMPDIFF(SECOND,created_at,now())','>','15*24*60*60')->delete();
-        })->daily();
+            Ad::where(DB::raw('TIMESTAMPDIFF(SECOND,created_at,now())'),'>',DB::raw(1296000))->delete();
+        })->daily()->evenInMaintenanceMode();
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use Validator;
 use App\User;
 use Illuminate\Http\Request;
@@ -84,13 +85,20 @@ class AdController extends Controller
     {
         //
         $post = Ad::find($id);
-        $username = 'deleted';
+        if ($post)
+        {
+            $username = 'deleted';
 
-        $user = User::where('id', $post->user_id)->first();
-        if ($user)
-            $username = $user->name;
+            $user = $post->user;
+            if ($user)
+                $username = $user->name;
 
-        return view('ads.show')->withPost($post)->withUsername($username);
+            return view('ads.show')->withPost($post)->withUsername($username);
+        }
+        else {
+            abort(404);
+        }
+
     }
 
     /**
