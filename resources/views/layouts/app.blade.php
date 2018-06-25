@@ -62,17 +62,17 @@
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
                                 <a class="dropdown-item" href="{{route('ad.create') }}">
-                                    {{ __('New Ad') }}
+                                    {{ __('Новое обьявление') }}
                                 </a>
                                 <a class="dropdown-item" href="{{route('user',Auth::user()->id ) }}">
-                                    {{ __('Profile') }}
+                                    {{ __('Профиль') }}
                                 </a>
 
 
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                    onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
+                                    {{ __('Выйти') }}
                                 </a>
 
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST"

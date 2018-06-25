@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use DB;
+use Illuminate\Support\Facades\Input;
 use Validator;
 use App\User;
 use Illuminate\Http\Request;
@@ -28,7 +29,6 @@ class AdController extends Controller
     public function index()
     {
         $posts = $this->posts->latest()->paginate(4);
-
         return view('ads.index')->withPosts($posts);
     }
 
@@ -39,7 +39,6 @@ class AdController extends Controller
      */
     public function create()
     {
-        //
         return view('ads.create');
     }
 
@@ -51,7 +50,6 @@ class AdController extends Controller
      */
     public function store(Request $request)
     {
-
         $p = $this->validate($request, array(
             'title' => 'required|max:100',
             'content' => 'required|max:800|min:20',
@@ -83,7 +81,6 @@ class AdController extends Controller
      */
     public function show($id)
     {
-        //
         $post = Ad::find($id);
         if ($post)
         {
@@ -98,7 +95,6 @@ class AdController extends Controller
         else {
             abort(404);
         }
-
     }
 
     /**

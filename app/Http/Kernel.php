@@ -65,6 +65,6 @@ class Kernel extends HttpKernel
         'checkUser' => \App\Http\Middleware\CheckUserOwned::class,
         'validated' => \App\Http\Middleware\CheckValidated::class,
         'checkAds' => \App\Http\Middleware\CheckAdsMiddleware::class,
-
+        'checkSearch' => \App\Http\Middleware\CheckAdsMiddleware::class,
     ];
 }

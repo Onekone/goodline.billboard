@@ -34,7 +34,7 @@ class ProfileController extends Controller
             return view('profile.profile')->withPosts($posts)->withAuth($auth)->withUser($user)->withvkLink($connectedTo);
         }
 
-            return redirect()->route('home');
+            return redirect()->route('ad.index');
     }
 
     public function sendAnotherVerify(Request $request, $id)

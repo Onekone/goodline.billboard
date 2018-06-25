@@ -23,7 +23,9 @@ class CreateAdsTable extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->softDeletes();
             $table->timestamps();
+
         });
+        DB::statement('ALTER TABLE ads ADD FULLTEXT search(title,content,contact)');
     }
 
     /**

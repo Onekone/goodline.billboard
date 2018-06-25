@@ -155,7 +155,7 @@
 
                                     </div>
                                 @endif
-                            </div>
+                            </div><br>
                         @endforeach
                     </div>
                 </div>
