@@ -80,7 +80,7 @@
         </div>
 
         <div class="links">
-            Forbidden
+            Forbidden<br>
             {{ $exception->getMessage() }}
         </div>
     </div>

@@ -1,10 +1,7 @@
 <p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
 
 <p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
+
 </p>
 
 ## About Laravel
@@ -27,34 +24,51 @@ Laravel has the most extensive and thorough [documentation](https://laravel.com/
 
 If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 1100 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
 
-## Laravel Sponsors
+## Установка
 
-We would like to extend our thanks to the following sponsors for helping fund on-going Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell):
+- Склонируйте данный репризиторий в папку хоста вашего сервера (обычно /var/www/) командой ```git clone``` и выполните команду ```composer install```. Это установит необходимые компоненты приложения и выполнит предварительную настройку.
+- Сгенерируйте новый ключ приложения с помощью команды ```php artisan key:generate```
+- Создайте и заполните файл настроек ```.env```. В комплекте с приложением поставляется файл ```.env.example```, который можно использовать как образец
+- Выполните миграцию моделей в базу данных используя команду ```php artisan migrate```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
+## Настройка .ENV  
 
-## Contributing
+Заполните ```.env.example```, поставляемый в составе приложения в следующих местах.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- База данных
+```
+DB_CONNECTION= -- тип базы данных --
+DB_HOST= -- адрес базы данных --
+DB_PORT= -- порт --
+DB_DATABASE= -- база --
+DB_USERNAME= -- пользователь --
+DB_PASSWORD= -- пароль --
+```
+По умолчанию это приложение поддерживает работу со следующими базами данных
+ - MySQL (```mysql```)
+ - Microsoft SQL Server (```sqlsrv```)
+ - PostgreSQL (```pgsql```)
+ - SQLite (```sqlite```)
 
-## Security Vulnerabilities
+База данных, указанная в этих настройках должна быть *уже* создана и доступна для представленных данных авторизации
+ 
+- Сервер электронной почты
+```
+MAIL_HOST= -- адрес до smtp сервера электронной почты --
+MAIL_PORT= -- порт --
+MAIL_USERNAME= -- имя пользователя --
+MAIL_PASSWORD= -- пароль --
+ ```
+Электронная почта отправляется через протокол smtp. Чтобы узнать, какие данные необходимо вводить, сверьтесь с настройками вашего сервера исходящей электронной почты.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- Авторизация ВКонтакте
 
-## License
+Для того, чтобы подключить авторизацию через сервис [ВКонтакте](http://vk.com), вам необходимо иметь уже настроенное приложение. Приложения в ВКонтакте можно создать на [сайте разработчиков](http://vk.com/dev), в разделе [Мои приложения](https://vk.com/apps?act=manage).
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```
+VKONTAKTE_KEY= -- ID приложения ВКонтакте --
+VKONTAKTE_SECRET= -- Защищённый ключ ВКонтакте --
+VKONTAKTE_REDIRECT_URI= -- Доверенный redirect URI --
+```  
+
+Команда ```php artisan cache:clear``` выполняет пересчитывание данных настроек

@@ -76,11 +76,11 @@
 
     <div class="content">
         <div class="title m-b-md">
-            404
+            410
         </div>
 
         <div class="links">
-            Not found<br>
+            Gone<br>
             {{ $exception->getMessage() }}
         </div>
     </div>

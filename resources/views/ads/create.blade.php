@@ -2,6 +2,11 @@
 
 @section('content')
     <div class="container">
+        @if (session('status') && session('status-class'))
+            <div class="alert {{ session('status-class') }}">
+                {{ session('status') }}
+            </div>
+        @endif
         @if (isset($posts))
             {!!Form::model($posts,['method'=>'PUT','route'=>['ad.update',$posts->id],'file'=>true,'enctype'=>"multipart/form-data"]) !!}
         @else

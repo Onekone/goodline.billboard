@@ -54,15 +54,21 @@ class AdController extends Controller
             'title' => 'required|max:100',
             'content' => 'required|max:800|min:20',
             'contact' => 'required|max:100',
-            'image_url' => 'nullable|file|image|mimes:jpeg,png,jpg,gif,svg|size:2048|max:2048'));
+            'image_url' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'));
+
+
         $userId = Auth::user()->id;
 
         if ($request->image_url) {
-            $photoName = md5(time() . '.' . $request->image_url->getClientOriginalExtension());
-            $request->image_url->move(public_path('images'), $photoName);
+            try {
+                $photoName = md5(time() ). '.' . $request->image_url->getClientOriginalExtension();
+                $request->image_url->move(public_path('images'), $photoName);
+            }
+            catch (\Symfony\Component\HttpFoundation\File\Exception\IniSizeFileException $e) {$photoName = null;}
         } else {
             $photoName = null;
         }
+
         $ad = $this->posts->create([
             'title' => $request['title'],
             'content' => $request['content'],
@@ -93,7 +99,7 @@ class AdController extends Controller
             return view('ads.show')->withPost($post)->withUsername($username);
         }
         else {
-            abort(404);
+            abort(410);
         }
     }
 
@@ -122,7 +128,7 @@ class AdController extends Controller
             'title' => 'required|max:100',
             'content' => 'required|max:800|min:20',
             'contact' => 'required|max:100',
-            'images_url' => 'nullable|file|image|mimes:jpeg,png,jpg,gif,svg|size:2048|max:2048'));
+            'image_url' => 'nullable|file|image|mimes:jpeg,png,jpg,gif,svg|max:2048'));
 
         $asset = Ad::find($id);
         $photoName = $asset->image_url;
@@ -151,7 +157,6 @@ class AdController extends Controller
         ]);
 
         return redirect()->route('ad.show',$id);
-
     }
 
     /**

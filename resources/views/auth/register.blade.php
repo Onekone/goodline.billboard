@@ -98,7 +98,7 @@
 
                             <div class="form-group row">
 
-                                <div class="col-md-4 col-form-label text-md-right captcha">
+                                <div class="col-md-4 col-form-label text-md-right captcha" style="padding-top: 0">
                                     <span class="captcha">{!! captcha_img() !!}<button type="button" class="btn btn-success" onclick="refreshCaptchaJSFunction()" ><img src="http://www.clipartbest.com/cliparts/7Ta/Mnb/7TaMnbL7c.png" width="24px" height="24px"></button></span>
 
 
