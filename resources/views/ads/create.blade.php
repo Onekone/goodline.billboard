@@ -2,6 +2,9 @@
 
 @section('content')
     <div class="container">
+        @if ($errors->any())
+            {!! dump($errors) !!}
+            @endif
         @if (session('status') && session('status-class'))
             <div class="alert {{ session('status-class') }}">
                 {{ session('status') }}
@@ -66,18 +69,20 @@
                         {!! Form::file('image_url',['class' => $errors->has('image_url')?'is-invalid':'','accept'=>'image/*']) !!}
                         {!! Form::checkbox('delete_image','delete_image') !!}
                         {!! Form::label('delete_image','Удалить изображение') !!}
-                        @if ($errors->has('image_url'))
-                            <span class="invalid-feedback"><strong>{{ $errors->first('image_url') }}</strong></span>
-                        @endif
+
                         @if (isset($posts))
                             <div style="text-align: center" class="form-control">
                                 @if ($posts->image_url != NULL)
-                                    <img src="{{asset('images/'.$posts->image_url)}}" class="">
+                                    <img src="{{asset('storage/images/'.$posts->image_url)}}" class="">
                                 @else
                                     <img src="https://ultimatefires.com.au/wp-content/uploads/2018/02/no-image-available.png"
                                          width="128px" height="128px" class="">
                                 @endif
                             </div>
+                        @endif
+
+                        @if ($errors->has('image_url'))
+                            <span class="invalid-feedback" style="display: block"><strong>{{ $errors->first('image_url') }}</strong></span>
                         @endif
                     </div>
                 </div>

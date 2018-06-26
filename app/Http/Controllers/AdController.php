@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateAdRequest;
 use DB;
 use Illuminate\Support\Facades\Input;
 use Validator;
@@ -48,14 +49,13 @@ class AdController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UpdateAdRequest $request)
     {
-        $p = $this->validate($request, array(
+        $p = $this->validate($request, [
             'title' => 'required|max:100',
             'content' => 'required|max:800|min:20',
             'contact' => 'required|max:100',
-            'image_url' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'));
-
+            'image_url' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048']);
 
         $userId = Auth::user()->id;
 
@@ -64,6 +64,7 @@ class AdController extends Controller
                 $photoName = md5(time() ). '.' . $request->image_url->getClientOriginalExtension();
                 $request->image_url->move(public_path('images'), $photoName);
             }
+            catch (\Illuminate\Http\Exceptions\PostTooLargeException $e) {$photoName = null;}
             catch (\Symfony\Component\HttpFoundation\File\Exception\IniSizeFileException $e) {$photoName = null;}
         } else {
             $photoName = null;
@@ -76,7 +77,7 @@ class AdController extends Controller
             'user_id' => $userId,
             'image_url' => $photoName,
         ]);
-        return redirect()->route('ad.show', $ad->id);
+        return view('ads.show')->withPost($ad)->withUsername($ad->user->name??'deleted');
     }
 
     /**
@@ -122,22 +123,17 @@ class AdController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateAdRequest $request, $id)
     {
-        $this->validate($request, array(
-            'title' => 'required|max:100',
-            'content' => 'required|max:800|min:20',
-            'contact' => 'required|max:100',
-            'image_url' => 'nullable|file|image|mimes:jpeg,png,jpg,gif,svg|max:2048'));
-
-        $asset = Ad::find($id);
+        $asset = Ad::findOrFail($id);
         $photoName = $asset->image_url;
 
         if ($request->image_url && !$request->delete_image) {
             try {
                 $photoName = md5(time() ). '.' . $request->image_url->getClientOriginalExtension();
-                $request->image_url->move(public_path('images'), $photoName);
+                $request->image_url->move(storage_path('/app/public/images'), $photoName);
             }
+            catch (\Illuminate\Http\Exceptions\PostTooLargeException $e) {$photoName = $asset->image_url;}
             catch (\Symfony\Component\HttpFoundation\File\Exception\IniSizeFileException $e) {$photoName = $asset->image_url;}
         }
 
@@ -146,7 +142,6 @@ class AdController extends Controller
         }
 
         $user = Auth::user();
-        $request = $request->all();
 
         $this->posts->where('id', $id)->update([
             'title' => $request['title'],
@@ -156,7 +151,7 @@ class AdController extends Controller
             'user_id' => $user->getAuthIdentifier(),
         ]);
 
-        return redirect()->route('ad.show',$id);
+        return view('ads.show')->withPost($asset)->withUsername($asset->user->name??'deleted');//redirect()->route('ad.show',$id);
     }
 
     /**

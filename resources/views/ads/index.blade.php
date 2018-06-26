@@ -43,7 +43,7 @@
                             @if($post->image_url!=null)
                                 <div class="col-md-4">
                                     <a href="{{route('ad.show',$post->id)}}">
-                                        <img src="{{asset('images/'.$post->image_url)}}" width="200px" height="200px">
+                                        <img src="{{asset('storage/images/'.$post->image_url)}}" style="width:100%;max-height:100%;height: auto;">
                                     </a>
                                 </div>
                             @endif

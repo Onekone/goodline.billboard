@@ -39,6 +39,5 @@ Route::put('/user/{key}','ProfileController@update')->name('user.update');
 Route::any('/teapot',function() {abort(418);});
 
 Route::get('refresh_captcha', 'Auth\RegisterController@refreshCaptcha')->name('refresh_captcha');
-Route::get('searchSimple', 'SearchController@index')->name('searchSimple');
 
 Route::post('Ad/search', array('as' => 'ad.search', 'uses' => 'AdController@postSearch'));

@@ -127,8 +127,7 @@
                                     <div class="row">
                                         @if($userpost->image_url!=null)
                                             <div class="col-md-4">
-                                                <img src="{{asset('images/'.$userpost->image_url)}}" width="200"
-                                                     height="200">
+                                                <img src="{{asset('storage/images/'.$userpost->image_url)}}" style="width:100%;max-height:100%;height: auto;">
                                             </div>
                                         @endif
                                         <div class="col-md-8">

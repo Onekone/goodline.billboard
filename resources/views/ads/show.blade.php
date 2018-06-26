@@ -6,7 +6,7 @@
                 <div class="card">
                     @if($post->image_url!=null)
                         <div class="card-header" style="text-align:center">
-                            <img src="{{asset('images/'.$post->image_url)}}" width="200" height="200">
+                            <img src="{{asset('storage/images/'.$post->image_url)}}" style="width:100%;max-height:100%;height: auto;">
                         </div>
                     @endif
                     <div class="card-body">
