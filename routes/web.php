@@ -18,7 +18,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('ad','AdController');
 Route::resource('ad','AdController')->only('create')->middleware(['auth','validated','checkAds']);
-Route::resource('ad','AdController')->only('store')->middleware(['auth','validated']);
+Route::resource('ad','AdController')->only('store')->middleware(['auth','validated','checkAds']);
 
 Route::resource('ad','AdController')->only('edit')->middleware(['check','validated']);
 Route::resource('ad','AdController')->only('update')->middleware(['check','validated']);

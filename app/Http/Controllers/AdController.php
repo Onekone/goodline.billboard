@@ -112,7 +112,7 @@ class AdController extends Controller
      */
     public function edit($id)
     {
-        $posts = $this->posts->find($id);
+        $posts = $this->posts->findOrFail($id);
         return view('ads.create')->withPosts($posts);
     }
 
@@ -162,7 +162,7 @@ class AdController extends Controller
      */
     public function destroy($id)
     {
-        $post = $this->posts->find($id);
+        $post = Ad::findOrFail($id);
         $post->delete();
         return redirect()->route('ad.index');
     }

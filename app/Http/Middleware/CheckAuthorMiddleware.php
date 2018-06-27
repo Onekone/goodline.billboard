@@ -21,7 +21,7 @@ class CheckAuthorMiddleware
     public function handle(Request $request, Closure $next)
     {
         $id = $request->route()->parameter('ad');
-        $post = Ad::find($id);
+        $post = Ad::findOrFail($id);
         $userId = $post->user->id;
         if(Auth::Check() && Auth::id()===$userId) {
             return $next($request);

@@ -3,16 +3,23 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class ExampleTest2 extends TestCase
+class AuthTest extends TestCase
 {
     /**
      * A basic test example.
      *
      * @return void
      */
-    public function testBasicTest2()
+
+    public function setUp () {
+        parent::setUp();
+
+    }
+
+    public function testExample()
     {
         $this->assertTrue(true);
     }
