@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Http\Controllers\AdController;
 use Auth;
 use App\User;
+use App\Ad;
 
 class ExampleTest extends TestCase
 {
@@ -205,6 +206,42 @@ class ExampleTest extends TestCase
         // assert
         $responseEdit->assertStatus(404);
         $responseUpdate->assertStatus(404);
+    }
+
+    public function test_AuthVerified_Delete_Success()
+    {
+        // arrange
+        $user = factory(User::class)->create();
+        $user->verified = 1;
+        $user->save();
+        $this->be($user);
+
+        // act
+        $post = factory(Ad::class)->create(['user_id'=>$user->id]);
+        $response1 = $this->call('POST',route('ad.store'),['title'=>$post->title,'content'=>$post->content,'contact'=>$post->contact]);
+        $response2 = $this->call('DELETE',route('ad.destroy',$post->id));
+
+        // assert
+        $response1->assertStatus(200);
+        $response2->assertStatus(302);
+        $response2->assertRedirect(route('ad.index'));
+    }
+
+
+    public function test_AuthUnverified_Delete_Success()
+    {
+        // arrange
+        $user = factory(User::class)->create();
+        $user->verified = 0;
+        $user->save();
+        $this->be($user);
+
+        // act
+        $post = factory(Ad::class)->create(['user_id'=>$user->id]);
+        $response = $this->call('DELETE',route('ad.destroy',$post->id));
+        $response->assertStatus(302);
+        //$response->assertRedirect(route('ad.index'));
+        // assert
     }
 
     public function test_WhileAuth_Delete_Success() {}
