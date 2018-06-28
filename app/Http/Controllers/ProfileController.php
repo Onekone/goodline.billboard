@@ -28,38 +28,28 @@ class ProfileController extends Controller
         if($user){
             $posts = Ad::where('user_id',$id)->orderBy('created_at','desc')->get();
             $auth = Auth::id();
+            $authFull = Auth::user();
             $connectedTo = SocialProvider::where('user_id',$user->id)->where('social_provider',0)->first();
             // view
             return view('profile.profile')->withPosts($posts)->withAuth($auth)->withUser($user)->withvkLink($connectedTo);
         }
-        ProfileController::flashMessage($request,'alert-danger','Юзера, которого вы пытаетесь изменить, не существует');
-        return redirect()->route('ad.index');
+
+            return redirect()->route('ad.index');
     }
 
     public function sendAnotherVerify(Request $request, $id)
     {
-        $user = User::findOrFail($id);
+        $user = User::find($id);
 
-        if (!$user->verified) {
-            $ev = EmailVerify::firstOrNew([
-                'user_id' => $user->id,
-            ]);
-            $ev->verify_token = str_random(60);
-            $ev->save();
-            Mail::to($user->email)->send(new EmailVerifyAccount($user->name,$ev->verify_token));
+        $ev = EmailVerify::firstOrNew([
+            'user_id' => $user->id,
+        ]);
+        $ev->verify_token = str_random(60);
+        $ev->save();
+        Mail::to($user->email)->send(new EmailVerifyAccount($user->name,$ev->verify_token));
 
-            $posts = Ad::where('user_id',$id)->orderBy('created_at','desc')->get();
-            $auth = Auth::id();
-            $connectedTo = SocialProvider::where('user_id',$user->id)->where('social_provider',0)->first();
-
-            ProfileController::flashMessage($request,'alert-info','Отправлено письмо с подтверждением');
-            return view('profile.profile')->withPosts($posts)->withAuth($auth)->withUser($user)->withvkLink($connectedTo);
-        }
-        else {
-            ProfileController::flashMessage($request,'alert-info','Пользователь уже подтвержден');
-            return redirect()->route('user',$id);
-        }
-
+        ProfileController::flashMessage($request,'alert-info','Отправлено письмо с подтверждением');
+        return $this->show($request,$id);
     }
 
     public function update(Request $request, $id)
@@ -111,9 +101,8 @@ class ProfileController extends Controller
                 return redirect()->route('user',$user->id);
             }
         }
-
         ProfileController::flashMessage($request,'alert-danger','Юзера, которого вы пытаетесь изменить, не существует');
-        return redirect(route('home'),404);
+        return redirect()->route('home');
     }
 
     public function flashMessage(Request $request,$class,$message)
@@ -134,7 +123,7 @@ class ProfileController extends Controller
             $ad_list = Ad::where('user_id',$id)->delete();
         }
         ProfileController::flashMessage($request,'alert-dark','Объявления успешно удалены');
-        return redirect()->route('user',$id);
+        return $this->show($request,$id);
     }
 
     public function nukeUser(Request $request, $id) {
@@ -162,7 +151,7 @@ class ProfileController extends Controller
             SocialProvider::where('user_id',$id)->where('social_provider',0)->delete();
         }
         ProfileController::flashMessage($request,'alert-info','Аккаунт ВК успешно отвязан');
-        return redirect()->route('user',$id);
+        return $this->show($request,$id);
     }
 
     public function verify(Request $request, $key)
