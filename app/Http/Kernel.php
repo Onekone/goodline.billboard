@@ -66,5 +66,6 @@ class Kernel extends HttpKernel
         'validated' => \App\Http\Middleware\CheckValidated::class,
         'checkAds' => \App\Http\Middleware\CheckAdsMiddleware::class,
         'checkSearch' => \App\Http\Middleware\CheckAdsMiddleware::class,
+        'unboundableVK' => \App\Http\Middleware\CheckUserVKUnbindable::class,
     ];
 }
