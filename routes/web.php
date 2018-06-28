@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/','AdController@index');
+Route::get('/','AdController@index')->name('root');
 
 Auth::routes();
 
