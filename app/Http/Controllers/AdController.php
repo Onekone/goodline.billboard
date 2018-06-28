@@ -64,11 +64,7 @@ class AdController extends Controller
             try {
 
                 $photoName = md5(time() ). '.' . $request->image_url->getClientOriginalExtension();
-<<<<<<< 3c6a311eb457a44ff774863814acf0438f3a5527
-                $request->image_url->move(storage_path('/app/public/images'), $photoName);
-=======
                 $request->image_url->move(storage_path('app/public/images'), $photoName);
->>>>>>> test_WhileAuth_CreateAdsImage
             }
             catch (\Exception $e) {dd($e->getTrace()[0]);}
             catch (\Illuminate\Http\Exceptions\PostTooLargeException $e) {$photoName = null;}
