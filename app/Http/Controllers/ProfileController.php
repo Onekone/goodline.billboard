@@ -33,23 +33,29 @@ class ProfileController extends Controller
             // view
             return view('profile.profile')->withPosts($posts)->withAuth($auth)->withUser($user)->withvkLink($connectedTo);
         }
-
-            return redirect()->route('ad.index');
+        ProfileController::flashMessage($request,'alert-danger','Юзера, которого вы пытаетесь изменить, не существует');
+        return redirect()->route('ad.index');
     }
 
     public function sendAnotherVerify(Request $request, $id)
     {
-        $user = User::find($id);
+        $user = User::findOrFail($id);
 
-        $ev = EmailVerify::firstOrNew([
-            'user_id' => $user->id,
-        ]);
-        $ev->verify_token = str_random(60);
-        $ev->save();
-        Mail::to($user->email)->send(new EmailVerifyAccount($user->name,$ev->verify_token));
+        if (!$user->verified) {
+            $ev = EmailVerify::firstOrNew([
+                'user_id' => $user->id,
+            ]);
+            $ev->verify_token = str_random(60);
+            $ev->save();
+            Mail::to($user->email)->send(new EmailVerifyAccount($user->name,$ev->verify_token));
 
-        ProfileController::flashMessage($request,'alert-info','Отправлено письмо с подтверждением');
-        return redirect()->route('user',$id);
+            ProfileController::flashMessage($request,'alert-info','Отправлено письмо с подтверждением');
+            return redirect()->route('user',$id);
+        }
+        else {
+            ProfileController::flashMessage($request,'alert-info','Пользователь уже подтвержден');
+        }
+
     }
 
     public function update(Request $request, $id)
@@ -101,8 +107,9 @@ class ProfileController extends Controller
                 return redirect()->route('user',$user->id);
             }
         }
+
         ProfileController::flashMessage($request,'alert-danger','Юзера, которого вы пытаетесь изменить, не существует');
-        return redirect()->route('home');
+        return redirect(route('home'),404);
     }
 
     public function flashMessage(Request $request,$class,$message)

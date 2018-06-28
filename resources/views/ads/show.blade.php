@@ -10,7 +10,7 @@
                         </div>
                     @endif
                     <div class="card-body">
-                        [PH] Прислал: {{$username}}<br>
+                        [PH] Прислал: {{$post->user->name??'deleted'}}<br>
                         [PH] Дата: {{ date('M j, Y', strtotime($post->created_at)) }}
                     </div>
                     @if(Auth::check() && $post->user_id == Auth::user()->id)

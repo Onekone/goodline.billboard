@@ -28,7 +28,7 @@ Route::get('/user/{id}', 'ProfileController@show')->name('user');
 Route::get('/user/{id}/verify', 'ProfileController@sendAnotherVerify')->name('user.verify')->middleware('auth');
 Route::get('/user/{id}/clear', 'ProfileController@nukeAds')->name('user.clear')->middleware(['checkUser','validated']);;
 Route::get('/user/{id}/destroy', 'ProfileController@nukeUser')->name('user.destroy')->middleware(['checkUser','validated']);;
-Route::get('/user/{id}/unbindVK', 'ProfileController@unbindVK')->name('user.unbindVK');
+Route::get('/user/{id}/unbindVK', 'ProfileController@unbindVK')->name('user.unbindVK')->middleware(['unboundableVK']);
 
 Route::get('register/vk', 'Auth\RegisterController@passVKData')->name('register.vk');
 Route::get('login/vk', 'SocialProviderController@redirectToProvider')->name('vk');
