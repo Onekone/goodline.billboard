@@ -2,13 +2,17 @@
 
 namespace Tests\Feature;
 
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Http\Controllers\AdController;
 use Auth;
 use App\User;
+use App\Ad;
 
-class AdControllerTest extends TestCase
+class ExampleTest extends TestCase
 {
     /**
      * A basic test example.
@@ -69,6 +73,7 @@ class AdControllerTest extends TestCase
         // assert
         $response->assertStatus(302);
     }
+
     public function test_WhileAuthUnverified_AccessCreate_Redirected()
     {
         // arrange
@@ -80,6 +85,7 @@ class AdControllerTest extends TestCase
         // assert
         $response->assertStatus(302);
     }
+
     public function test_WhileAuthVerified_AccessCreate_Success()
     {
         // arrange
@@ -91,6 +97,7 @@ class AdControllerTest extends TestCase
         // assert
         $response->assertStatus(200);
     }
+
     public function test_WhileAuthUnverified_Store_RedirectBack()
     {
         // arrange
@@ -105,6 +112,7 @@ class AdControllerTest extends TestCase
         // если  if(Auth::Check() && Auth::user()->verified) -> fail
         // то       return redirect()->back();
     }
+
     public function test_WhileAuthVerified_Store_Success() {
         // arrange
         $user = $this->verifiedUser;
@@ -113,7 +121,7 @@ class AdControllerTest extends TestCase
         $response = $this->actingAs($user)->call('POST',route('ad.store'),$this->postExample1);
 
         // assert
-        $response->assertStatus(201);
+        $response->assertStatus(200);
     }
 
     public function test_WhileAuthVerified_StoreOverload_RedirectBackOnCreateStore() {
@@ -136,6 +144,7 @@ class AdControllerTest extends TestCase
         // если  if($posts<5) -> fail
         // то       return redirect()->back();
     }
+
     public function test_WhileUnauth_EditUpdate_RedirectBack() {
         // arrange
         $p = factory(\App\Ad::class)->create(['user_id'=>$this->verifiedUser]);
@@ -148,6 +157,7 @@ class AdControllerTest extends TestCase
         $responseEdit->assertStatus(302);
         $responseUpdate->assertStatus(302);
     }
+
     public function test_WhileAuthUnverified_EditUpdate_RedirectBack() {
         // arrange
         $p = factory(\App\Ad::class)->create(['user_id'=>$this->notVerifiedUser]);
@@ -160,6 +170,7 @@ class AdControllerTest extends TestCase
         $responseEdit->assertStatus(302);
         $responseUpdate->assertStatus(302);
     }
+
     public function test_WhileAuth_EditUpdate_Success() {
         // arrange
         $user = $this->verifiedUser;
@@ -173,6 +184,7 @@ class AdControllerTest extends TestCase
         $responseEdit->assertStatus(200);
         $responseUpdate->assertStatus(302);
     }
+
     public function test_WhileAuth_Unowned_UpdateEdit_Redirect() {
         // arrange
         $ad = $this->otherUserAds->random();
@@ -186,6 +198,7 @@ class AdControllerTest extends TestCase
         $responseEdit->assertStatus(302);
         $responseUpdate->assertStatus(302);
     }
+
     public function test_WhileAuth_NotExisting_UpdateEdit_404() {
         // arrange
         $user = $this->verifiedUser;

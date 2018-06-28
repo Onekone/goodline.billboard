@@ -25,7 +25,7 @@ class CreateAdsTable extends Migration
             $table->timestamps();
 
         });
-        DB::statement('ALTER TABLE ads ADD FULLTEXT search(title,content,contact)');
+        //DB::statement('ALTER TABLE ads ADD FULLTEXT search(title,content,contact)');
     }
 
     /**

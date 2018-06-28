@@ -9,7 +9,7 @@ use Laravel\Scout\Searchable;
 class Ad extends Model
 {
     use SoftDeletes;
-    use Searchable;
+   // use Searchable;
     protected $fillable = ['title', 'content', 'contact','user_id','image_url'];
     protected $primaryKey = 'id';
 
