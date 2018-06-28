@@ -21,6 +21,7 @@ class ExampleTest extends TestCase
      */
     use RefreshDatabase;
 
+
     var $postExample1 = [
         'title'=>'ABCDEABCDE',
         'content'=>'ABCDEABCDEABCDEABCDE',
@@ -246,38 +247,51 @@ class ExampleTest extends TestCase
     }
 
 
-//    public function test_WhileAuth_CreateAdsImage_Success() {
-//        // arrange
-//        $user = factory(User::class)->create();
-//        $user->verified = 1;
-//        $user->save();
-//        $this->be($user);
-//        //$image = UploadedFile::fake()->create('ads.jpg', 1000);
-//        $image = imagecreatefromjpeg('/var/www/project/billboard/tests/Feature/file/test.jpg');
-//        // act
-//        $post = factory(Ad::class)->create(['user_id'=>$user->id]);
-//        $response = $this->call('POST',route('ad.store'),['title'=>'картинка','content'=>$post->content,'contact'=>$post->contact,'image_url'=>$image]);
-//        //$response = $this->call('POST',route('ad.store'),['title'=>$post->title,'content'=>$post->content,'contact'=>$post->contact,'image_url'=>UploadedFile::fake()->image('avatar.jpg')]);
-//
-//        // assert
-//        $response->assertStatus(200);
-//    }
-//
-//    public function test_WhileAuth_CreateAdsImage_Redirect() {
-//        // arrange
-//        Storage::fake('avatars');
-//        $user = factory(User::class)->create();
-//        $user->verified = 1;
-//        $user->save();
-//        $this->be($user);
-//
-//        // act
-//        $post = factory(Ad::class)->create(['user_id'=>$user->id,'image_url'=>UploadedFile::fake()->create('document.pdf', 100)]);
-//        $response = $this->call('POST',route('ad.store'),['title'=>$post->title,'content'=>$post->content,'contact'=>$post->contact]);
-//
-//        // assert
-//        $response->assertStatus(302);
-//    }
+    public function test_WhileAuth_CreateAdsImage_Success() {
+        // arrange
+        $user = factory(User::class)->create();
+        $user->verified = 1;
+        $user->save();
+        $this->be($user);
+        $image = UploadedFile::fake()->image('avatar.jpg', 1000, 1000);
+        $post = factory(Ad::class)->make();
+        $response = $this->call('POST',route('ad.store'),['title'=>'картинка','content'=>$post->content,'contact'=>$post->contact,'image_url'=> $image]);
+        // assert
+        $response->assertStatus(200);
+    }
+
+    public function test_WhileAuth_CreateAdsImage_Redirect() {
+        // arrange
+        Storage::fake('avatars');
+        $user = factory(User::class)->create();
+        $user->verified = 1;
+        $user->save();
+        $this->be($user);
+        $image = UploadedFile::fake()->image('avatar.jpg', 2000, 2000)->size(4000);
+        // act
+        $post = factory(Ad::class)->make();
+        $response = $this->call('POST',route('ad.store'),['title'=>$post->title,'content'=>$post->content,'contact'=>$post->contact,'image_url'=> $image]);
+
+        // assert
+        $response->assertStatus(302);
+    }
+
+    public function test_WhileAuth_CreateAdsFile_Redirect() {
+        // arrange
+        Storage::fake('avatars');
+        $user = factory(User::class)->create();
+        $user->verified = 1;
+        $user->save();
+        $this->be($user);
+        $file = UploadedFile::fake()->create('document.txt', 2000);
+        // act
+        $post = factory(Ad::class)->make();
+        $response = $this->call('POST',route('ad.store'),['title'=>$post->title,'content'=>$post->content,'contact'=>$post->contact,'image_url'=> $file]);
+        // assert
+        $response->assertStatus(302);
+    }
+
+
 
 
     public function test_WhileAuth_Delete_Success() {}

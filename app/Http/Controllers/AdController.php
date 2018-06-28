@@ -60,15 +60,19 @@ class AdController extends Controller
         $userId = Auth::user()->id;
 
         if ($request->image_url) {
+
             try {
+
                 $photoName = md5(time() ). '.' . $request->image_url->getClientOriginalExtension();
-                $request->image_url->move(public_path('images'), $photoName);
+                $request->image_url->move(storage_path('app/public/images'), $photoName);
             }
+            catch (\Exception $e) {dd($e->getTrace()[0]);}
             catch (\Illuminate\Http\Exceptions\PostTooLargeException $e) {$photoName = null;}
             catch (\Symfony\Component\HttpFoundation\File\Exception\IniSizeFileException $e) {$photoName = null;}
         } else {
             $photoName = null;
         }
+
 
         $ad = $this->posts->create([
             'title' => $request['title'],
@@ -133,8 +137,9 @@ class AdController extends Controller
                 $photoName = md5(time() ). '.' . $request->image_url->getClientOriginalExtension();
                 $request->image_url->move(storage_path('/app/public/images'), $photoName);
             }
-            catch (\Illuminate\Http\Exceptions\PostTooLargeException $e) {$photoName = $asset->image_url;}
-            catch (\Symfony\Component\HttpFoundation\File\Exception\IniSizeFileException $e) {$photoName = $asset->image_url;}
+            catch (\Exception $e) {dd($e->getTrace()[0]);}
+            catch (\Illuminate\Http\Exceptions\PostTooLargeException $e) {$photoName = null;}
+            catch (\Symfony\Component\HttpFoundation\File\Exception\IniSizeFileException $e) {$photoName = null;}
         }
 
         if ($request->delete_image) {
