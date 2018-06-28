@@ -28,6 +28,7 @@ class ProfileController extends Controller
         if($user){
             $posts = Ad::where('user_id',$id)->orderBy('created_at','desc')->get();
             $auth = Auth::id();
+            $authFull = Auth::user();
             $connectedTo = SocialProvider::where('user_id',$user->id)->where('social_provider',0)->first();
             // view
             return view('profile.profile')->withPosts($posts)->withAuth($auth)->withUser($user)->withvkLink($connectedTo);
@@ -48,16 +49,11 @@ class ProfileController extends Controller
             $ev->save();
             Mail::to($user->email)->send(new EmailVerifyAccount($user->name,$ev->verify_token));
 
-            $posts = Ad::where('user_id',$id)->orderBy('created_at','desc')->get();
-            $auth = Auth::id();
-            $connectedTo = SocialProvider::where('user_id',$user->id)->where('social_provider',0)->first();
-
             ProfileController::flashMessage($request,'alert-info','Отправлено письмо с подтверждением');
-            return view('profile.profile')->withPosts($posts)->withAuth($auth)->withUser($user)->withvkLink($connectedTo);
+            return redirect()->route('user',$id);
         }
         else {
             ProfileController::flashMessage($request,'alert-info','Пользователь уже подтвержден');
-            return redirect()->route('user',$id);
         }
 
     }
