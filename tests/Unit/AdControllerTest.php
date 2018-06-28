@@ -121,7 +121,7 @@ class ExampleTest extends TestCase
         $response = $this->actingAs($user)->call('POST',route('ad.store'),$this->postExample1);
 
         // assert
-        $response->assertStatus(200);
+        $response->assertStatus(201);
     }
 
     public function test_WhileAuthVerified_StoreOverload_RedirectBackOnCreateStore() {
