@@ -60,15 +60,19 @@ class AdController extends Controller
         $userId = Auth::user()->id;
 
         if ($request->image_url) {
+
             try {
+
                 $photoName = md5(time() ). '.' . $request->image_url->getClientOriginalExtension();
-                $request->image_url->move(storage_path('/app/public/images'), $photoName);
+                $request->image_url->move(storage_path('app/public/images'), $photoName);
             }
+            catch (\Exception $e) {dd($e->getTrace()[0]);}
             catch (\Illuminate\Http\Exceptions\PostTooLargeException $e) {$photoName = null;}
             catch (\Symfony\Component\HttpFoundation\File\Exception\IniSizeFileException $e) {$photoName = null;}
         } else {
             $photoName = null;
         }
+
 
         $ad = $this->posts->create([
             'title' => $request['title'],
@@ -77,8 +81,7 @@ class AdController extends Controller
             'user_id' => $userId,
             'image_url' => $photoName,
         ]);
-
-        return response()->redirectToRoute('ad.show',['id'=>$ad->id], 201);
+        return view('ads.show')->withPost($ad)->withUsername($ad->user->name??'deleted');
     }
 
     /**
@@ -89,8 +92,20 @@ class AdController extends Controller
      */
     public function show($id)
     {
-        $post = Ad::findOrFail($id);
-        return view('ads.show')->withPost($post);
+        $post = Ad::find($id);
+        if ($post)
+        {
+            $username = 'deleted';
+
+            $user = $post->user;
+            if ($user)
+                $username = $user->name;
+
+            return view('ads.show')->withPost($post)->withUsername($username);
+        }
+        else {
+            abort(410);
+        }
     }
 
     /**
@@ -122,22 +137,26 @@ class AdController extends Controller
                 $photoName = md5(time() ). '.' . $request->image_url->getClientOriginalExtension();
                 $request->image_url->move(storage_path('/app/public/images'), $photoName);
             }
-            catch (\Illuminate\Http\Exceptions\PostTooLargeException $e) {$photoName = $asset->image_url;}
-            catch (\Symfony\Component\HttpFoundation\File\Exception\IniSizeFileException $e) {$photoName = $asset->image_url;}
+            catch (\Exception $e) {dd($e->getTrace()[0]);}
+            catch (\Illuminate\Http\Exceptions\PostTooLargeException $e) {$photoName = null;}
+            catch (\Symfony\Component\HttpFoundation\File\Exception\IniSizeFileException $e) {$photoName = null;}
         }
 
         if ($request->delete_image) {
             $photoName = NULL;
         }
 
+        $user = Auth::user();
+
         $this->posts->where('id', $id)->update([
             'title' => $request['title'],
             'content' => $request['content'],
             'contact' => $request['contact'],
             'image_url' => $photoName,
+            'user_id' => $user->getAuthIdentifier(),
         ]);
 
-        return response()->redirectToRoute('ad.show',['id'=>$asset->id]);
+        return view('ads.show')->withPost($asset)->withUsername($asset->user->name??'deleted');//redirect()->route('ad.show',$id);
     }
 
     /**
@@ -150,7 +169,6 @@ class AdController extends Controller
     {
         $post = Ad::findOrFail($id);
         $post->delete();
-
-        return response()->redirectToRoute('ad.index');
+        return redirect()->route('ad.index');
     }
 }
