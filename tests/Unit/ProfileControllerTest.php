@@ -8,6 +8,7 @@
 
 namespace Tests\Feature;
 
+use App\EmailVerify;
 use App\SocialProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -211,14 +212,16 @@ class ProfileControllerTest extends TestCase {
         $response = $this->actingAs($this->verifiedUser)->get(route('user.destroy',$user->id));
         // assert
         $response->assertStatus(302);
+        $response->assertRedirect(route('root'));
     }
     public function test_WhileAuth_UnknownID_NukeUser_Success() {
         // arrange
         $user = $this->otherUser;
         // act
-        $response = $this->actingAs($this->verifiedUser)->get(route('user.destroy',$user->id));
+        $response = $this->actingAs($this->verifiedUser)->get(route('user.destroy',-1));
         // assert
         $response->assertStatus(302);
+        $response->assertRedirect(route('root'));
     }
 
     public function test_WhileUnauth_UnbindVK_Redirect() {
@@ -237,7 +240,7 @@ class ProfileControllerTest extends TestCase {
         // act
         $response = $this->actingAs($user)->get(route('user.unbindVK',$user->id));
         // assert
-        $response->assertStatus(302);
+        $response->assertStatus(200);
     }
     public function test_WhileAuth_Bound_UnbindVK_Success() {
         // arrange
@@ -251,12 +254,42 @@ class ProfileControllerTest extends TestCase {
     }
 
     public function test_WhileUnauth_Verify_Success() {
+        // arrange
+        $user = factory(\App\User::class)->create(['verified'=>0]);
+        $userVerifyToken = EmailVerify::firstOrCreate(['user_id'=>$user->id,'verify_token'=>str_random(60)]);
+        $userVerifyToken->save();
+
+        // act
+        $response = $this->get(route('verify',$userVerifyToken->verify_token));
+        // assert
+        $response->assertStatus(200);
 
     }
     public function test_WhileUnauth_UnknownToken_Verify_Failure() {
+        // arrange
+
+        // act
+        $response = $this->get(route('verify','invalid_token'));
+        // assert
+        $response->assertStatus(302);
     }
     public function test_WhileAuth_Verify_Success() {
+        // arrange
+        $user = factory(\App\User::class)->create(['verified'=>0]);
+        $userVerifyToken = EmailVerify::firstOrCreate(['user_id'=>$user->id,'verify_token'=>str_random(60)]);
+        $userVerifyToken->save();
+
+        // act
+        $response = $this->actingAs($user)->get(route('verify',$userVerifyToken->verify_token));
+        // assert
+        $response->assertStatus(200);
     }
     public function test_WhileAuth_UnknownToken_Verify_Failure() {
+        // arrange
+        $user = factory(\App\User::class)->create(['verified'=>0]);
+        // act
+        $response = $this->actingAs($user)->get(route('verify','invalid_token'));
+        // assert
+        $response->assertStatus(302);
     }
 }

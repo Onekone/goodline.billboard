@@ -116,12 +116,7 @@ class ProfileController extends Controller
         $request->session()->put('status-class',$class);
     }
     public function nukeAds(Request $request, $id) {
-
-        $auth = Auth::user();
-
-        if ($auth && $auth->id == $id) {
-            $ad_list = Ad::where('user_id',$id)->delete();
-        }
+        $ad_list = Ad::where('user_id',$id)->delete();
         ProfileController::flashMessage($request,'alert-dark','Объявления успешно удалены');
         return $this->show($request,$id);
     }
@@ -137,10 +132,9 @@ class ProfileController extends Controller
             EmailVerify::where('user_id',$id)->delete();
             SocialProvider::where('user_id',$id)->delete();
             User::where('id',$id)->delete();
-
+            return redirect()->route('ad.index');
         }
-
-        return redirect()->route('ad.index');
+        return redirect()->route('root');
     }
 
     public function unbindVK(Request $request,$id) {
@@ -159,7 +153,7 @@ class ProfileController extends Controller
 
         try {
             $tkn = EmailVerify::where('verify_token',$key)->firstOrFail();
-            $p = User::find($tkn->user_id);
+            $p = User::findOrFail($tkn->user_id);
 
             $p->verified = 1;
             $p->save();
@@ -167,12 +161,13 @@ class ProfileController extends Controller
             $tkn->delete();
 
             ProfileController::flashMessage($request,'alert-success','Email успешно подтвержден');
+            return view('home');
         }
         catch (\Exception $E) {
             ProfileController::flashMessage($request,'alert-danger','Ошибка подтверждения email');
             return redirect()->back();
         }
 
-        return view('home');
+        return redirect()->route('ad.index');
     }
 }
