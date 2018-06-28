@@ -2,6 +2,9 @@
 
 namespace Tests\Feature;
 
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Http\Controllers\AdController;
@@ -218,13 +221,11 @@ class ExampleTest extends TestCase
 
         // act
         $post = factory(Ad::class)->create(['user_id'=>$user->id]);
-        $response1 = $this->call('POST',route('ad.store'),['title'=>$post->title,'content'=>$post->content,'contact'=>$post->contact]);
-        $response2 = $this->call('DELETE',route('ad.destroy',$post->id));
+        $response = $this->call('DELETE',route('ad.destroy',$post->id));
 
         // assert
-        $response1->assertStatus(200);
-        $response2->assertStatus(302);
-        $response2->assertRedirect(route('ad.index'));
+        $response->assertStatus(302);
+        $response->assertRedirect(route('ad.index'));
     }
 
 
@@ -243,6 +244,41 @@ class ExampleTest extends TestCase
         //$response->assertRedirect(route('ad.index'));
         // assert
     }
+
+
+//    public function test_WhileAuth_CreateAdsImage_Success() {
+//        // arrange
+//        $user = factory(User::class)->create();
+//        $user->verified = 1;
+//        $user->save();
+//        $this->be($user);
+//        //$image = UploadedFile::fake()->create('ads.jpg', 1000);
+//        $image = imagecreatefromjpeg('/var/www/project/billboard/tests/Feature/file/test.jpg');
+//        // act
+//        $post = factory(Ad::class)->create(['user_id'=>$user->id]);
+//        $response = $this->call('POST',route('ad.store'),['title'=>'картинка','content'=>$post->content,'contact'=>$post->contact,'image_url'=>$image]);
+//        //$response = $this->call('POST',route('ad.store'),['title'=>$post->title,'content'=>$post->content,'contact'=>$post->contact,'image_url'=>UploadedFile::fake()->image('avatar.jpg')]);
+//
+//        // assert
+//        $response->assertStatus(200);
+//    }
+//
+//    public function test_WhileAuth_CreateAdsImage_Redirect() {
+//        // arrange
+//        Storage::fake('avatars');
+//        $user = factory(User::class)->create();
+//        $user->verified = 1;
+//        $user->save();
+//        $this->be($user);
+//
+//        // act
+//        $post = factory(Ad::class)->create(['user_id'=>$user->id,'image_url'=>UploadedFile::fake()->create('document.pdf', 100)]);
+//        $response = $this->call('POST',route('ad.store'),['title'=>$post->title,'content'=>$post->content,'contact'=>$post->contact]);
+//
+//        // assert
+//        $response->assertStatus(302);
+//    }
+
 
     public function test_WhileAuth_Delete_Success() {}
     public function test_WhileAuth_UnownedDelete_Redirect() {}

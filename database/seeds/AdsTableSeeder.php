@@ -13,8 +13,8 @@ class AdsTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::statement("SET foreign_key_checks=0");
-        DB::table('ads')->truncate();
+//        DB::statement("SET foreign_key_checks=0");
+//        DB::table('ads')->truncate();
         $ads = new Ad();
         $faker = \Faker\Factory::create();
         $users = User::all();
@@ -32,6 +32,6 @@ class AdsTableSeeder extends Seeder
                 ]);
             }
         }
-        DB::statement("SET foreign_key_checks=1");
+//        DB::statement("SET foreign_key_checks=1");
     }
 }
