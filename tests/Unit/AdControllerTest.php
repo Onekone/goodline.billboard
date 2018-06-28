@@ -12,7 +12,7 @@ use Auth;
 use App\User;
 use App\Ad;
 
-class ExampleTest extends TestCase
+class AdControllerTest extends TestCase
 {
     /**
      * A basic test example.
@@ -20,7 +20,6 @@ class ExampleTest extends TestCase
      * @return void
      */
     use RefreshDatabase;
-
 
     var $postExample1 = [
         'title'=>'ABCDEABCDE',
@@ -74,7 +73,6 @@ class ExampleTest extends TestCase
         // assert
         $response->assertStatus(302);
     }
-
     public function test_WhileAuthUnverified_AccessCreate_Redirected()
     {
         // arrange
@@ -86,7 +84,6 @@ class ExampleTest extends TestCase
         // assert
         $response->assertStatus(302);
     }
-
     public function test_WhileAuthVerified_AccessCreate_Success()
     {
         // arrange
@@ -98,7 +95,6 @@ class ExampleTest extends TestCase
         // assert
         $response->assertStatus(200);
     }
-
     public function test_WhileAuthUnverified_Store_RedirectBack()
     {
         // arrange
@@ -113,7 +109,6 @@ class ExampleTest extends TestCase
         // если  if(Auth::Check() && Auth::user()->verified) -> fail
         // то       return redirect()->back();
     }
-
     public function test_WhileAuthVerified_Store_Success() {
         // arrange
         $user = $this->verifiedUser;
@@ -122,7 +117,7 @@ class ExampleTest extends TestCase
         $response = $this->actingAs($user)->call('POST',route('ad.store'),$this->postExample1);
 
         // assert
-        $response->assertStatus(200);
+        $response->assertStatus(201);
     }
 
     public function test_WhileAuthVerified_StoreOverload_RedirectBackOnCreateStore() {
@@ -145,7 +140,6 @@ class ExampleTest extends TestCase
         // если  if($posts<5) -> fail
         // то       return redirect()->back();
     }
-
     public function test_WhileUnauth_EditUpdate_RedirectBack() {
         // arrange
         $p = factory(\App\Ad::class)->create(['user_id'=>$this->verifiedUser]);
@@ -158,7 +152,6 @@ class ExampleTest extends TestCase
         $responseEdit->assertStatus(302);
         $responseUpdate->assertStatus(302);
     }
-
     public function test_WhileAuthUnverified_EditUpdate_RedirectBack() {
         // arrange
         $p = factory(\App\Ad::class)->create(['user_id'=>$this->notVerifiedUser]);
@@ -171,20 +164,19 @@ class ExampleTest extends TestCase
         $responseEdit->assertStatus(302);
         $responseUpdate->assertStatus(302);
     }
-
     public function test_WhileAuth_EditUpdate_Success() {
         // arrange
-        $p = factory(\App\Ad::class)->create(['user_id'=>$this->verifiedUser]);
+        $user = $this->verifiedUser;
+        $ad = factory(\App\Ad::class)->create(['user_id'=>$user->id]);
 
         // act
-        $responseEdit = $this->actingAs($this->verifiedUser)->get(route('ad.edit',$p->id));
-        $responseUpdate = $this->actingAs($this->verifiedUser)->put(route('ad.update',$p->id),$this->postExample2);
+        $responseEdit = $this->actingAs($user)->get(route('ad.edit',$ad->id));
+        $responseUpdate = $this->actingAs($user)->put( route('ad.update',$ad->id) , $this->postExample2 );
 
         // assert
         $responseEdit->assertStatus(200);
-        $responseUpdate->assertStatus(200);
+        $responseUpdate->assertStatus(302);
     }
-
     public function test_WhileAuth_Unowned_UpdateEdit_Redirect() {
         // arrange
         $ad = $this->otherUserAds->random();
@@ -198,7 +190,6 @@ class ExampleTest extends TestCase
         $responseEdit->assertStatus(302);
         $responseUpdate->assertStatus(302);
     }
-
     public function test_WhileAuth_NotExisting_UpdateEdit_404() {
         // arrange
         $user = $this->verifiedUser;
@@ -212,40 +203,51 @@ class ExampleTest extends TestCase
         $responseUpdate->assertStatus(404);
     }
 
-    public function test_AuthVerified_Delete_Success()
-    {
+    public function test_WhileUnauth_Delete_RedirectBack() {
         // arrange
-        $user = factory(User::class)->create();
-        $user->verified = 1;
-        $user->save();
-        $this->be($user);
+        $user = $this->verifiedUser;
+        $ad = $this->otherUserAds->random();
 
         // act
-        $post = factory(Ad::class)->create(['user_id'=>$user->id]);
-        $response = $this->call('DELETE',route('ad.destroy',$post->id));
+        $responseDelete = $this->delete(route('ad.destroy',$ad->id));
 
         // assert
-        $response->assertStatus(302);
-        $response->assertRedirect(route('ad.index'));
+        $responseDelete->assertStatus(302);
     }
-
-
-    public function test_AuthUnverified_Delete_Success()
-    {
+    public function test_WhileAuth_Delete_Success() {
         // arrange
-        $user = factory(User::class)->create();
-        $user->verified = 0;
-        $user->save();
-        $this->be($user);
+        $user = $this->verifiedUser;
+        $ad = factory(\App\Ad::class)->create(['user_id'=>$user->id]);
 
         // act
-        $post = factory(Ad::class)->create(['user_id'=>$user->id]);
-        $response = $this->call('DELETE',route('ad.destroy',$post->id));
-        $response->assertStatus(302);
-        //$response->assertRedirect(route('ad.index'));
-        // assert
-    }
+        $responseDelete = $this->actingAs($user)->delete(route('ad.destroy',$ad->id));
 
+        // assert
+        $responseDelete->assertStatus(302);
+        $responseDelete->assertRedirect(route('ad.index'));
+    }
+    public function test_WhileAuth_UnownedDelete_Redirect() {
+        // arrange
+        $user = $this->verifiedUser;
+        $ad = $this->otherUserAds->random();
+
+        // act
+        $responseDelete = $this->actingAs($user)->delete(route('ad.destroy',$ad->id));
+
+        // assert
+        $responseDelete->assertStatus(302);
+        $responseDelete->assertRedirect(route('ad.index'));
+    }
+    public function test_WhileAuth_NotExistingDelete_404() {
+        // arrange
+        $user = $this->verifiedUser;
+
+        // act
+        $responseDelete = $this->actingAs($user)->delete(route('ad.destroy',-1));
+
+        // assert
+        $responseDelete->assertStatus(404);
+    }
 
     public function test_WhileAuth_CreateAdsImage_Success() {
         // arrange
@@ -257,7 +259,7 @@ class ExampleTest extends TestCase
         $post = factory(Ad::class)->make();
         $response = $this->call('POST',route('ad.store'),['title'=>'картинка','content'=>$post->content,'contact'=>$post->contact,'image_url'=> $image]);
         // assert
-        $response->assertStatus(200);
+        $response->assertStatus(201);
     }
 
     public function test_WhileAuth_CreateAdsImage_Redirect() {
@@ -290,11 +292,4 @@ class ExampleTest extends TestCase
         // assert
         $response->assertStatus(302);
     }
-
-
-
-
-    public function test_WhileAuth_Delete_Success() {}
-    public function test_WhileAuth_UnownedDelete_Redirect() {}
-    public function test_WhileAuth_NotExistingDelete_404() {}
 }
