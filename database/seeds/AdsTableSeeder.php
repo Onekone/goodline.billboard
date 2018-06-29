@@ -14,11 +14,12 @@ class AdsTableSeeder extends Seeder
     public function run()
     {
 
-        //if (app()->environment() !== 'testing') {
-        //    DB::statement("SET foreign_key_checks=0");
-        //}
+        if (app()->environment() !== 'testing') {
+            DB::statement("SET foreign_key_checks=0");
+            DB::table('ads')->truncate();
+        }
 
-//        DB::table('ads')->truncate();
+//
         $ads = new Ad();
         $faker = \Faker\Factory::create();
         $users = User::all();
@@ -26,7 +27,6 @@ class AdsTableSeeder extends Seeder
 
         foreach (range(0,$count) as $user) {
             $p = $users[$user]->id;
-            $this->command->getOutput()->writeln("<info>($p)</info>");
             foreach (range(1, 5) as $ad) {
                 $ads->create([
                     'title' => $faker->text(20),
@@ -36,9 +36,9 @@ class AdsTableSeeder extends Seeder
                 ]);
             }
         }
-//        if (app()->environment() !== 'testing') {
-//            DB::statement("SET foreign_key_checks=1");
-//        }
+        if (app()->environment() !== 'testing') {
+            DB::statement("SET foreign_key_checks=1");
+        }
 //
     }
 }

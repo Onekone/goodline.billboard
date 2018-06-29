@@ -14,14 +14,15 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
 
-//        if (app()->environment() !== 'testing') {
-//            DB::statement("SET foreign_key_checks=0");
-////        }
-//
-//        DB::table('email_verifies')->truncate();
-//        DB::table('password_resets')->truncate();
-//        DB::table('social_providers')->truncate();
-//        DB::table('users')->truncate();
+        if (app()->environment() !== 'testing') {
+            DB::statement("SET foreign_key_checks=0");
+        }
+//        }
+
+        DB::table('email_verifies')->truncate();
+        DB::table('password_resets')->truncate();
+        DB::table('social_providers')->truncate();
+        DB::table('users')->truncate();
         $user = new User();
         $faker = \Faker\Factory::create();
         foreach (range(1,5) as $ad) {
@@ -32,10 +33,9 @@ class UsersTableSeeder extends Seeder
             ]);
         }
 
-//        if (app()->environment() !== 'testing') {
-//            var_dump('executes');
-//            DB::statement("SET foreign_key_checks=1");
-//        }
+        if (app()->environment() !== 'testing') {
+            DB::statement("SET foreign_key_checks=1");
+        }
 //
     }
 }

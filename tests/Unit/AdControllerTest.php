@@ -22,15 +22,15 @@ class AdControllerTest extends TestCase
     use RefreshDatabase;
 
     var $postExample1 = [
-        'title'=>'ABCDEABCDE',
-        'content'=>'ABCDEABCDEABCDEABCDE',
-        'contact'=>'ABCDEABCDE'
+        'title'=>'Test 1',
+        'content'=>'Testing Content #001',
+        'contact'=>'Contact info 1'
     ];
 
     var $postExample2 = [
-        'title'=>'ABCDEABCDE',
-        'content'=>'ABCDEABCDEABCDEABCDE',
-        'contact'=>'ABCDEABCDE'
+        'title'=>'Test 2',
+        'content'=>'Testing Content #002',
+        'contact'=>'Contact info 2'
     ];
 
     var $otherUser = null;
@@ -118,23 +118,32 @@ class AdControllerTest extends TestCase
 
         // assert
         $response->assertStatus(201);
+        $this->assertDatabaseHas('ads', $this->postExample1);
+
     }
 
     public function test_WhileAuthVerified_StoreOverload_RedirectBackOnCreateStore() {
         // arrange
         $user = $this->verifiedUser;
+        $lastOne = [
+            'title' => $this->postExample2['title'],
+            'user_id' => $user->id,
+            'content' => $this->postExample2['content'],
+            'contact' => $this->postExample2['contact'],
+        ];
 
         // act
         for($i = 0;$i < 5;$i++)
             $this->actingAs($user)->call('POST',route('ad.store'),$this->postExample1);
 
         $responseCreate = $this->get(route('ad.create'));
-        $responseStore = $this->call('POST',route('ad.store'),$this->postExample1);
+        $responseStore = $this->call('POST',route('ad.store'),$this->postExample2);
         // assert
 
         $responseCreate->assertStatus(302);
         $responseStore->assertStatus(302);
-        $this->assertLessThanOrEqual(5,\App\Ad::where('user_id',$user->id)->count());
+        $this->assertDatabaseMissing('ads',['title'=>$this->postExample2['title']]);
+
 
         // из /app/Http/Middleware/CheckAdsMiddleware.php
         // если  if($posts<5) -> fail
@@ -176,6 +185,7 @@ class AdControllerTest extends TestCase
         // assert
         $responseEdit->assertStatus(200);
         $responseUpdate->assertStatus(302);
+        $this->assertDatabaseHas('ads',$this->postExample2);
     }
     public function test_WhileAuth_Unowned_UpdateEdit_Redirect() {
         // arrange
@@ -189,6 +199,7 @@ class AdControllerTest extends TestCase
         // assert
         $responseEdit->assertStatus(302);
         $responseUpdate->assertStatus(302);
+        $this->assertDatabaseMissing('ads',$this->postExample2);
     }
     public function test_WhileAuth_NotExisting_UpdateEdit_404() {
         // arrange
@@ -201,6 +212,7 @@ class AdControllerTest extends TestCase
         // assert
         $responseEdit->assertStatus(404);
         $responseUpdate->assertStatus(404);
+        $this->assertDatabaseMissing('ads',$this->postExample2);
     }
 
     public function test_WhileUnauth_Delete_RedirectBack() {
@@ -213,17 +225,29 @@ class AdControllerTest extends TestCase
 
         // assert
         $responseDelete->assertStatus(302);
+
     }
     public function test_WhileAuth_Delete_Success() {
         // arrange
         $user = $this->verifiedUser;
-        $ad = factory(\App\Ad::class)->create(['user_id'=>$user->id]);
+        $ad = factory(\App\Ad::class)->create(['title'=>'test','user_id'=>$user->id]);
+        $adAsArray = [
+            'title'  => $ad->title,
+            'content'=>$ad->content,
+            'contact'=>$ad->contact,
+            'user_id'=>$ad->user_id,
+        ];
+        $thisAd = Ad::where('user_id',$ad->user_id)->where('content',$ad->content)->where('contact',$ad->contact)->get();
+        $this->assertCount(1,$thisAd);
 
         // act
         $responseDelete = $this->actingAs($user)->delete(route('ad.destroy',$ad->id));
 
         // assert
         $responseDelete->assertStatus(302);
+        $thisAd = Ad::where('user_id',$ad->user_id)->where('content',$ad->content)->where('contact',$ad->contact)->get();
+
+        $this->assertEmpty($thisAd);
         $responseDelete->assertRedirect(route('ad.index'));
     }
     public function test_WhileAuth_UnownedDelete_Redirect() {
@@ -251,45 +275,59 @@ class AdControllerTest extends TestCase
 
     public function test_WhileAuth_CreateAdsImage_Success() {
         // arrange
-        $user = factory(User::class)->create();
-        $user->verified = 1;
-        $user->save();
-        $this->be($user);
+        $user = $this->verifiedUser;
+
         $image = UploadedFile::fake()->image('avatar.jpg', 1000, 1000);
         $post = factory(Ad::class)->make();
-        $response = $this->call('POST',route('ad.store'),['title'=>'картинка','content'=>$post->content,'contact'=>$post->contact,'image_url'=> $image]);
+
+        // act
+        $response = $this->actingAs($user)->call('POST',route('ad.store'),[
+            'title'     => 'CreateAdsImage',
+            'content'   => 'Testing Testing Testing Testing',
+            'contact'   => 'Testing Testing Testing',
+            'image_url' =>  $image]);
+
         // assert
+
+        $thisAd = \App\Ad::where('title','CreateAdsImage')->get();
+        foreach($thisAd as $ad) {
+            $this->assertFileExists(storage_path('/app/public/images/').$ad->image_url);
+        }
         $response->assertStatus(201);
     }
 
-    public function test_WhileAuth_CreateAdsImage_Redirect() {
+    public function test_WhileAuth_TooBig_CreateAdsImage_Redirect() {
         // arrange
         Storage::fake('avatars');
-        $user = factory(User::class)->create();
-        $user->verified = 1;
-        $user->save();
-        $this->be($user);
+        $user = $this->verifiedUser;
         $image = UploadedFile::fake()->image('avatar.jpg', 2000, 2000)->size(4000);
-        // act
-        $post = factory(Ad::class)->make();
-        $response = $this->call('POST',route('ad.store'),['title'=>$post->title,'content'=>$post->content,'contact'=>$post->contact,'image_url'=> $image]);
 
+        // act
+        $response = $this->actingAs($user)->call('POST',route('ad.store'),[
+            'title'     => 'CreateAdsImage',
+            'content'   => 'Testing Testing Testing Testing',
+            'contact'   => 'Testing Testing Testing',
+            'image_url' =>  $image
+        ]);
         // assert
+        $response->assertSessionHasErrors();
+        $this->assertTrue(session('errors')->has('image_url'));
         $response->assertStatus(302);
     }
 
-    public function test_WhileAuth_CreateAdsFile_Redirect() {
+    public function test_WhileAuth_NotAFile_CreateAdsFile_Redirect() {
         // arrange
-        Storage::fake('avatars');
-        $user = factory(User::class)->create();
-        $user->verified = 1;
-        $user->save();
-        $this->be($user);
-        $file = UploadedFile::fake()->create('document.txt', 2000);
+        Storage::fake('text');
+        $user = $this->verifiedUser;
+        $file = UploadedFile::fake()->create('document.txt', 900);
+
         // act
         $post = factory(Ad::class)->make();
-        $response = $this->call('POST',route('ad.store'),['title'=>$post->title,'content'=>$post->content,'contact'=>$post->contact,'image_url'=> $file]);
+        $response = $this->actingAs($user)->call('POST',route('ad.store'),['title'=>$post->title,'content'=>$post->content,'contact'=>$post->contact,'image_url'=> $file]);
+
         // assert
+        $response->assertSessionHasErrors();
+        $this->assertTrue(session('errors')->has('image_url'));
         $response->assertStatus(302);
     }
 }

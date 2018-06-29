@@ -31,6 +31,13 @@ host('team3.php.elt')
     ->identityFile('~/.ssh/id_rsa')
     ->set('deploy_path', '/www/htdocs/team3');
 
+task('deploy:configclear', function () {
+    run('php {{release_path}}/artisan config:clear');
+})->desc('Clearing config cache');
+task('deploy:cacheclear', function () {
+    run('php {{release_path}}/artisan cache:clear');
+})->desc('Clearing app cache');
+
 task('deploy:migration', function () {
     run('php {{release_path}}/artisan migrate --force');
 })->desc('Artisan migrations');
@@ -55,6 +62,8 @@ task('deploy', [
     'deploy:release',
     'deploy:update_code',
     'deploy:composerinstall',
+    'deploy:configclear',
+    'deploy:cacheclear',
     'deploy:link',
     'deploy:migration',
     'deploy:seed',
