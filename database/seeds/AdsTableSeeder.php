@@ -13,7 +13,11 @@ class AdsTableSeeder extends Seeder
      */
     public function run()
     {
-//        DB::statement("SET foreign_key_checks=0");
+
+        //if (app()->environment() !== 'testing') {
+        //    DB::statement("SET foreign_key_checks=0");
+        //}
+
 //        DB::table('ads')->truncate();
         $ads = new Ad();
         $faker = \Faker\Factory::create();
@@ -32,6 +36,9 @@ class AdsTableSeeder extends Seeder
                 ]);
             }
         }
-//        DB::statement("SET foreign_key_checks=1");
+//        if (app()->environment() !== 'testing') {
+//            DB::statement("SET foreign_key_checks=1");
+//        }
+//
     }
 }

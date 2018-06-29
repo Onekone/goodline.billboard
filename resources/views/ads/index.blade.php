@@ -65,9 +65,11 @@
                 </div>
             </div>
         @endforeach
+
         <div class="block_links">
             {{ $posts->links() }}
         </div>
+
         <script>
             $(document).ready(function () {
                 $('[data-toggle="tooltip"]').tooltip();

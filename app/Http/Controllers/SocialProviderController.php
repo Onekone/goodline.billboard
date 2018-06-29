@@ -39,7 +39,6 @@ class SocialProviderController extends Controller
         $userSocial = Socialite::driver('vkontakte')->stateless()->user();
         $accessTokenResponseBody = $userSocial->accessTokenResponseBody;
 
-
         // Martin Bean - Stack Overflow
         // https://stackoverflow.com/questions/29127330/laravel-5-socialite-change-auth-redirect-path-dynamically
 
@@ -93,12 +92,12 @@ class SocialProviderController extends Controller
                     }
                 }
                 else {
-                    SocialProviderController::flashMessage($request,'alert-dark','Прощайте');
+                    SocialProviderController::flashMessage($request,'alert-dark','На этой учетной записи ВКонтакте не указан адрес электронной почты. Для продолжения, вам надо указать его');
                     return redirect()->route('register.vk', [
                         'social_id' => $userSocial->id,
                         'email' => '',
                         'name' => $userSocial->name,
-                    ]);
+                    ],302)->withErrors(['email'=>'На этой учетной записи ВКонтакте не указан адрес электронной почты. Для продолжения вам необходимо указать его']);
                 }
 
 

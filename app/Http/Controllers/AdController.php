@@ -73,7 +73,6 @@ class AdController extends Controller
             $photoName = null;
         }
 
-
         $ad = $this->posts->create([
             'title' => $request['title'],
             'content' => $request['content'],
@@ -82,7 +81,7 @@ class AdController extends Controller
             'image_url' => $photoName,
         ]);
 
-        return response()->redirectToRoute('ad.show',['id'=>$ad->id], 201);
+        return redirect(route('ad.show',$ad->id),201);
     }
 
     /**
@@ -126,7 +125,7 @@ class AdController extends Controller
                 $photoName = md5(time() ). '.' . $request->image_url->getClientOriginalExtension();
                 $request->image_url->move(storage_path('/app/public/images'), $photoName);
             }
-            catch (\Exception $e) {dd($e->getTrace()[0]);}
+            catch (\Exception $e) {dd(get_class($e));}
             catch (\Illuminate\Http\Exceptions\PostTooLargeException $e) {$photoName = null;}
             catch (\Symfony\Component\HttpFoundation\File\Exception\IniSizeFileException $e) {$photoName = null;}
         }
