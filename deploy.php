@@ -46,6 +46,10 @@ task('deploy:seed', function () {
     run('php {{release_path}}/artisan db:seed');
 })->desc('Artisan seed');
 
+task('deploy:storage', function () {
+    run('php {{release_path}}/artisan storage:link');
+})->desc('Artisan storage');
+
 task('deploy:link', function () {
     run('link {{release_path}}/../../shared/.env {{release_path}}/.env');
 })->desc('create env link');
@@ -66,7 +70,8 @@ task('deploy', [
     'deploy:cacheclear',
     'deploy:link',
     'deploy:migration',
-    'deploy:seed',
+    //'deploy:seed',
+    'deploy:storage',
     'deploy:clear_paths',
     'deploy:symlink',
     'deploy:unlock',

@@ -330,4 +330,15 @@ class AdControllerTest extends TestCase
         $this->assertTrue(session('errors')->has('image_url'));
         $response->assertStatus(302);
     }
+
+    public function test_WhileAuth_ShowAds_Success() {
+        // arrange
+        $user = factory(User::class)->create();
+        $user->verified = 1;
+        $user->save();
+        $this->be($user);
+        $p = factory(\App\Ad::class)->create(['user_id'=>$user->id]);
+        $response = $this->get(route('ad.show',$p->id));
+        $response->assertStatus(200);
+    }
 }

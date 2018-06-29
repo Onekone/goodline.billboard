@@ -96,7 +96,7 @@
                         <div style="display: inline-block; position: relative; float: right;">
                             @if ($user->isModerator == true)
                                 <a data-toggle="tooltip" title="[PH] Модератор"><img
-                                            src="https://image.freepik.com/free-icon/star-ios-7-symbol_318-35526.jpg"
+                                            src="https://maxcdn.icons8.com/Color/PNG/512/Messaging/crown-512.png"
                                             width="24px" height="24px"></a>
                             @endif
                         </div>
@@ -127,7 +127,8 @@
                                     <div class="row">
                                         @if($userpost->image_url!=null)
                                             <div class="col-md-4">
-                                                <img src="{{asset('storage/images/'.$userpost->image_url)}}" style="width:100%;max-height:100%;height: auto;">
+                                                <img src="{{asset('storage/images/'.$userpost->image_url)}}"
+                                                     style="width:100%;max-height:100%;height: auto;">
                                             </div>
                                         @endif
                                         <div class="col-md-8">

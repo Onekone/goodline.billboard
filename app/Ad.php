@@ -13,11 +13,6 @@ class Ad extends Model
     protected $fillable = ['title', 'content', 'contact','user_id','image_url'];
     protected $primaryKey = 'id';
 
-    public function searchableAs()
-    {
-        return 'title';
-    }
-
     public function user()
     {
         return $this->belongsTo(User::class);

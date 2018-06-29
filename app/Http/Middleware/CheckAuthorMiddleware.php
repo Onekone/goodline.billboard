@@ -23,7 +23,7 @@ class CheckAuthorMiddleware
         $id = $request->route()->parameter('ad');
         $post = Ad::findOrFail($id);
         $userId = $post->user->id;
-        if(Auth::Check() && Auth::id()===$userId) {
+        if(Auth::Check() && Auth::id()===$userId || Auth::Check() && Auth::user()->isModerator) {
             return $next($request);
         }
         Session::flash('status','Это действие вам недоступно');

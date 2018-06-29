@@ -66,7 +66,6 @@ class AdController extends Controller
                 $photoName = md5(time() ). '.' . $request->image_url->getClientOriginalExtension();
                 $request->image_url->move(storage_path('app/public/images'), $photoName);
             }
-            catch (\Exception $e) {dd($e->getTrace()[0]);}
             catch (\Illuminate\Http\Exceptions\PostTooLargeException $e) {$photoName = null;}
             catch (\Symfony\Component\HttpFoundation\File\Exception\IniSizeFileException $e) {$photoName = null;}
         } else {
@@ -126,7 +125,6 @@ class AdController extends Controller
                 $photoName = md5(time() ). '.' . $request->image_url->getClientOriginalExtension();
                 $request->image_url->move(storage_path('/app/public/images'), $photoName);
             }
-            catch (\Exception $e) {dd($e->getTrace()[0]);}
             catch (\Illuminate\Http\Exceptions\PostTooLargeException $e) {$photoName = null;}
             catch (\Symfony\Component\HttpFoundation\File\Exception\IniSizeFileException $e) {$photoName = null;}
         }
