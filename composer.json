@@ -17,8 +17,8 @@
         "laravelcollective/html": "^5.4.0",
         "mews/captcha": "^2.2",
         "phpunit/php-code-coverage": "^6.0",
-        "socialiteproviders/vkontakte": "^4.0",
-        "teamtnt/laravel-scout-tntsearch-driver": "^3.0"
+        "sngrl/sphinxsearch": "dev-master",
+        "socialiteproviders/vkontakte": "^4.0"
     },
     "require-dev": {
         "filp/whoops": "^2.0",

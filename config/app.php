@@ -164,7 +164,8 @@ return [
         
         \SocialiteProviders\Manager\ServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
-        Laravel\Scout\ScoutServiceProvider::class,
+        sngrl\SphinxSearch\SphinxSearchServiceProvider::class,
+        //Laravel\Scout\ScoutServiceProvider::class,
         Mews\Captcha\CaptchaServiceProvider::class,
 
     ],
@@ -219,6 +220,7 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
         'Socialite' => \SocialiteProviders\Manager\ServiceProvider::class,
         'Captcha' => Mews\Captcha\Facades\Captcha::class,
+        'Sphinx' => sngrl\SphinxSearch\SphinxSearchServiceProvider::class,
     ],
 
 ];
