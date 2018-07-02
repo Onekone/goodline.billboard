@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "5da3286a53e6a95886bb77dba9e305c9",
-    "content-hash": "77411d23ea27b81410a8be5ee5ec30dc",
+    "hash": "9a78cb00bd4118ac1e96144c7a210cb1",
+    "content-hash": "dfcccbcf9a59457de3eacad21bb0fbea",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -882,6 +882,109 @@
                 "trusted proxy"
             ],
             "time": "2018-02-07 20:20:57"
+        },
+        {
+            "name": "fobia/laravel-sphinx",
+            "version": "v0.2.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fobiaphp/laravel-sphinx.git",
+                "reference": "692d75ef308e814f4664467247e50fb39a068086"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fobiaphp/laravel-sphinx/zipball/692d75ef308e814f4664467247e50fb39a068086",
+                "reference": "692d75ef308e814f4664467247e50fb39a068086",
+                "shasum": ""
+            },
+            "require": {
+                "foolz/sphinxql-query-builder": "^1.0",
+                "php": ">=5.5.9"
+            },
+            "require-dev": {
+                "illuminate/bus": "~5.2.0|~5.3.0|~5.4.0",
+                "illuminate/database": "~5.2.0|~5.3.0|~5.4.0",
+                "illuminate/support": "~5.2.0|~5.3.0|~5.4.0",
+                "orchestra/testbench": "~3.1",
+                "phpunit/phpunit": "~5.5",
+                "symfony/filesystem": "^3.0"
+            },
+            "suggest": {
+                "laravel/framework": "The Laravel Framework",
+                "prettus/l5-repository": "Repositories to  the database layer"
+            },
+            "type": "project",
+            "autoload": {
+                "psr-4": {
+                    "Fobia\\Database\\SphinxConnection\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A Laravel query builder for SphinxQL",
+            "keywords": [
+                "Sphinx Eloquent",
+                "database",
+                "laravel",
+                "query builder",
+                "sphinx",
+                "sphinxql",
+                "sql"
+            ],
+            "time": "2017-10-23 13:54:27"
+        },
+        {
+            "name": "foolz/sphinxql-query-builder",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/FoolCode/SphinxQL-Query-Builder.git",
+                "reference": "ca6e6836b5f1bc5077e0d179874aa252440ea4dc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/FoolCode/SphinxQL-Query-Builder/zipball/ca6e6836b5f1bc5077e0d179874aa252440ea4dc",
+                "reference": "ca6e6836b5f1bc5077e0d179874aa252440ea4dc",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "replace": {
+                "foolz/sphinxql": "self.version"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "6.3.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Foolz\\SphinxQL\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "foolz",
+                    "email": "support@foolz.us"
+                }
+            ],
+            "description": "A PHP query builder for SphinxQL. Uses MySQLi to connect to the Sphinx server.",
+            "homepage": "http://www.foolz.us",
+            "keywords": [
+                "database",
+                "query builder",
+                "search",
+                "sphinx",
+                "sphinxql",
+                "sql"
+            ],
+            "time": "2017-11-07 14:00:57"
         },
         {
             "name": "gigablah/sphinxphp",
@@ -2363,6 +2466,109 @@
                 "dependency injection"
             ],
             "time": "2018-01-21 07:42:36"
+        },
+        {
+            "name": "prettus/l5-repository",
+            "version": "2.6.32",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/andersao/l5-repository.git",
+                "reference": "f6ebfffee80a38e1d2dcf479e70b1a9ead397c24"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/andersao/l5-repository/zipball/f6ebfffee80a38e1d2dcf479e70b1a9ead397c24",
+                "reference": "f6ebfffee80a38e1d2dcf479e70b1a9ead397c24",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/config": "~5.0",
+                "illuminate/console": "~5.0",
+                "illuminate/database": "~5.0",
+                "illuminate/filesystem": "~5.0",
+                "illuminate/http": "~5.0",
+                "illuminate/pagination": "~5.0",
+                "illuminate/support": "~5.0",
+                "prettus/laravel-validation": "1.1.*"
+            },
+            "suggest": {
+                "league/fractal": "Required to use the Fractal Presenter (0.12.*).",
+                "prettus/laravel-validation": "Required to provide easy validation with the repository (1.1.*)",
+                "robclancy/presenter": "Required to use the Presenter Model (1.3.*)"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Prettus\\Repository\\Providers\\RepositoryServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Prettus\\Repository\\": "src/Prettus/Repository/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Anderson Andrade",
+                    "email": "contato@andersonandra.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Laravel 5 - Repositories to  the database layer",
+            "keywords": [
+                "cache",
+                "eloquent",
+                "laravel",
+                "model",
+                "repository"
+            ],
+            "time": "2018-01-27 15:53:20"
+        },
+        {
+            "name": "prettus/laravel-validation",
+            "version": "1.1.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/andersao/laravel-validator.git",
+                "reference": "d9eb401fb3518a890b117e83bd25a4109fcdb704"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/andersao/laravel-validator/zipball/d9eb401fb3518a890b117e83bd25a4109fcdb704",
+                "reference": "d9eb401fb3518a890b117e83bd25a4109fcdb704",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "~5.4",
+                "illuminate/validation": "~5.4",
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Prettus\\Validator\\": "src/Prettus/Validator/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Anderson Andrade",
+                    "email": "contato@andersonandra.de"
+                }
+            ],
+            "description": "Laravel Validation Service",
+            "keywords": [
+                "laravel",
+                "service",
+                "validation"
+            ],
+            "time": "2017-08-28 23:28:32"
         },
         {
             "name": "psr/container",
