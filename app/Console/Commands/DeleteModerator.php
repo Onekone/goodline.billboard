@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use DB;
+use Validator;
 
 class DeleteModerator extends Command
 {
@@ -40,11 +41,22 @@ class DeleteModerator extends Command
     {
 
         $email = $this->ask('Email');
+
+        $validator = Validator::make(['email'=>$email],['email' => 'required|email|max:64']);
+
+        if ($validator->fails()) {
+            foreach ($validator->errors()->all() as $error) {
+                $this->comment($error);
+            }
+            die;
+        }
+
         $userEmail=DB::table('users')
             ->where('email',$email)
             ->first();
         ;
-        if($userEmail->email==$email){
+
+        if($userEmail!=NULL && $userEmail->email==$email){
             DB::table('users')
                 ->update(['isModerator' => '0']);
             $this->info($userEmail->isModerator ? 'Moderator deleted!' : 'This user wasn\'t a moderator' );
