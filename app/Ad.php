@@ -2,14 +2,13 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Laravel\Scout\Searchable;
 
-class Ad extends Model
+class Ad extends \Fobia\Database\SphinxConnection\Eloquent\Model
 {
     use SoftDeletes;
-   // use Searchable;
+    protected $connection = 'sphinx';
+
     protected $fillable = ['title', 'content', 'contact','user_id','image_url'];
     protected $primaryKey = 'id';
 

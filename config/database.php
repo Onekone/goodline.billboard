@@ -33,6 +33,15 @@ return [
 
     'connections' => [
 
+        'sphinx' => [
+            'driver'   => 'sphinx',
+            'host'     => env('SPHINX_HOST', env('DB_HOST','127.0.0.1')),
+            'port'     => 9306,
+            'database' => env('DB_DATABASE', 'forge'),
+            'username' => env('DB_USERNAME', 'forge'),
+            'password' => env('DB_PASSWORD', ''),
+        ],
+
         'sqlite' => [
             'driver'   => 'sqlite',
             'database' => storage_path('database.sqlite'),

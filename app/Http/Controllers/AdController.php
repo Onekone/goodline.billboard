@@ -29,6 +29,17 @@ class AdController extends Controller
 
     public function index()
     {
+        //$posts = Ad::paginate(15);
+        $posts = $this->posts->latest()->paginate(4);
+        return view('ads.index')->withPosts($posts);
+    }
+
+    /**
+     * @param Request $request
+     * @return mixed
+     */
+    public function search(Request $request,$search) {
+        // TODO: оно не работает. По какой-то причине тянет MySQL синтаксис, и походу вовсе не коннектится к сфинксу
         $posts = $this->posts->latest()->paginate(4);
         return view('ads.index')->withPosts($posts);
     }
