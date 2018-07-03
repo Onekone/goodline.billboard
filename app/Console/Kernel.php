@@ -16,8 +16,6 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         //
-        Commands\AssignModerator::class,
-        Commands\DeleteModerator::class
     ];
 
     /**

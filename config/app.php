@@ -124,7 +124,8 @@ return [
         /*
          * Laravel Framework Service Providers...
          */
-        
+        Fobia\Database\SphinxConnection\SphinxServiceProvider::class,
+
         Illuminate\Auth\AuthServiceProvider::class,
         Illuminate\Broadcasting\BroadcastServiceProvider::class,
         Illuminate\Bus\BusServiceProvider::class,
@@ -164,7 +165,15 @@ return [
         
         \SocialiteProviders\Manager\ServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
-        Fobia\Database\SphinxConnection\SphinxServiceProvider::class,
+
+        // Full text search
+        sngrl\SphinxSearch\SphinxSearchServiceProvider::class,
+
+
+        Laravel\Scout\ScoutServiceProvider::class,
+        \TeamTNT\Scout\TNTSearchScoutServiceProvider::class,
+
+
         //Laravel\Scout\ScoutServiceProvider::class,
         Mews\Captcha\CaptchaServiceProvider::class,
 

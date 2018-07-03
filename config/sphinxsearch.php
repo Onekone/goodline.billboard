@@ -1,13 +1,14 @@
 <?php
-return array(
+return [
     'host'    => '127.0.0.1',
     'port'    => 9312,
     'timeout' => 30,
-    'indexes' => array(
-        'billboardIndex' => array('table' => 'keywords', 'column' => 'id'),
-    ),
-    'mysql_server' => array(
+    'indexes' => [
+        'billboardIndex' => ['table' => 'ads', 'column' => 'id'],
+    ],
+    'mysql_server' => [
         'host' => '127.0.0.1',
-        'port' => 9306
-    )
-);
+        'port' => 9306]
+];
+
+

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateAdRequest;
+use sngrl\SphinxSearch\SphinxSearch;
 use DB;
 use Illuminate\Support\Facades\Input;
+use Sphinx\SphinxClient;
 use Validator;
 use App\User;
 use Illuminate\Http\Request;
@@ -29,7 +31,6 @@ class AdController extends Controller
 
     public function index()
     {
-        //$posts = Ad::paginate(15);
         $posts = $this->posts->latest()->paginate(4);
         return view('ads.index')->withPosts($posts);
     }
@@ -38,10 +39,29 @@ class AdController extends Controller
      * @param Request $request
      * @return mixed
      */
-    public function search(Request $request,$search) {
-        // TODO: оно не работает. По какой-то причине тянет MySQL синтаксис, и походу вовсе не коннектится к сфинксу
-        $posts = $this->posts->latest()->paginate(4);
-        return view('ads.index')->withPosts($posts);
+    public function search(Request $request) {
+
+        //TODO: sngrl/sphinxsearch
+
+//        $sphinx = new SphinxSearch();
+//        $results = $sphinx->search('Магия', 'billboardIndex')->get();
+
+
+        //TODO: fobia/laravel-sphinx
+//        $db = \DB::connection('sphinx');
+//        $sq = $db->table('ads')->match();
+//        dd($sq->toSql());
+
+        //TODO: laravel scout
+
+        //$p = Ad::search($request->input('query'))->paginate(4);
+        //return view('ads.index')->withPosts($p);
+
+        //TODO: raw
+
+        $db = \DB::connection('sphinx')->table('ads')->select('*')->whereRaw('match(\'Debitis\')')->get();
+        dd($db);
+
     }
 
     /**
