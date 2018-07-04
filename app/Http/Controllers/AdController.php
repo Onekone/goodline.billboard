@@ -43,9 +43,14 @@ class AdController extends Controller
 
         $searchterm = Input::get('query');
 
-        $sphinx = new SphinxSearch();
-        $results = $sphinx->SetMatchMode(\Sphinx\SphinxClient::SPH_MATCH_EXTENDED2)->search($searchterm, 'billboardIndex')->get();
-        $p = collect($results);
+        if (!$searchterm) {
+            $p = collect([]);
+        }
+        else {
+            $sphinx = new SphinxSearch();
+            $results = $sphinx->SetMatchMode(\Sphinx\SphinxClient::SPH_MATCH_EXTENDED2)->search($searchterm, 'billboardIndex')->get();
+            $p = collect($results);
+        }
 
         $posts = new \Illuminate\Pagination\LengthAwarePaginator( $p->slice( ( Input::get('page') ?? 0) *4 - 4, 4),$p->count(),4,Input::get('page')  );
         $posts->setPath(route('ad.search',['query'=>Input::get('query')]));
