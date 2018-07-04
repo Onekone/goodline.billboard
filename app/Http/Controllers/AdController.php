@@ -6,6 +6,7 @@ use App\Http\Requests\UpdateAdRequest;
 use Illuminate\Support\Collection;
 use sngrl\SphinxSearch\SphinxSearch;
 use DB;
+use Session;
 use Illuminate\Support\Facades\Input;
 use Validator;
 use Illuminate\Http\Request;
@@ -45,11 +46,18 @@ class AdController extends Controller
 
         if (!$searchterm) {
             $p = collect([]);
+            Session::flash('status','Нечего искать');
+            Session::flash('status-class','alert-info');
         }
         else {
             $sphinx = new SphinxSearch();
             $results = $sphinx->SetMatchMode(\Sphinx\SphinxClient::SPH_MATCH_EXTENDED2)->search($searchterm, 'billboardIndex')->get();
             $p = collect($results);
+
+            if ($p->count()<=0) {
+                Session::flash('status','По вашему запросу ничего найдено');
+                Session::flash('status-class','alert-info');
+            }
         }
 
         $posts = new \Illuminate\Pagination\LengthAwarePaginator( $p->slice( ( Input::get('page') ?? 0) *4 - 4, 4),$p->count(),4,Input::get('page')  );
