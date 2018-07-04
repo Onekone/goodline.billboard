@@ -81,7 +81,7 @@
                 </div>
                 <div class="modal-body">
                     <input type="text" class="form-control" name="query" value="{{ old('query')??request('query') }}"> <br>
-                    BLAH BLAH BLAH BLAH BLAH
+                    <table style="table-layout: ">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-success form-control" data-dismiss="modal">Отмена</button>

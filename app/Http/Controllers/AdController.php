@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateAdRequest;
+use Illuminate\Support\Collection;
 use sngrl\SphinxSearch\SphinxSearch;
 use DB;
 use Illuminate\Support\Facades\Input;
@@ -25,12 +26,14 @@ class AdController extends Controller
         $this->posts = $posts;
     }
 
+    /**
+     * @return mixed
+     */
     public function index()
     {
         $posts = $this->posts->latest()->paginate(4);
         return view('ads.index')->withPosts($posts);
     }
-
     /**
      * @param Request $request
      * @return mixed
@@ -42,13 +45,13 @@ class AdController extends Controller
 
         $sphinx = new SphinxSearch();
         $results = $sphinx->SetMatchMode(\Sphinx\SphinxClient::SPH_MATCH_EXTENDED2)->search($searchterm, 'billboardIndex')->get();
+        $p = collect($results);
 
-        $posts = new \Illuminate\Pagination\LengthAwarePaginator( $results->slice( ( Input::get('page') ?? 0) *4 - 4, 4),$results->count(),4,Input::get('query')  );
+        $posts = new \Illuminate\Pagination\LengthAwarePaginator( $p->slice( ( Input::get('page') ?? 0) *4 - 4, 4),$p->count(),4,Input::get('page')  );
         $posts->setPath(route('ad.search',['query'=>Input::get('query')]));
 
         return view('ads.index')->withPosts($posts);
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -58,7 +61,6 @@ class AdController extends Controller
     {
         return view('ads.create');
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -72,13 +74,10 @@ class AdController extends Controller
             'content' => 'required|max:800|min:20',
             'contact' => 'required|max:100',
             'image_url' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048']);
-
         $userId = Auth::user()->id;
 
         if ($request->image_url) {
-
             try {
-
                 $photoName = md5(time() ). '.' . $request->image_url->getClientOriginalExtension();
                 $request->image_url->move(storage_path('app/public/images'), $photoName);
             }
@@ -87,8 +86,6 @@ class AdController extends Controller
         } else {
             $photoName = null;
         }
-
-
         $ad = $this->posts->create([
             'title' => $request['title'],
             'content' => $request['content'],
@@ -99,7 +96,6 @@ class AdController extends Controller
 
         return response()->redirectToRoute('ad.show',['id'=>$ad->id], 201);
     }
-
     /**
      * Display the specified resource.
      *
@@ -111,7 +107,6 @@ class AdController extends Controller
         $post = Ad::findOrFail($id);
         return view('ads.show')->withPost($post);
     }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -123,7 +118,6 @@ class AdController extends Controller
         $posts = $this->posts->findOrFail($id);
         return view('ads.create')->withPosts($posts);
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -158,7 +152,6 @@ class AdController extends Controller
 
         return response()->redirectToRoute('ad.show',['id'=>$asset->id]);
     }
-
     /**
      * Remove the specified resource from storage.
      *
