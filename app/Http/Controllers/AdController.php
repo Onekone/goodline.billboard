@@ -6,14 +6,10 @@ use App\Http\Requests\UpdateAdRequest;
 use sngrl\SphinxSearch\SphinxSearch;
 use DB;
 use Illuminate\Support\Facades\Input;
-use Sphinx\SphinxClient;
 use Validator;
-use App\User;
 use Illuminate\Http\Request;
 use App\Ad;
 use Auth;
-
-//use Illuminate\Support\Facades\Auth;
 
 class AdController extends Controller
 {
@@ -40,28 +36,17 @@ class AdController extends Controller
      * @return mixed
      */
     public function search(Request $request) {
+        // sngrl/sphinxsearch
 
-        //TODO: sngrl/sphinxsearch
+        $searchterm = Input::get('query');
 
-//        $sphinx = new SphinxSearch();
-//        $results = $sphinx->search('Магия', 'billboardIndex')->get();
+        $sphinx = new SphinxSearch();
+        $results = $sphinx->SetMatchMode(\Sphinx\SphinxClient::SPH_MATCH_EXTENDED2)->search($searchterm, 'billboardIndex')->get();
 
+        $posts = new \Illuminate\Pagination\LengthAwarePaginator( $results->slice( ( Input::get('page') ?? 0) *4 - 4, 4),$results->count(),4,Input::get('query')  );
+        $posts->setPath(route('ad.search',['query'=>Input::get('query')]));
 
-        //TODO: fobia/laravel-sphinx
-//        $db = \DB::connection('sphinx');
-//        $sq = $db->table('ads')->match();
-//        dd($sq->toSql());
-
-        //TODO: laravel scout
-
-        //$p = Ad::search($request->input('query'))->paginate(4);
-        //return view('ads.index')->withPosts($p);
-
-        //TODO: raw
-
-        $db = \DB::connection('sphinx')->table('ads')->select('*')->whereRaw('match(\'Debitis\')')->get();
-        dd($db);
-
+        return view('ads.index')->withPosts($posts);
     }
 
     /**

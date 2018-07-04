@@ -124,8 +124,6 @@ return [
         /*
          * Laravel Framework Service Providers...
          */
-        Fobia\Database\SphinxConnection\SphinxServiceProvider::class,
-
         Illuminate\Auth\AuthServiceProvider::class,
         Illuminate\Broadcasting\BroadcastServiceProvider::class,
         Illuminate\Bus\BusServiceProvider::class,
@@ -154,6 +152,11 @@ return [
          * Package Service Providers...
          */
 
+        Collective\Html\HtmlServiceProvider::class,             // Forms snippets
+        Mews\Captcha\CaptchaServiceProvider::class,             // Local captcha
+        sngrl\SphinxSearch\SphinxSearchServiceProvider::class,  // Full text search
+        SocialiteProviders\Manager\ServiceProvider::class,      // OAuth2 with vk.com
+
         /*
          * Application Service Providers...
          */
@@ -163,19 +166,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         
-        \SocialiteProviders\Manager\ServiceProvider::class,
-        Collective\Html\HtmlServiceProvider::class,
 
-        // Full text search
-        sngrl\SphinxSearch\SphinxSearchServiceProvider::class,
-
-
-        Laravel\Scout\ScoutServiceProvider::class,
-        \TeamTNT\Scout\TNTSearchScoutServiceProvider::class,
-
-
-        //Laravel\Scout\ScoutServiceProvider::class,
-        Mews\Captcha\CaptchaServiceProvider::class,
 
     ],
 

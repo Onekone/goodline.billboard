@@ -2,20 +2,15 @@
 @section('content')
 
     <div class="container">
-        {{--<form action="{{route('searchSimple')}}" method="GET" class="search-simple">--}}
-            {{--<div class="row">--}}
-                {{--<div class="col-xs-10">--}}
-                    {{--<div class="form-group">--}}
-                        {{--<input type="text" class="form-control" name="q" value="{{ old('q') }}" required>--}}
-                    {{--</div>--}}
-                {{--</div>--}}
-                {{--<div class="col-xs-2">--}}
-                    {{--<div class="form-group">--}}
-                        {{--<input class="btn btn-info" type="submit" value="Искать">--}}
-                    {{--</div>--}}
-                {{--</div>--}}
-            {{--</div>--}}
-        {{--</form>--}}
+
+        <form action="{{route('ad.search')}}" method="GET" class="search-simple">
+            <div class="form-group row">
+                <input type="text" class="form-control col-md-8" name="query" value="{{ old('query')??request('query') }}">
+                <input class="btn btn-primary form-control col-md-2" type="submit" value="Искать">
+                <button type="button" data-toggle="modal" data-target="#modalSearchHelp" class="btn btn-secondary col-md-2">Помощь по поиску</button>
+
+            </div>
+        </form>
 
         @if (session('status') && session('status-class'))
             <div class="alert {{ session('status-class') }}">
@@ -73,5 +68,27 @@
                 $('[data-toggle="tooltip"]').tooltip();
             });
         </script>
+    </div>
+    <div id="modalSearchHelp" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <form action="{{route('ad.search')}}" method="GET" class="search-simple">
+            <div class="modal-content">
+                <div class="modal-header">
+
+                    <h4 class="modal-title">Настройки аккаунта</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" class="form-control" name="query" value="{{ old('query')??request('query') }}"> <br>
+                    BLAH BLAH BLAH BLAH BLAH
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success form-control" data-dismiss="modal">Отмена</button>
+                    <input class="btn btn-primary form-control" type="submit" value="Искать">
+                </div>
+            </div>
+            </form>
+        </div>
     </div>
 @endsection
