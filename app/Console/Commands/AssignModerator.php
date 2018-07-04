@@ -55,7 +55,7 @@ class AssignModerator extends Command
             ->where('email',$email)
             ->first();
         ;
-        if($userEmail->email==$email){
+        if($userEmail!=NULL && $userEmail->email==$email){
             DB::table('users')
                 ->update(['isModerator' => '1']);
             $this->info($userEmail->isModerator ? 'This user is already a moderator' : 'Moderator appointed!' );
