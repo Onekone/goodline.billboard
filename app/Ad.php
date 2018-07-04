@@ -8,8 +8,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Ad extends Model
 {
     use SoftDeletes;
+    //protected $connection = 'sphinx';
 
-    protected $table = 'ads';
+    protected  $table = 'ads';
     protected $fillable = ['title', 'content', 'contact','user_id','image_url'];
     protected $primaryKey = 'id';
 

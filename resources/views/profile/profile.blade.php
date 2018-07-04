@@ -14,7 +14,7 @@
                                          width="24px" height="24px">
                                 @else
                                     <a href="{{route('user.verify',$user->id)}}" data-toggle="tooltip"
-                                       title="[PH] Необходимо подтвердить адрес электронной почты. Отправить запрос?"><img
+                                       title="Необходимо подтвердить адрес электронной почты. Отправить запрос?"><img
                                                 src="https://emojipedia-us.s3.amazonaws.com/thumbs/120/twitter/141/warning-sign_26a0.png"
                                                 width="24px" height="24px"></a>
                                 @endif
@@ -27,12 +27,12 @@
                         @if($auth && $auth==$user->id)
                             <hr>
                             {!! Form::model($user, ['route' => ['user',$user->id], $user->id, 'method' => 'PUT', 'name' => 'editForm']) !!}
-                            [PH] Отображаемое имя:
+                            Отображаемое имя:
                             <input id="username" type="text"
                                    class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}"
                                    name="username" value="{{$user->name}}" required> <br>
 
-                            [PH] Адрес электронной почты:
+                            Адрес электронной почты:
                             <input id="useremail" type="email"
                                    class="form-control{{ $errors->has('useremail') ? ' is-invalid' : '' }}"
                                    name="useremail" value="{{$user->email}}" required>
@@ -43,7 +43,7 @@
                             @endif
                             <br>
                             @if($user->password=="")
-                                [PH] У вас нет пароля.<br>
+                                У вас нет пароля.<br>
                                 <input id="changePassQuestion" name="changePassQuestion" value="changePasswordQuestion"
                                        type="checkbox"> Задать пароль?
                                 <input id="password" type="password"
@@ -54,13 +54,13 @@
                                        name="password_new">
                                 <hr>
                             @else
-                                [PH] Текущий пароль:
+                                Текущий пароль:
                                 <input id="password" type="password"
                                        class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}"
                                        name="password" required> <br>
 
                                 <input id="changePassQuestion" name="changePassQuestion" value="changePasswordQuestion"
-                                       type="checkbox"> [PH] Поменять пароль?
+                                       type="checkbox"> Поменять пароль?
                                 <input id="password_new" type="password"
                                        class="form-control{{ $errors->has('password_new') ? ' is-invalid' : '' }}"
                                        name="password_new">
@@ -68,22 +68,22 @@
                             @endif
                             @if($vkLink)
                                 <a href="http://vk.com/id{{$vkLink->social_id}}"
-                                   class="btn btn-outline-info form-control">[PH] Профиль ВК</a>
+                                   class="btn btn-outline-info form-control">Профиль ВК</a>
                                 <a href="#" data-toggle="modal" data-target="#modalUnbindVK"
-                                   class="btn btn-info form-control">[PH] Отвязать от ВК</a>
+                                   class="btn btn-info form-control">Отвязать от ВК</a>
                                 <hr>
                             @else
                                 <a href="{{route('vk')}}" class="btn btn-info form-control" data-toggle="tooltip"
-                                   title="[PH] Это позволит вам использовать аккаунт в контакте для авторизации на сайте вместо логина/пароля. (WIP: после изначальной привязки id ВК к id пользователя не тянет больше никаких данных)">[PH]
+                                   title="Это позволит вам использовать аккаунт в контакте для авторизации на сайте вместо логина/пароля. (WIP: после изначальной привязки id ВК к id пользователя не тянет больше никаких данных)">
                                     Связать с ВК</a>
                                 <hr>
                             @endif
                             <a href="#" data-toggle="modal" data-target="#modalNukeAds"
-                               class="btn btn-outline-danger form-control">[PH] Удалить все объявления</a>
+                               class="btn btn-outline-danger form-control">Удалить все объявления</a>
                             <a href="#" data-toggle="modal" data-target="#modalNukeUser"
-                               class="btn btn-outline-danger form-control">[PH] Удалить аккаунт</a>
+                               class="btn btn-outline-danger form-control">Удалить аккаунт</a>
                             <hr>
-                            <button type="submit" class="btn btn-success form-control">[PH] Сохранить изменения</button>
+                            <button type="submit" class="btn btn-success form-control">Сохранить изменения</button>
                             <br>
                             {!! Form::close() !!}
                         @endif
@@ -95,7 +95,7 @@
                     <div class="card-header"> {{ $user->name }}
                         <div style="display: inline-block; position: relative; float: right;">
                             @if ($user->isModerator == true)
-                                <a data-toggle="tooltip" title="[PH] Модератор"><img
+                                <a data-toggle="tooltip" title="Модератор"><img
                                             src="https://maxcdn.icons8.com/Color/PNG/512/Messaging/crown-512.png"
                                             width="24px" height="24px"></a>
                             @endif
@@ -119,7 +119,7 @@
                                     @if (!$auth || $auth!=$user->id)
                                         <div style="display: inline-block; position: relative; float: right;">
                                             <a data-toggle="tooltip"
-                                               title="Истекает {{ date('d M, Y', strtotime($userpost->created_at. ' + 15 days')) }}">{{$userpost->created_at}}</a>
+                                               title="Истекает {{ date('d.m.Y', strtotime($userpost->created_at. ' + 15 days')) }}">{{$userpost->created_at}}</a>
                                         </div>
                                     @endif
                                 </div>
@@ -140,16 +140,16 @@
                                     <div class="card-footer">
                                         <div style='display: inline-block; float:left; width:30%; text-align: center'>
                                             <a data-toggle="tooltip"
-                                               title="[PH] Истекает {{ date('d M, Y', strtotime($userpost->created_at. ' + 15 days')) }}">{{$userpost->created_at}}</a>
+                                               title="Истекает {{ date('d.m.Y', strtotime($userpost->created_at. ' + 15 days')) }}">{{$userpost->created_at}}</a>
                                         </div>
                                         <div style='display: inline-block; float:right; width:30%;'>
                                             {!! Form::open(['method'=>'delete','route'=>['ad.destroy',$userpost->id]]) !!}
-                                            {{  Form::submit('[PH] Удалить',array('class'=>'form-control btn btn-danger'))}}
+                                            {{  Form::submit('Удалить',array('class'=>'form-control btn btn-danger'))}}
                                             {!! Form::close() !!}
                                         </div>
                                         <div style='display: inline-block; float:right; width:30%;'>
                                             {!! Form::open(['method'=>'get','route'=>['ad.edit',$userpost->id]]) !!}
-                                            {!! Form::submit('[PH] Редактировать',array('class'=>'form-control btn btn-primary'))!!}
+                                            {!! Form::submit('Редактировать',array('class'=>'form-control btn btn-primary'))!!}
                                             {!! Form::close() !!}
                                         </div>
 

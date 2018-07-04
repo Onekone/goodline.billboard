@@ -11,9 +11,9 @@ abstract class TestCase extends BaseTestCase
 
     public  $baseUrl = 'http://billboard';
 
-    public function artisan($command, $parameters = [])
-    {
-        Artisan::call('migrate:fresh',['--database'=>'sqlite']);
-        Artisan::call('db:seed',['--database'=>'sqlite']);
-    }
+//    public function artisan($command, $parameters = [])
+//    {
+//        Artisan::call('migrate:fresh',['--database'=>'sqlite']);
+//        Artisan::call('db:seed',['--database'=>'sqlite']);
+//    }
 }

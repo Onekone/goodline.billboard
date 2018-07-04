@@ -5,9 +5,17 @@
 
         <form action="{{route('ad.search')}}" method="GET" class="search-simple">
             <div class="form-group row">
-                <input type="text" class="form-control col-md-10" name="query" id="queryMain" value="{{ old('query')??request('query') }}">
-                <button type="submit" class="btn btn-primary form-control col-md-1"><img src="http://www.clker.com/cliparts/n/U/H/1/H/u/search-icon-white-one-hi.png" width="20px" height="20px"></button>
-                <button type="button" data-toggle="modal" data-target="#modalSearchHelp" class="btn btn-secondary col-md-1"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Question_mark_white-transparent.svg/500px-Question_mark_white-transparent.svg.png" width="20px" height="20px"></button>
+                <input type="text" class="form-control col-md-10" name="query"
+                       value="{{ old('query')??request('query') }}">
+                <button type="submit" class="btn btn-warning form-control col-md-1"><img src="http://www.clker.com/cliparts/n/U/H/1/H/u/search-icon-white-one-hi.png" width="20px" height="20px"></button>
+                <button type="button" data-toggle="modal" data-target="#modalSearchHelp" class="btn btn-link  col-md-1">
+                    <a style="text-decoration: none;color: inherit;"
+                       data-toggle="tooltip"
+                       title="Помощь по поиску"><img
+                                src="https://im0-tub-ru.yandex.net/i?id=14fdd4ff95e37219ac8d40d95802c1dc&n=13"
+                                width="24px" height="24px">
+                    </a>
+                </button>
 
             </div>
         </form>
@@ -18,7 +26,12 @@
             </div>
         @endif
         @if (Auth::user())
-            <a href="{{route('ad.create')}}" class="btn btn-primary form-control">Создать новое объявление</a>
+            <div class="col-12">
+                <button type="button"
+                        class="btn btn-link  col-md-3 d-block mx-auto">
+                    <a href="{{route('ad.create')}}" class="btn btn-warning form-control">Создать новое объявление</a>
+                </button>
+            </div>
         @endif
         @foreach($posts as $post)
             <div class="ads">
@@ -30,7 +43,7 @@
                         <div style="display: inline-block; position: relative; float: right;">
                             <a style="text-decoration: none;color: inherit;" href="{{route('ad.show',$post->id)}}"
                                data-toggle="tooltip"
-                               title="[PH] Истекает {{ date('d M, Y', strtotime($post->created_at. ' + 15 days')) }}">{{date('d M, Y', strtotime($post->created_at))}}</a>
+                               title="Истекает {{ date('d.m.Y', strtotime($post->created_at. ' + 15 days')) }}">{{date('d.m.Y', strtotime($post->created_at))}}</a>
                         </div>
                     </div>
                     <div class="card-body">
@@ -88,7 +101,7 @@
                                 <input type="text" class="form-control" name="query" id="query" value="{{ old('query')??request('query') }}">
                             </div>
                             <div class="col-md-2">
-                                <button type="button" class="form-control btn btn-primary"><img src="http://www.clker.com/cliparts/n/U/H/1/H/u/search-icon-white-one-hi.png" width="20px" height="20px"></button>
+                                <button type="button" class="form-control btn btn-warning"><img src="http://www.clker.com/cliparts/n/U/H/1/H/u/search-icon-white-one-hi.png" width="20px" height="20px"></button>
                             </div><br>
                         </div>
 

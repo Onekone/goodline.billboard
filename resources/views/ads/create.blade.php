@@ -1,10 +1,6 @@
 @extends('layouts.app')
-
 @section('content')
     <div class="container">
-        @if ($errors->any())
-            {!! dump($errors) !!}
-            @endif
         @if (session('status') && session('status-class'))
             <div class="alert {{ session('status-class') }}">
                 {{ session('status') }}
@@ -75,7 +71,7 @@
                                 @if ($posts->image_url != NULL)
                                     <img src="{{asset('storage/images/'.$posts->image_url)}}" class="">
                                 @else
-                                    <img src="https://ultimatefires.com.au/wp-content/uploads/2018/02/no-image-available.png"
+                                    <img src="https://фарба.com/image/cache/no_image-600x600.jpg"
                                          width="128px" height="128px" class="">
                                 @endif
                             </div>
@@ -89,10 +85,12 @@
             </div>
             <div class="card-footer">
                 <div class="form-group row">
+                    {{--<div class="text-center">--}}
                     <a href="{{isset($posts)? route('ad.show',$posts->id) : URL::previous()}}"
-                       class="form-control col-md-6 btn btn-danger">Отмена</a>
-                    {!! Form::submit('Сохранить',['class' => 'form-control col-md-6 btn btn-primary']) !!}
+                       class="form-control col-md-3 btn btn-danger d-block mx-auto">Отмена</a>
+                    {!! Form::submit('Сохранить',['class' => 'form-control col-md-3 btn btn-success d-block mx-auto']) !!}
                 </div>
+                {{--</div>--}}
                 {!! Form::close() !!}
             </div>
         </div>
