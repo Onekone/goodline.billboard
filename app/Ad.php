@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Ad extends Model
 {
-    use SoftDeletes;
     //protected $connection = 'sphinx';
 
     protected  $table = 'ads';
@@ -18,6 +17,4 @@ class Ad extends Model
     {
         return $this->belongsTo(User::class);
     }
-
-    protected $dates = ['deleted_at'];
 }
