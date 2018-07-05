@@ -50,20 +50,27 @@ class AdController extends Controller
             Session::flash('status-class','alert-info');
         }
         else {
-            $sphinx = new SphinxSearch();
-            $results = $sphinx->SetMatchMode(\Sphinx\SphinxClient::SPH_MATCH_EXTENDED2)->setSortMode(\Sphinx\SphinxClient::SPH_SORT_EXTENDED, "@weight DESC")->search($searchterm, 'billboardIndex')->get();
-            $p = collect($results);
+                $sphinx = new SphinxSearch();
 
-            if ($p->count()<=0) {
-                Session::flash('status','По вашему запросу ничего найдено');
-                Session::flash('status-class','alert-info');
-            }
+                $results = $sphinx->SetMatchMode(\Sphinx\SphinxClient::SPH_MATCH_EXTENDED2)->setSortMode(\Sphinx\SphinxClient::SPH_SORT_ATTR_DESC, "created_at")->search($searchterm, 'billboardIndex')->get();
+                if ($results === false) {
+                    abort(500);
+                }
+
+                $p = collect($results);
+
+                if ($p->count()<=0) {
+                    Session::flash('status','По вашему запросу ничего найдено');
+                    Session::flash('status-class','alert-info');
+                }
+
+                $posts = new \Illuminate\Pagination\LengthAwarePaginator( $p->slice( ( Input::get('page') ?? 0) *4 - 4, 4),$p->count(),4,Input::get('page')  );
+                $posts->setPath(route('ad.search',['query'=>Input::get('query')]));
+
+                return view('ads.index')->withPosts($posts);
         }
 
-        $posts = new \Illuminate\Pagination\LengthAwarePaginator( $p->slice( ( Input::get('page') ?? 0) *4 - 4, 4),$p->count(),4,Input::get('page')  );
-        $posts->setPath(route('ad.search',['query'=>Input::get('query')]));
 
-        return view('ads.index')->withPosts($posts);
     }
     /**
      * Show the form for creating a new resource.
