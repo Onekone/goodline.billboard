@@ -11,6 +11,16 @@ set('repository', 'http://git.rep.elt/edikskrim/billboard.git');
 
 set('branch', 'master');
 
+set('shared_dirs', [
+    'storage/app',
+    'storage/app/public/images',
+    'storage/framework/cache',
+    'storage/framework/sessions',
+    'storage/framework/views',
+    'storage/logs',
+    'public/uploads',
+    'node_modules',
+]);
 
 // [Optional] Allocate tty for git clone. Default value is false.
 set('git_tty', true); 
