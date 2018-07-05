@@ -69,8 +69,6 @@ class AdController extends Controller
 
                 return view('ads.index')->withPosts($posts);
         }
-
-
     }
     /**
      * Show the form for creating a new resource.
