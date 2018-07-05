@@ -63,10 +63,11 @@
                     {!! Form::label('image_url','Изображение',['class'=>'col-sm-2 col-form-label text-md-right']) !!}
                     <div class="col-md-10">
                         {!! Form::file('image_url',['class' => $errors->has('image_url')?'is-invalid':'','accept'=>'image/*']) !!}
-                        {!! Form::checkbox('delete_image','delete_image') !!}
-                        {!! Form::label('delete_image','Удалить изображение') !!}
-
                         @if (isset($posts))
+                            @if ($posts->image_url != NULL)
+                                {!! Form::checkbox('delete_image','delete_image') !!}
+                                {!! Form::label('delete_image','Удалить изображение') !!}
+                            @endif
                             <div style="text-align: center" class="form-control">
                                 @if ($posts->image_url != NULL)
                                     <img src="{{asset('storage/images/'.$posts->image_url)}}" class="">

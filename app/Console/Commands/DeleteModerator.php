@@ -12,7 +12,7 @@ class DeleteModerator extends Command
      *
      * @var string
      */
-    protected $signature = 'DeleteModerator';
+    protected $signature = 'moderator:delete';
 
     /**
      * The console command description.

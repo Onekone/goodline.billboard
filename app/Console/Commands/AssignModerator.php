@@ -13,7 +13,7 @@ class AssignModerator extends Command
      *
      * @var string
      */
-    protected $signature = 'AssignModerator';
+    protected $signature = 'moderator:assign';
 
     /**
      * The console command description.
