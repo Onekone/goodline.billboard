@@ -11,26 +11,15 @@ set('repository', 'http://git.rep.elt/edikskrim/billboard.git');
 
 set('branch', 'master');
 
-set('shared_dirs', [
-    'storage/app',
-    'storage/app/public/images',
-    'storage/framework/cache',
-    'storage/framework/sessions',
-    'storage/framework/views',
-    'storage/logs',
-    'public/uploads',
-    'node_modules',
-]);
-
 // [Optional] Allocate tty for git clone. Default value is false.
 set('git_tty', true); 
 
 // Shared files/dirs between deploys 
 add('shared_files', []);
-add('shared_dirs', []);
+add('shared_dirs', ['storage']);
 
 // Writable dirs by web server 
-add('writable_dirs', []);
+add('writable_dirs', ['storage']);
 set('allow_anonymous_stats', false);
 
 // Hosts
@@ -64,6 +53,10 @@ task('deploy:link', function () {
     run('link {{release_path}}/../../shared/.env {{release_path}}/.env');
 })->desc('create env link');
 
+task('deploy:linkstorage', function () {
+    run('ln -s {{release_path}}/../../shared/storage/app/public/images {{release_path}}/storage/app/public/images');
+})->desc('create storage link');
+
 task('deploy:composerinstall', function () {
     run('cd {{release_path}} && composer install');
 })->desc('create env link');
@@ -79,9 +72,10 @@ task('deploy', [
     'deploy:configclear',
     'deploy:cacheclear',
     'deploy:link',
+    'deploy:storage',
+    'deploy:linkstorage',
     'deploy:migration',
     //'deploy:seed',
-    'deploy:storage',
     'deploy:clear_paths',
     'deploy:symlink',
     'deploy:unlock',

@@ -22,6 +22,7 @@ class AdController extends Controller
      */
     private $posts;
 
+
     public function __construct(Ad $posts)
     {
         $this->posts = $posts;
@@ -151,7 +152,7 @@ class AdController extends Controller
         if ($request->image_url && !$request->delete_image) {
             try {
                 $photoName = md5(time() ). '.' . $request->image_url->getClientOriginalExtension();
-                $request->image_url->move(storage_path('/app/public/images'), $photoName);
+                $request->image_url->move(storage_path('app/public/images'), $photoName);
             }
             catch (\Illuminate\Http\Exceptions\PostTooLargeException $e) {$photoName = null;}
             catch (\Symfony\Component\HttpFoundation\File\Exception\IniSizeFileException $e) {$photoName = null;}
