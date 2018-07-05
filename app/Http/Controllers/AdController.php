@@ -51,7 +51,7 @@ class AdController extends Controller
         }
         else {
             $sphinx = new SphinxSearch();
-            $results = $sphinx->SetMatchMode(\Sphinx\SphinxClient::SPH_MATCH_EXTENDED2)->search($searchterm, 'billboardIndex')->get();
+            $results = $sphinx->SetMatchMode(\Sphinx\SphinxClient::SPH_MATCH_EXTENDED2)->setSortMode(\Sphinx\SphinxClient::SPH_SORT_EXTENDED, "@weight DESC")->search($searchterm, 'billboardIndex')->get();
             $p = collect($results);
 
             if ($p->count()<=0) {
