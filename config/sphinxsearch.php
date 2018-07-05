@@ -1,7 +1,7 @@
 <?php
 return [
-    'host'    => '127.0.0.1',
-    'port'    => 9312,
+    'host'    => ENV('SPHINX_HOST',ENV('DB_HOST','127.0.0.1')),
+    'port'    => ENV('SPHINX_PORTSPHINX',9312),
     'timeout' => 30,
     'user' => ENV('DB_USERNAME','forge'),
     'password' => ENV('DB_PASSWORD','forge'),
@@ -9,10 +9,10 @@ return [
         'billboardIndex' => ['table' => 'ads', 'column' => 'id'],
     ],
     'mysql_server' => [
-        'host' => '127.0.0.1',
+        'host' => ENV('SPHINX_HOST',ENV('DB_HOST','127.0.0.1')),
         'user' => ENV('DB_USERNAME','forge'),
         'password' => ENV('DB_PASSWORD','forge'),
-        'port' => 9306]
+        'port' => ENV('SPHINX_PORTMYSQL41',9306) ]
 ];
 
 

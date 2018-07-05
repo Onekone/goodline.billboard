@@ -56,7 +56,7 @@
                                 </div>
                             @endif
                             <div class="col-md-8">
-                                {{ $post->content }}
+                                {!! nl2br($post->content) !!}
                             </div>
                         </div>
                     </div>
@@ -76,13 +76,6 @@
         <div class="block_links">
             {{ $posts->links() }}
         </div>
-        <script>
-            $(document).on('click', 'a.accordion-toggle', function(e) {
-                $(e.target).parent().siblings('.accordion-body').on('hidden', function(e) {
-                    e.stopPropagation();
-                });
-            });
-        </script>
     </div>
     <div id="modalSearchHelp" class="modal fade" role="dialog">
         <div class="modal-dialog">
@@ -95,13 +88,13 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <form class="form-horizontal" action="{{route('ad.search')}}" method="GET" class="search-simple">
+                    <form action="{{route('ad.search')}}" method="GET" class="search-simple">
                         <div class="row">
                             <div class="col-md-10">
                                 <input type="text" class="form-control" name="query" id="query" value="{{ old('query')??request('query') }}">
                             </div>
                             <div class="col-md-2">
-                                <button type="button" class="form-control btn btn-warning"><img src="http://www.clker.com/cliparts/n/U/H/1/H/u/search-icon-white-one-hi.png" width="20px" height="20px"></button>
+                                <button type="submit" class="form-control btn btn-warning"><img src="http://www.clker.com/cliparts/n/U/H/1/H/u/search-icon-white-one-hi.png" width="20px" height="20px"></button>
                             </div><br>
                         </div>
 
@@ -110,7 +103,7 @@
 
                     <div class="container">
                         <div class="row">
-                            <div class="col-md-4"><a href="#" id="logicAnd" class="btn-link" data-toggle="popover" data-trigger="hover" title="A B" data-content="По умолчанию, введенные слова считаются за отдельные элементы поиска, и в базе данных ищутся все записи, в которой есть все эти слова в любом порядке">Логическое НЕ</a></div>
+                            <div class="col-md-4"><a href="#" id="logicAnd" class="btn-link" data-toggle="popover" data-trigger="hover" title="A B" data-content="По умолчанию, введенные слова считаются за отдельные элементы поиска, и в базе данных ищутся все записи, в которой есть все эти слова в любом порядке">Логическое И</a></div>
                             <div class="col-md-4"><a href="#" id="logicOr" class="btn-link" data-toggle="popover" data-trigger="hover" title="A | B" data-content="Поиск будет искать наличие как минимум одного из этих элементов (либо A, либо B)">Логическое ИЛИ</a></div>
                             <div class="col-md-4"><a href="#" id="logicNot" class="btn-link" data-toggle="popover" data-trigger="hover" title="-A" data-content="Поиск будет искать объявления, в которых нет этого элемента">Логическое НЕ</a></div>
                         </div>

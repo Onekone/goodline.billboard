@@ -4,25 +4,8 @@
 
 </p>
 
-## About Laravel
-
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
-
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of any modern web application framework, making it a breeze to get started learning the framework.
-
-If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 1100 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
+## О проекте
+Типа.Билборд - учебный проект размещения объявлений, разработанный в рамках проекта "Быстрый старт PHP" командой Алексея Сенчурина ([github](https://github.com/Onekone)) и Эдуарда Ситдыкова ([github](https://github.com/edikskrim)).
 
 ## Установка
 
@@ -31,7 +14,7 @@ If you're not in the mood to read, [Laracasts](https://laracasts.com) contains o
 - Создайте и заполните файл настроек ```.env```. В комплекте с приложением поставляется файл ```.env.example```, который можно использовать как образец
 - Выполните миграцию моделей в базу данных используя команду ```php artisan migrate```
 
-## Настройка .ENV  
+## Настройка приложения 
 
 Заполните ```.env.example```, поставляемый в составе приложения в следующих местах.
 
@@ -51,6 +34,27 @@ DB_PASSWORD= -- пароль --
  - SQLite (```sqlite```)
 
 База данных, указанная в этих настройках должна быть *уже* создана и доступна для представленных данных авторизации
+
+- Полнотекстовый поиск
+
+Полнотекстовый поиск использует Sphinx в качестве поискового механизма. После миграции проведите индексацию базы данных.
+Дополнительную информацию о настройке Sphinx можно получить из [документации Sphinx Search](http://sphinxsearch.com/docs/) и плагина [sngrl/sphinxsearch](https://github.com/sngrl/sphinxsearch)
+
+Файл .env
+```
+SPHINX_HOST= -- адрес сервера Sphinx--
+SPHINX_PORTSPHINX  = --порт протокола sphinx (def. 9312)--
+SPHINX_PORTMYSQL41 = --порт протокола mysql41 (def. 9306)--
+```
+
+Если вы хостите сервер Sphinx Search самостоятельно, вы можете использовать прилагаемый файл конфигурации
+```
+  sql_host      = -- адрес базы данных SQL --
+  sql_user      = -- пользователь БД --
+  sql_pass      = -- пароль от БД --
+  sql_db        = -- используемая база данных (def. 3306)--
+  sql_port      = -- порт --
+```
  
 - Сервер электронной почты
 ```
@@ -59,7 +63,7 @@ MAIL_PORT= -- порт --
 MAIL_USERNAME= -- имя пользователя --
 MAIL_PASSWORD= -- пароль --
  ```
-Электронная почта отправляется через протокол smtp. Чтобы узнать, какие данные необходимо вводить, сверьтесь с настройками вашего сервера исходящей электронной почты.
+Электронная почта отправляется через протокол ```smtp```. Чтобы узнать, какие данные необходимо вводить, сверьтесь с настройками вашего сервера исходящей электронной почты.
 
 - Авторизация ВКонтакте
 
@@ -73,19 +77,19 @@ VKONTAKTE_REDIRECT_URI= -- Доверенный redirect URI --
 
 Команда ```php artisan cache:clear``` выполняет пересчитывание данных настроек
 
-##Назначение модератора
-Названичение модератора происходит с помощью команды:
+- Назначение модератора
+
+Назначение модератора происходит с помощью команды:
 
 ```php artisan moderator:assign```
 
-В поле ввода, нужно вести email пользователя который будет назначен модератором.
+В поле ввода нужно вести email пользователя, который будет назначен модератором.
 ```
 Email:
     > 
 ```
-Удаление модератора происходит с помощью команды:
+Удаление модератора происходит аналогично с помощью команды:
 
 ```php artisan moderator:delete```
 
-В поле ввода, нужно вести email пользователя который будет удален из модераторов.
-    
+В поле ввода нужно вести email пользователя, который будет удален из модераторов.

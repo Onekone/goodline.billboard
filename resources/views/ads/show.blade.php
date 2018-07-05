@@ -39,12 +39,12 @@
                         {{$post->title}}
                     </div>
                     <div class="card-body">
-                        {{$post->content}}
+                        {!! nl2br($post->content) !!}
                     </div>
                 </div>
                 <div class="card-footer">
                     Контактная информация: <br>
-                    {{$post->contact}}
+                    {!! nl2br($post->contact) !!}
                 </div>
             </div>
         </div>
