@@ -59,12 +59,12 @@ class AdController extends Controller
                 $sphinx->setServer( Config::get('sphinxsearch.host'),Config::get('sphinxsearch.port'));
                 $sphinx->setMatchMode(SphinxClient::SPH_MATCH_EXTENDED2);
                 $sphinx->setMaxQueryTime(3);
-                $sphinx->setSortMode(SphinxClient::SPH_SORT_ATTR_DESC,"created_at");
+                //$sphinx->setSortMode(SphinxClient::SPH_SORT_ATTR_DESC,"created_at");
 
                 $result = $sphinx->query(Input::get('query'),'billboardIndex');
 
                 if ($result['matches']??null) {
-                    $p = Ad::find(array_keys($result['matches']));
+                    $p = Ad::find(array_keys($result['matches']))->sortByDesc("created_at");
                 }
                 else {
                     $p = collect();
