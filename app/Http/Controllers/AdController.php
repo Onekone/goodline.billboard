@@ -33,8 +33,11 @@ class AdController extends Controller
      */
     public function index()
     {
+        Session::forget('status');
+        Session::forget('status-class');
         $posts = $this->posts->latest()->paginate(4);
         return view('ads.index')->withPosts($posts);
+
     }
     /**
      * @param Request $request
@@ -44,6 +47,8 @@ class AdController extends Controller
         // sngrl/sphinxsearch
 
         $searchterm = Input::get('query');
+        Session::forget('status');
+        Session::forget('status-class');
 
         if (!$searchterm) {
             $p = collect([]);
