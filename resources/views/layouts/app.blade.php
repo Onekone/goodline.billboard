@@ -24,8 +24,8 @@
 
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/billbord.css') }}" rel="stylesheet">
+    <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
+    <link href="/css/billbord.css" rel="stylesheet">
 
     @yield('head')
 </head>

@@ -22,3 +22,7 @@
     padding-top: 20px;
     margin-top: 10px;
 }
+
+.left{
+    float: left;}
+.right{float: right}

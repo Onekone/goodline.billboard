@@ -17,18 +17,18 @@
                         </div>
                     @endif
                     <div class="card-body">
-                        [PH] Прислал: {{$post->user->name??'deleted'}}<br>
-                        [PH] Дата: {{ date('d.m.Y', strtotime($post->created_at)) }}
+                        Прислал: {{$post->user->name??'deleted'}}<br>
+                        Дата: {{ date('d.m.Y', strtotime($post->created_at)) }}
                     </div>
                     <div class="card-footer">
                         @if(Auth::check() && $post->user_id == Auth::user()->id)
                             {!! Form::open(['method'=>'get','route'=>['ad.edit',$post->id]]) !!}
-                            {!! Form::submit('[PH] Редактировать',array('class'=>'form-control btn btn-primary','width'=>'300px'))!!}
+                            {!! Form::submit('Редактировать',array('class'=>'form-control btn btn-primary','width'=>'300px'))!!}
                             {!! Form::close() !!}
                         @endif
                         @if(Auth::check() && $post->user_id == Auth::user()->id || Auth::check() && Auth::user()->isModerator == 1)
                             {!! Form::open(['method'=>'delete','route'=>['ad.destroy',$post->id]]) !!}
-                            {{  Form::submit('[PH] Удалить',array('class'=>'form-control btn btn-danger','width'=>'300px'))}}
+                            {{  Form::submit('Удалить',array('class'=>'form-control btn btn-danger','width'=>'300px'))}}
                             {!! Form::close() !!}
                         @endif
                     </div>
