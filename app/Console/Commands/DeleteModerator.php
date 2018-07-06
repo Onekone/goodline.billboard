@@ -55,7 +55,7 @@ class DeleteModerator extends Command
             ->where('email',$email)
             ->first();
         ;
-        if($userEmail->email==$email){
+        if($userEmail!=NULL && $userEmail->email==$email){
             DB::table('users')
                 ->update(['isModerator' => '0']);
             $this->info($userEmail->isModerator ? 'Moderator deleted!' : 'This user wasn\'t a moderator' );
