@@ -112,6 +112,13 @@
                                 {{ $message }}
                             </div>
                         @endif
+                            @if($posts->count()==0)
+                                <div style="display: block; margin: auto">
+                                    <img src="{{asset('/images/background/background.png')}}" style="display: block; margin: auto;border-radius: 20px;">
+                                    <p style="text-align: center; margin: auto">Тут что-то должно быть, но не в этот раз</p>
+                                </div>
+
+                            @endif
                         @foreach($posts as $userpost)
                             <div class="card">
                                 <div class="card-header">
