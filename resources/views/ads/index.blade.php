@@ -6,7 +6,7 @@
         <form action="{{route('ad.search')}}" method="GET" class="search-simple">
             <div class="form-group row">
                 <input type="text" class="form-control col-md-10" name="query"
-                       value="{{ old('query')??request('query') }}">
+                       value="{{ old('query')??request('query') }}" required>
                 <button type="submit" class="btn btn-warning form-control col-md-1"><img src="http://www.clker.com/cliparts/n/U/H/1/H/u/search-icon-white-one-hi.png" width="20px" height="20px"></button>
                 <button type="button" data-toggle="modal" data-target="#modalSearchHelp" class="btn btn-link  col-md-1">
                     <a style="text-decoration: none;color: inherit;"
@@ -32,6 +32,13 @@
                     <a href="{{route('ad.create')}}" class="btn btn-warning form-control">Создать новое объявление</a>
                 </button>
             </div>
+        @endif
+        @if($posts->count()==0)
+            <div style="display: block; margin: auto">
+                <img src="{{asset('/images/background/background.png')}}" style="display: block; margin: auto">
+                <p style="text-align: center; margin: auto">Тут что-то должно быть, но не в этот раз</p>
+            </div>
+
         @endif
         @foreach($posts as $post)
             <div class="ads">
@@ -84,14 +91,14 @@
             <div class="modal-content">
                 <div class="modal-header">
 
-                    <h4 class="modal-title">Поиск</h4>
+                    <h4 class="modal-title">Помощь по поиску</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
                     <form action="{{route('ad.search')}}" method="GET" class="search-simple">
                         <div class="row">
                             <div class="col-md-10">
-                                <input type="text" class="form-control" name="query" id="query" value="{{ old('query')??request('query') }}">
+                                <input type="text" class="form-control" name="query" id="query" value="{{ old('query')??request('query') }}" required>
                             </div>
                             <div class="col-md-2">
                                 <button type="submit" class="form-control btn btn-warning"><img src="http://www.clker.com/cliparts/n/U/H/1/H/u/search-icon-white-one-hi.png" width="20px" height="20px"></button>
