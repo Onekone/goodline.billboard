@@ -7,7 +7,9 @@ use Illuminate\Support\Collection;
 use sngrl\SphinxSearch\SphinxSearch;
 use DB;
 use Session;
+use Config;
 use Illuminate\Support\Facades\Input;
+use Sphinx\SphinxClient;
 use Validator;
 use Illuminate\Http\Request;
 use App\Ad;
@@ -26,6 +28,8 @@ class AdController extends Controller
     public function __construct(Ad $posts)
     {
         $this->posts = $posts;
+
+        $p = new SphinxClient;
     }
 
     /**
@@ -50,19 +54,30 @@ class AdController extends Controller
             $p = collect([]);
         }
         else {
-                $sphinx = new SphinxSearch();
+            try {
+                $sphinx = new SphinxClient;
+                $sphinx->setServer( Config::get('sphinxsearch.host'),Config::get('sphinxsearch.port'));
+                $sphinx->setMatchMode(SphinxClient::SPH_MATCH_EXTENDED2);
+                $sphinx->setMaxQueryTime(3);
+                $sphinx->setSortMode(SphinxClient::SPH_SORT_ATTR_DESC,"created_at");
 
-                $results = $sphinx->SetMatchMode(\Sphinx\SphinxClient::SPH_MATCH_EXTENDED2)->setSortMode(\Sphinx\SphinxClient::SPH_SORT_ATTR_DESC, "created_at")->search($searchterm, 'billboardIndex')->get();
-                if ($results === false) {
-                    abort(500);
+                $result = $sphinx->query(Input::get('query'),'billboardIndex');
+
+                if ($result['matches']??null) {
+                    $p = Ad::find(array_keys($result['matches']));
                 }
-
-                $p = collect($results);
+                else {
+                    $p = collect();
+                }
 
                 $posts = new \Illuminate\Pagination\LengthAwarePaginator( $p->slice( ( Input::get('page') ?? 0) *4 - 4, 4),$p->count(),4,Input::get('page')  );
                 $posts->setPath(route('ad.search',['query'=>Input::get('query')]));
 
                 return view('ads.index')->withPosts($posts);
+            }
+            catch (\ErrorException $e) {
+                abort(500,'Search error\n'.$e->getMessage());
+            }
         }
     }
     /**
