@@ -3,15 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateAdRequest;
+use Illuminate\Support\Collection;
+use sngrl\SphinxSearch\SphinxSearch;
 use DB;
+use Session;
+use Config;
 use Illuminate\Support\Facades\Input;
+use Sphinx\SphinxClient;
 use Validator;
-use App\User;
 use Illuminate\Http\Request;
 use App\Ad;
 use Auth;
-
-//use Illuminate\Support\Facades\Auth;
 
 class AdController extends Controller
 {
@@ -22,17 +24,62 @@ class AdController extends Controller
      */
     private $posts;
 
+
     public function __construct(Ad $posts)
     {
         $this->posts = $posts;
+
+        $p = new SphinxClient;
     }
 
+    /**
+     * @return mixed
+     */
     public function index()
     {
         $posts = $this->posts->latest()->paginate(4);
         return view('ads.index')->withPosts($posts);
-    }
 
+    }
+    /**
+     * @param Request $request
+     * @return mixed
+     */
+    public function search(Request $request) {
+        // sngrl/sphinxsearch
+
+        $searchterm = Input::get('query');
+
+        if (!$searchterm) {
+            $p = collect([]);
+        }
+        else {
+            try {
+                $sphinx = new SphinxClient;
+                $sphinx->setServer( Config::get('sphinxsearch.host'),Config::get('sphinxsearch.port'));
+                $sphinx->setMatchMode(SphinxClient::SPH_MATCH_EXTENDED2);
+                $sphinx->setMaxQueryTime(3);
+                //$sphinx->setSortMode(SphinxClient::SPH_SORT_ATTR_DESC,"created_at");
+
+                $result = $sphinx->query(Input::get('query'),'billboardIndex');
+
+                if ($result['matches']??null) {
+                    $p = Ad::find(array_keys($result['matches']))->sortByDesc("created_at");
+                }
+                else {
+                    $p = collect();
+                }
+
+                $posts = new \Illuminate\Pagination\LengthAwarePaginator( $p->slice( ( Input::get('page') ?? 0) *4 - 4, 4),$p->count(),4,Input::get('page')  );
+                $posts->setPath(route('ad.search',['query'=>Input::get('query')]));
+
+                return view('ads.index')->withPosts($posts);
+            }
+            catch (\ErrorException $e) {
+                abort(500,'Search error\n'.$e->getMessage());
+            }
+        }
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -42,7 +89,6 @@ class AdController extends Controller
     {
         return view('ads.create');
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -56,23 +102,18 @@ class AdController extends Controller
             'content' => 'required|max:800|min:20',
             'contact' => 'required|max:100',
             'image_url' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048']);
-
         $userId = Auth::user()->id;
 
         if ($request->image_url) {
-
             try {
-
                 $photoName = md5(time() ). '.' . $request->image_url->getClientOriginalExtension();
                 $request->image_url->move(storage_path('app/public/images'), $photoName);
             }
-            catch (\Exception $e) {dd($e->getTrace()[0]);}
             catch (\Illuminate\Http\Exceptions\PostTooLargeException $e) {$photoName = null;}
             catch (\Symfony\Component\HttpFoundation\File\Exception\IniSizeFileException $e) {$photoName = null;}
         } else {
             $photoName = null;
         }
-
         $ad = $this->posts->create([
             'title' => $request['title'],
             'content' => $request['content'],
@@ -81,9 +122,8 @@ class AdController extends Controller
             'image_url' => $photoName,
         ]);
 
-        return redirect(route('ad.show',$ad->id),201);
+        return response()->redirectToRoute('ad.show',['id'=>$ad->id], 201);
     }
-
     /**
      * Display the specified resource.
      *
@@ -95,7 +135,6 @@ class AdController extends Controller
         $post = Ad::findOrFail($id);
         return view('ads.show')->withPost($post);
     }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -107,7 +146,6 @@ class AdController extends Controller
         $posts = $this->posts->findOrFail($id);
         return view('ads.create')->withPosts($posts);
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -123,9 +161,8 @@ class AdController extends Controller
         if ($request->image_url && !$request->delete_image) {
             try {
                 $photoName = md5(time() ). '.' . $request->image_url->getClientOriginalExtension();
-                $request->image_url->move(storage_path('/app/public/images'), $photoName);
+                $request->image_url->move(storage_path('app/public/images'), $photoName);
             }
-            catch (\Exception $e) {dd(get_class($e));}
             catch (\Illuminate\Http\Exceptions\PostTooLargeException $e) {$photoName = null;}
             catch (\Symfony\Component\HttpFoundation\File\Exception\IniSizeFileException $e) {$photoName = null;}
         }
@@ -143,7 +180,6 @@ class AdController extends Controller
 
         return response()->redirectToRoute('ad.show',['id'=>$asset->id]);
     }
-
     /**
      * Remove the specified resource from storage.
      *

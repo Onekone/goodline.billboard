@@ -16,6 +16,8 @@ Route::get('/','AdController@index')->name('root');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/ad/search', 'AdController@search')->name('ad.search');
 Route::resource('ad','AdController');
 Route::resource('ad','AdController')->only('create')->middleware(['auth','validated','checkAds']);
 Route::resource('ad','AdController')->only('store')->middleware(['auth','validated','checkAds']);
@@ -39,5 +41,3 @@ Route::put('/user/{key}','ProfileController@update')->name('user.update');
 Route::any('/teapot',function() {abort(418);});
 
 Route::get('refresh_captcha', 'Auth\RegisterController@refreshCaptcha')->name('refresh_captcha');
-
-Route::post('Ad/search', array('as' => 'ad.search', 'uses' => 'AdController@postSearch'));

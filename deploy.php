@@ -11,16 +11,15 @@ set('repository', 'http://git.rep.elt/edikskrim/billboard.git');
 
 set('branch', 'master');
 
-
 // [Optional] Allocate tty for git clone. Default value is false.
 set('git_tty', true); 
 
 // Shared files/dirs between deploys 
 add('shared_files', []);
-add('shared_dirs', []);
+add('shared_dirs', ['storage']);
 
 // Writable dirs by web server 
-add('writable_dirs', []);
+add('writable_dirs', ['storage']);
 set('allow_anonymous_stats', false);
 
 // Hosts
@@ -46,9 +45,17 @@ task('deploy:seed', function () {
     run('php {{release_path}}/artisan db:seed');
 })->desc('Artisan seed');
 
+task('deploy:storage', function () {
+    run('php {{release_path}}/artisan storage:link');
+})->desc('Artisan storage');
+
 task('deploy:link', function () {
     run('link {{release_path}}/../../shared/.env {{release_path}}/.env');
 })->desc('create env link');
+
+task('deploy:linkstorage', function () {
+    run('ln -s {{release_path}}/../../shared/storage/app/public/images {{release_path}}/storage/app/public/images');
+})->desc('create storage link');
 
 task('deploy:composerinstall', function () {
     run('cd {{release_path}} && composer install');
@@ -65,8 +72,10 @@ task('deploy', [
     'deploy:configclear',
     'deploy:cacheclear',
     'deploy:link',
+    'deploy:storage',
+    'deploy:linkstorage',
     'deploy:migration',
-    'deploy:seed',
+    //'deploy:seed',
     'deploy:clear_paths',
     'deploy:symlink',
     'deploy:unlock',

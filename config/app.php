@@ -78,7 +78,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'ru',
 
     /*
     |--------------------------------------------------------------------------
@@ -91,7 +91,7 @@ return [
     |
     */
 
-    'fallback_locale' => 'en',
+    'fallback_locale' => 'ru',
 
     /*
     |--------------------------------------------------------------------------
@@ -124,7 +124,6 @@ return [
         /*
          * Laravel Framework Service Providers...
          */
-        
         Illuminate\Auth\AuthServiceProvider::class,
         Illuminate\Broadcasting\BroadcastServiceProvider::class,
         Illuminate\Bus\BusServiceProvider::class,
@@ -153,6 +152,11 @@ return [
          * Package Service Providers...
          */
 
+        Collective\Html\HtmlServiceProvider::class,             // Forms snippets
+        Mews\Captcha\CaptchaServiceProvider::class,             // Local captcha
+        sngrl\SphinxSearch\SphinxSearchServiceProvider::class,  // Full text search
+        SocialiteProviders\Manager\ServiceProvider::class,      // OAuth2 with vk.com
+
         /*
          * Application Service Providers...
          */
@@ -162,10 +166,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         
-        \SocialiteProviders\Manager\ServiceProvider::class,
-        Collective\Html\HtmlServiceProvider::class,
-        Laravel\Scout\ScoutServiceProvider::class,
-        Mews\Captcha\CaptchaServiceProvider::class,
+
 
     ],
 

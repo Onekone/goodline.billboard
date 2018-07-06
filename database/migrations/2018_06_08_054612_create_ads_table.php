@@ -21,7 +21,6 @@ class CreateAdsTable extends Migration
             $table->text('image_url')->nullable();
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->softDeletes();
             $table->timestamps();
 
         });
