@@ -33,8 +33,6 @@ class AdController extends Controller
      */
     public function index()
     {
-        Session::forget('status');
-        Session::forget('status-class');
         $posts = $this->posts->latest()->paginate(4);
         return view('ads.index')->withPosts($posts);
 
@@ -47,13 +45,9 @@ class AdController extends Controller
         // sngrl/sphinxsearch
 
         $searchterm = Input::get('query');
-        Session::forget('status');
-        Session::forget('status-class');
 
         if (!$searchterm) {
             $p = collect([]);
-            Session::flash('status','Нечего искать');
-            Session::flash('status-class','alert-info');
         }
         else {
                 $sphinx = new SphinxSearch();
@@ -64,11 +58,6 @@ class AdController extends Controller
                 }
 
                 $p = collect($results);
-
-                if ($p->count()<=0) {
-                    Session::flash('status','По вашему запросу ничего найдено');
-                    Session::flash('status-class','alert-info');
-                }
 
                 $posts = new \Illuminate\Pagination\LengthAwarePaginator( $p->slice( ( Input::get('page') ?? 0) *4 - 4, 4),$p->count(),4,Input::get('page')  );
                 $posts->setPath(route('ad.search',['query'=>Input::get('query')]));
