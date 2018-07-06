@@ -69,18 +69,18 @@
                             @endif
                             @if($vkLink)
                                 <a href="http://vk.com/id{{$vkLink->social_id}}"
-                                   class="btn btn-outline-info form-control">Профиль ВК</a>
+                                   class="btn btn-outline-info form-control btn-margin-bottom">Профиль ВК</a>
                                 <a href="#" data-toggle="modal" data-target="#modalUnbindVK"
                                    class="btn btn-info form-control">Отвязать от ВК</a>
                                 <hr>
                             @else
-                                <a href="{{route('vk')}}" class="btn btn-info form-control" data-toggle="tooltip"
+                                <a href="{{route('vk')}}" class="btn btn-info form-control " data-toggle="tooltip"
                                    title="Это позволит вам использовать аккаунт в контакте для авторизации на сайте вместо логина/пароля. (WIP: после изначальной привязки id ВК к id пользователя не тянет больше никаких данных)">
                                     Связать с ВК</a>
                                 <hr>
                             @endif
                             <a href="#" data-toggle="modal" data-target="#modalNukeAds"
-                               class="btn btn-outline-danger form-control">Удалить все объявления</a>
+                               class="btn btn-outline-danger form-control btn-margin-bottom">Удалить все объявления</a>
                             <a href="#" data-toggle="modal" data-target="#modalNukeUser"
                                class="btn btn-outline-danger form-control">Удалить аккаунт</a>
                             <hr>

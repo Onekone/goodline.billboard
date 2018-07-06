@@ -5,19 +5,27 @@
     <div class="container">
 
         <form action="{{route('ad.search')}}" method="GET" class="search-simple">
-            <div class="form-group row">
-                <input type="text" class="form-control col-md-10" name="query"
-                       value="{{ old('query')??request('query') }}" required>
-                <button type="submit" class="btn btn-warning form-control col-md-1"><img src="http://www.clker.com/cliparts/n/U/H/1/H/u/search-icon-white-one-hi.png" width="20px" height="20px"></button>
-                <button type="button" data-toggle="modal" data-target="#modalSearchHelp" class="btn btn-link  col-md-1">
-                    <a style="text-decoration: none;color: inherit;"
-                       data-toggle="tooltip"
-                       title="Помощь по поиску"><img
-                                src="https://im0-tub-ru.yandex.net/i?id=14fdd4ff95e37219ac8d40d95802c1dc&n=13"
-                                width="24px" height="24px">
-                    </a>
-                </button>
+            <div class="form-group header-search-bar">
+                <div class="full-width">
+                    <input type="text" class="form-control" name="query"
+                           value="{{ old('query')??request('query') }}" required>
+                </div>
+                <div class="header-search-bar header-right-side p-x-10">
+                        <button type="submit" class="btn full-width btn-warning"><img
+                                    src="http://www.clker.com/cliparts/n/U/H/1/H/u/search-icon-white-one-hi.png"
+                                    width="20px" height="20px"></button>
 
+
+                        <button type="button" data-toggle="modal" data-target="#modalSearchHelp"
+                                class="btn full-width btn-link">
+                            <a style="text-decoration: none;color: inherit;"
+                               data-toggle="tooltip"
+                               title="Помощь по поиску"><img
+                                        src="https://im0-tub-ru.yandex.net/i?id=14fdd4ff95e37219ac8d40d95802c1dc&n=13"
+                                        width="24px" height="24px">
+                            </a>
+                        </button>
+                </div>
             </div>
         </form>
 
@@ -29,8 +37,9 @@
         @if (Auth::user())
             <div class="col-12">
                 <button type="button"
-                        class="btn btn-link  col-md-3 d-block mx-auto">
-                    <a href="{{route('ad.create')}}" class="btn btn-warning form-control">Создать новое объявление</a>
+                        class="btn btn-link d-block mx-auto">
+                    <a href="{{route('ad.create')}}" class="btn btn-warning form-control text-white">Создать новое
+                        объявление</a>
                 </button>
             </div>
         @endif
@@ -59,7 +68,8 @@
                             @if($post->image_url!=null)
                                 <div class="col-md-4">
                                     <a href="{{route('ad.show',$post->id)}}">
-                                        <img src="{{asset('storage/images/'.$post->image_url)}}" style="width:100%;max-height:100%;height: auto;">
+                                        <img src="{{asset('storage/images/'.$post->image_url)}}"
+                                             style="width:100%;max-height:100%;height: auto;">
                                     </a>
                                 </div>
                             @endif
@@ -72,7 +82,7 @@
                     <div class="card-footer">
                         <div style="display: inline-block; float:left; width:30%">
                             @if (App\User::find($post->user_id))
-                            <a href="{{route("user",$post->user_id)}}">{{App\User::find($post->user_id)->name}}</a>
+                                <a href="{{route("user",$post->user_id)}}">{{App\User::find($post->user_id)->name}}</a>
                             @else
                                 deleted
                             @endif
@@ -81,7 +91,7 @@
                 </div>
             </div>
         @endforeach
-        <div class="block_links">
+        <div class="block_links flex-center">
             {{ $posts->links() }}
         </div>
     </div>
@@ -99,25 +109,45 @@
                     <form action="{{route('ad.search')}}" method="GET" class="search-simple">
                         <div class="row">
                             <div class="col-md-10">
-                                <input type="text" class="form-control" name="query" id="query" value="{{ old('query')??request('query') }}" required>
+                                <input type="text" class="form-control" name="query" id="query"
+                                       value="{{ old('query')??request('query') }}" required>
                             </div>
                             <div class="col-md-2">
-                                <button type="submit" class="form-control btn btn-warning"><img src="http://www.clker.com/cliparts/n/U/H/1/H/u/search-icon-white-one-hi.png" width="20px" height="20px"></button>
-                            </div><br>
+                                <button type="submit" class="form-control btn btn-warning"><img
+                                            src="http://www.clker.com/cliparts/n/U/H/1/H/u/search-icon-white-one-hi.png"
+                                            width="20px" height="20px"></button>
+                            </div>
+                            <br>
                         </div>
 
                     </form>
-                    <hr> Операции с поиском <br>
+                    <hr>
+                    Операции с поиском <br>
 
                     <div class="container">
                         <div class="row">
-                            <div class="col-md-4"><a href="#" id="logicAnd" class="btn-link" data-toggle="popover" data-trigger="hover" title="A B" data-content="По умолчанию, введенные слова считаются за отдельные элементы поиска, и в базе данных ищутся все записи, в которой есть все эти слова в любом порядке">Логическое И</a></div>
-                            <div class="col-md-4"><a href="#" id="logicOr" class="btn-link" data-toggle="popover" data-trigger="hover" title="A | B" data-content="Поиск будет искать наличие как минимум одного из этих элементов (либо A, либо B)">Логическое ИЛИ</a></div>
-                            <div class="col-md-4"><a href="#" id="logicNot" class="btn-link" data-toggle="popover" data-trigger="hover" title="-A" data-content="Поиск будет искать объявления, в которых нет этого элемента">Логическое НЕ</a></div>
+                            <div class="col-md-4"><a href="#" id="logicAnd" class="btn-link" data-toggle="popover"
+                                                     data-trigger="hover" title="A B"
+                                                     data-content="По умолчанию, введенные слова считаются за отдельные элементы поиска, и в базе данных ищутся все записи, в которой есть все эти слова в любом порядке">Логическое
+                                    И</a></div>
+                            <div class="col-md-4"><a href="#" id="logicOr" class="btn-link" data-toggle="popover"
+                                                     data-trigger="hover" title="A | B"
+                                                     data-content="Поиск будет искать наличие как минимум одного из этих элементов (либо A, либо B)">Логическое
+                                    ИЛИ</a></div>
+                            <div class="col-md-4"><a href="#" id="logicNot" class="btn-link" data-toggle="popover"
+                                                     data-trigger="hover" title="-A"
+                                                     data-content="Поиск будет искать объявления, в которых нет этого элемента">Логическое
+                                    НЕ</a></div>
                         </div>
                         <div class="row">
-                            <div class="col-md-4"><a href="#" id="logicGroup" class="btn-link" data-toggle="popover" data-trigger="hover" title="(A B C)" data-content="Элементы будут сгруппированны вместе. Операции можно применять как внутри группы, так и к самой группе">Группировка</a></div>
-                            <div class="col-md-4"><a href="#" id="logicPhrase" class="btn-link" data-toggle="popover" data-trigger="hover" title='"A B C"' data-content="Элементы поиска можно заключить в кавычки. Так несколько слов можно искать вместе как фразу">Поиск по фразе</a></div>
+                            <div class="col-md-4"><a href="#" id="logicGroup" class="btn-link" data-toggle="popover"
+                                                     data-trigger="hover" title="(A B C)"
+                                                     data-content="Элементы будут сгруппированны вместе. Операции можно применять как внутри группы, так и к самой группе">Группировка</a>
+                            </div>
+                            <div class="col-md-4"><a href="#" id="logicPhrase" class="btn-link" data-toggle="popover"
+                                                     data-trigger="hover" title='"A B C"'
+                                                     data-content="Элементы поиска можно заключить в кавычки. Так несколько слов можно искать вместе как фразу">Поиск
+                                    по фразе</a></div>
                             <div class="col-md-4"></div>
 
                         </div>
@@ -126,17 +156,32 @@
                     </div>
 
 
-
-                    <hr> Поиск по полям <br>
+                    <hr>
+                    Поиск по полям <br>
                     <div class="container">
                         <div class="row">
-                            <div class="col-md-4"><a href="#" id="fieldTitle" class="btn-link" data-toggle="popover" data-trigger="hover"   title="@title A" data-content="Поиск будет проводиться по выбранному полю">Заголовок</a></div>
-                            <div class="col-md-4"><a href="#" id="fieldContent" class="btn-link" data-toggle="popover" data-trigger="hover" title="@content A" data-content="Поиск будет проводиться по выбранному полю">Содержимое</a></div>
-                            <div class="col-md-4"><a href="#" id="fieldContact" class="btn-link" data-toggle="popover" data-trigger="hover" title="@contact A" data-content="Поиск будет проводиться по выбранному полю">Контактная информация</a></div>
+                            <div class="col-md-4"><a href="#" id="fieldTitle" class="btn-link" data-toggle="popover"
+                                                     data-trigger="hover" title="@title A"
+                                                     data-content="Поиск будет проводиться по выбранному полю">Заголовок</a>
+                            </div>
+                            <div class="col-md-4"><a href="#" id="fieldContent" class="btn-link" data-toggle="popover"
+                                                     data-trigger="hover" title="@content A"
+                                                     data-content="Поиск будет проводиться по выбранному полю">Содержимое</a>
+                            </div>
+                            <div class="col-md-4"><a href="#" id="fieldContact" class="btn-link" data-toggle="popover"
+                                                     data-trigger="hover" title="@contact A"
+                                                     data-content="Поиск будет проводиться по выбранному полю">Контактная
+                                    информация</a></div>
                         </div>
                         <div class="row">
-                            <div class="col-md-4"><a href="#" id="fieldSpecific" class="btn-link" data-toggle="popover" data-trigger="hover" title="@(поле,поле) текст" data-content="Поля, по которым происходит поиск, можно объединить в группы точно также, как и слова поиска">Несколько полей</a></div>
-                            <div class="col-md-4"><a href="#" id="fieldIgnore" class="btn-link" data-toggle="popover" data-trigger="hover" title="@!(поле) текст" data-content="Совпадения в указанном поле будут проигнорированы">Игнорировать поле</a></div>
+                            <div class="col-md-4"><a href="#" id="fieldSpecific" class="btn-link" data-toggle="popover"
+                                                     data-trigger="hover" title="@(поле,поле) текст"
+                                                     data-content="Поля, по которым происходит поиск, можно объединить в группы точно также, как и слова поиска">Несколько
+                                    полей</a></div>
+                            <div class="col-md-4"><a href="#" id="fieldIgnore" class="btn-link" data-toggle="popover"
+                                                     data-trigger="hover" title="@!(поле) текст"
+                                                     data-content="Совпадения в указанном поле будут проигнорированы">Игнорировать
+                                    поле</a></div>
                         </div>
                     </div>
 
@@ -199,7 +244,7 @@
             });
         });
 
-        $(document).ready(function(){
+        $(document).ready(function () {
             $('[data-toggle="popover"]').popover();
         });
 
