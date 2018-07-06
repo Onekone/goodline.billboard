@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title','Объявление')
 @section('content')
     <div class="container">
         @if (session('status') && session('status-class'))

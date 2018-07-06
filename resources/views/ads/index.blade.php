@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title','Типа.Билборд')
 @section('content')
 
     <div class="container">
