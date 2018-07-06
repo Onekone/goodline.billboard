@@ -7,6 +7,7 @@ use Illuminate\Support\Collection;
 use sngrl\SphinxSearch\SphinxSearch;
 use DB;
 use Session;
+use Config;
 use Illuminate\Support\Facades\Input;
 use Sphinx\SphinxClient;
 use Validator;
@@ -55,9 +56,10 @@ class AdController extends Controller
         else {
             try {
                 $sphinx = new SphinxClient;
-                $sphinx->setServer(env('DB_SPHINXHOST','localhost'));
+                $sphinx->setServer( Config::get('sphinxsearch.host'),Config::get('sphinxsearch.port'));
                 $sphinx->setMatchMode(SphinxClient::SPH_MATCH_EXTENDED2);
                 $sphinx->setMaxQueryTime(3);
+                $sphinx->setSortMode(SphinxClient::SPH_SORT_ATTR_DESC,"created_at");
 
                 $result = $sphinx->query(Input::get('query'),'billboardIndex');
 
@@ -76,11 +78,6 @@ class AdController extends Controller
             catch (\ErrorException $e) {
                 abort(500,'Search error\n'.$e->getMessage());
             }
-
-
-
-
-
         }
     }
     /**
