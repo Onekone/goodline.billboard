@@ -35,12 +35,9 @@
             </div>
         @endif
         @if (Auth::user())
-            <div class="col-12">
-                <button type="button"
-                        class="btn btn-link d-block mx-auto">
-                    <a href="{{route('ad.create')}}" class="btn btn-warning form-control text-white">Создать новое
+            <div class="text-center">
+                    <a href="{{route('ad.create')}}" class="btn btn-warning form-control text-white col-md-4">Создать новое
                         объявление</a>
-                </button>
             </div>
         @endif
         @if($posts->count()==0)
