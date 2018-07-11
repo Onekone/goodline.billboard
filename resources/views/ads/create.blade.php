@@ -43,7 +43,7 @@
                     </div>
                 @endif
                 <div class="form-group row">
-                    {!! Form::label('content','Текст объяления',['class'=>'col-sm-2 col-form-label text-md-right']) !!}
+                    {!! Form::label('content','Текст объявления',['class'=>'col-sm-2 col-form-label text-md-right']) !!}
                     <div class="col-md-10">
                         {!! Form::textarea('content',old('content'),['class'=> $errors->has('content')?'form-control is-invalid':'form-control','required','rows'=>'7']) !!}
                         @if ($errors->has('content'))

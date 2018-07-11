@@ -17,19 +17,16 @@
                         </div>
                     @endif
                     <div class="card-body">
-                        [PH] Прислал: {{$post->user->name??'deleted'}}<br>
-                        [PH] Дата: {{ date('d.m.Y', strtotime($post->created_at)) }}
+                        Прислал: {{$post->user->name??'deleted'}}<br>
+                        Дата: {{ date('d.m.Y', strtotime($post->created_at)) }}
                     </div>
                     <div class="card-footer">
                         @if(Auth::check() && $post->user_id == Auth::user()->id)
-                            {!! Form::open(['method'=>'get','route'=>['ad.edit',$post->id]]) !!}
-                            {!! Form::submit('[PH] Редактировать',array('class'=>'form-control btn btn-primary','width'=>'300px'))!!}
-                            {!! Form::close() !!}
+                            <a href="{{route('ad.edit', $post->id)}}" class="btn btn-primary">Редактировать</a>
                         @endif
                         @if(Auth::check() && $post->user_id == Auth::user()->id || Auth::check() && Auth::user()->isModerator == 1)
-                            {!! Form::open(['method'=>'delete','route'=>['ad.destroy',$post->id]]) !!}
-                            {{  Form::submit('[PH] Удалить',array('class'=>'form-control btn btn-danger','width'=>'300px'))}}
-                            {!! Form::close() !!}
+                                <a data-toggle="modal" data-target="#modalDeleteAds"
+                                   class="btn btn-danger text-white" >Удалить</a>
                         @endif
                     </div>
                 </div>
@@ -50,5 +47,29 @@
             </div>
         </div>
     </div>
+
+    <div id="modalDeleteAds" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+
+                    <h4 class="modal-title">Удалить обьявление</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    Вы уверены что хотите удалить обьявление?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Отмена</button>
+                    <form action="{{route('ad.destroy', $post->id)}}" method="post">
+                        {{method_field('delete')}}
+                        <button type="submit" class="btn btn-primary">Удалить</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @stop
 

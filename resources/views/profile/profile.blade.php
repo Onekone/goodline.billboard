@@ -69,18 +69,18 @@
                             @endif
                             @if($vkLink)
                                 <a href="http://vk.com/id{{$vkLink->social_id}}"
-                                   class="btn btn-outline-info form-control">Профиль ВК</a>
+                                   class="btn btn-outline-info form-control btn-margin-bottom">Профиль ВК</a>
                                 <a href="#" data-toggle="modal" data-target="#modalUnbindVK"
                                    class="btn btn-info form-control">Отвязать от ВК</a>
                                 <hr>
                             @else
-                                <a href="{{route('vk')}}" class="btn btn-info form-control" data-toggle="tooltip"
+                                <a href="{{route('vk')}}" class="btn btn-info form-control " data-toggle="tooltip"
                                    title="Это позволит вам использовать аккаунт в контакте для авторизации на сайте вместо логина/пароля. (WIP: после изначальной привязки id ВК к id пользователя не тянет больше никаких данных)">
                                     Связать с ВК</a>
                                 <hr>
                             @endif
                             <a href="#" data-toggle="modal" data-target="#modalNukeAds"
-                               class="btn btn-outline-danger form-control">Удалить все объявления</a>
+                               class="btn btn-outline-danger form-control btn-margin-bottom">Удалить все объявления</a>
                             <a href="#" data-toggle="modal" data-target="#modalNukeUser"
                                class="btn btn-outline-danger form-control">Удалить аккаунт</a>
                             <hr>
@@ -113,13 +113,14 @@
                                 {{ $message }}
                             </div>
                         @endif
-                            @if($posts->count()==0)
-                                <div style="display: block; margin: auto">
-                                    <img src="{{asset('/images/background/background.png')}}" style="display: block; margin: auto;border-radius: 20px;">
-                                    <p style="text-align: center; margin: auto">Тут что-то должно быть, но не в этот раз</p>
-                                </div>
+                        @if($posts->count()==0)
+                            <div style="display: block; margin: auto">
+                                <img src="{{asset('/images/background/background.png')}}"
+                                     style="display: block; margin: auto;border-radius: 20px;">
+                                <p style="text-align: center; margin: auto">Тут что-то должно быть, но не в этот раз</p>
+                            </div>
 
-                            @endif
+                        @endif
                         @foreach($posts as $userpost)
                             <div class="card">
                                 <div class="card-header">
@@ -146,24 +147,42 @@
                                 </div>
                                 @if ($auth && $auth==$user->id)
                                     <div class="card-footer">
-                                        <div style='display: inline-block; float:left; width:30%; text-align: center'>
-                                            <a data-toggle="tooltip"
-                                               title="Истекает {{ date('d.m.Y', strtotime($userpost->created_at. ' + 15 days')) }}">{{$userpost->created_at}}</a>
+                                        <form action="{{route('ad.edit', $userpost->id)}}" method="get">
+                                            <div class="left">
+                                            <span data-toggle="tooltip"
+                                               title="Истекает {{ date('d.m.Y', strtotime($userpost->created_at. ' + 15 days')) }}">{{$userpost->created_at}}</span>
+                                            </div>
+                                            <div class="right">
+                                            <button type="submit" class="btn btn-primary">Редактировать</button>
+                                            <a data-toggle="modal" data-target="#modalDeleteAds"
+                                               class="btn btn-danger text-white">Удалить</a>
+                                            </div>
+                                        </form>
+                                    </div>
+                                @endif
+                            </div><br>
+                            <div id="modalDeleteAds" class="modal fade" role="dialog">
+                                <div class="modal-dialog">
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+
+                                            <h4 class="modal-title">Удалить обьявление</h4>
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
                                         </div>
-                                        <div style='display: inline-block; float:right; width:30%;'>
+                                        <div class="modal-body">
+                                            Вы уверены что хотите удалить обьявление?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-success" data-dismiss="modal">Отмена
+                                            </button>
                                             {!! Form::open(['method'=>'delete','route'=>['ad.destroy',$userpost->id]]) !!}
                                             {{  Form::submit('Удалить',array('class'=>'form-control btn btn-danger'))}}
                                             {!! Form::close() !!}
                                         </div>
-                                        <div style='display: inline-block; float:right; width:30%;'>
-                                            {!! Form::open(['method'=>'get','route'=>['ad.edit',$userpost->id]]) !!}
-                                            {!! Form::submit('Редактировать',array('class'=>'form-control btn btn-primary'))!!}
-                                            {!! Form::close() !!}
-                                        </div>
-
                                     </div>
-                                @endif
-                            </div><br>
+                                </div>
+                            </div>
                         @endforeach
                     </div>
                 </div>
@@ -243,4 +262,8 @@
             </div>
         </div>
     </div>
+
+
+
+
 @endsection
